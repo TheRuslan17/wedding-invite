@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Максим & Ульяна | Свадьба</title>
 
-    <!-- Библиотеки -->
+    <!-- Шрифты (оставляем как есть) -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
 
     <style>
         * {
@@ -354,10 +352,6 @@
 
         .social-links a .vk-icon {
             color: #4a76a8;
-        }
-
-        .social-links a .insta-icon {
-            color: #e4405f;
         }
 
         .social-links a span {
@@ -719,84 +713,127 @@
         </p>
     </footer>
 
-<!-- АУДИО -->
-<audio id="bgMusic" loop preload="auto">
-    <source src="song.mp3" type="audio/mpeg">
-    <p>Ваш браузер не поддерживает аудио.</p>
-</audio>
+    <!-- АУДИО -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="song.mp3" type="audio/mpeg">
+        <p>Ваш браузер не поддерживает аудио.</p>
+    </audio>
 
-<script>
-    // --- УПРАВЛЕНИЕ МУЗЫКОЙ С ОБРАБОТКОЙ ОШИБОК ---
-    const audio = document.getElementById('bgMusic');
-    const musicToggle = document.getElementById('musicToggle');
-    const icon = musicToggle.querySelector('i');
+    <!-- Font Awesome (иконки) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- AOS (анимации) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    // Проверяем, загрузился ли файл
-    audio.addEventListener('canplaythrough', function() {
-        console.log('✅ Музыка загружена!');
-    });
+    <script>
+        // --- ИНИЦИАЛИЗАЦИЯ AOS ---
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 40
+        });
 
-    audio.addEventListener('error', function(e) {
-        console.error('❌ Ошибка загрузки музыки:', e);
-        // Показываем иконку с крестиком, если ошибка
-        icon.className = 'fa-regular fa-circle-xmark';
-        musicToggle.style.color = '#c48b7a';
-    });
+        // --- УПРАВЛЕНИЕ МУЗЫКОЙ ---
+        const audio = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const icon = musicToggle.querySelector('i');
 
-    let musicStarted = false;
+        // Проверяем, загрузился ли файл
+        audio.addEventListener('canplaythrough', function() {
+            console.log('✅ Музыка загружена!');
+        });
 
-    function toggleMusic() {
-        if (audio.paused) {
-            audio.play()
-                .then(() => {
-                    icon.className = 'fa-regular fa-circle-pause';
-                    musicToggle.classList.remove('muted');
-                })
-                .catch(err => {
-                    console.error('Не удалось запустить:', err);
-                    alert('Не удалось запустить музыку. Проверь файл song.mp3');
-                });
-        } else {
-            audio.pause();
-            icon.className = 'fa-regular fa-circle-play';
-            musicToggle.classList.add('muted');
+        audio.addEventListener('error', function(e) {
+            console.error('❌ Ошибка загрузки музыки:', e);
+            icon.className = 'fa-regular fa-circle-xmark';
+            musicToggle.style.color = '#c48b7a';
+        });
+
+        let musicStarted = false;
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play()
+                    .then(() => {
+                        icon.className = 'fa-regular fa-circle-pause';
+                        musicToggle.classList.remove('muted');
+                    })
+                    .catch(err => {
+                        console.error('Не удалось запустить:', err);
+                        alert('Не удалось запустить музыку. Проверь файл song.mp3');
+                    });
+            } else {
+                audio.pause();
+                icon.className = 'fa-regular fa-circle-play';
+                musicToggle.classList.add('muted');
+            }
         }
-    }
 
-    musicToggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        toggleMusic();
-    });
+        musicToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMusic();
+        });
 
-    // Автозапуск после первого клика
-    document.addEventListener('click', function initAudio() {
-        if (!musicStarted) {
-            audio.volume = 0.3;
-            audio.play()
-                .then(() => {
-                    icon.className = 'fa-regular fa-circle-pause';
-                    musicToggle.classList.remove('muted');
-                    musicStarted = true;
-                })
-                .catch(err => {
-                    console.warn('Автозапуск заблокирован:', err);
+        // Автозапуск после первого клика
+        document.addEventListener('click', function initAudio() {
+            if (!musicStarted) {
+                audio.volume = 0.3;
+                audio.play()
+                    .then(() => {
+                        icon.className = 'fa-regular fa-circle-pause';
+                        musicToggle.classList.remove('muted');
+                        musicStarted = true;
+                    })
+                    .catch(err => {
+                        console.warn('Автозапуск заблокирован:', err);
+                    });
+                document.removeEventListener('click', initAudio);
+            }
+        }, { once: true });
+
+        // --- ФОРМА RSVP ---
+        const form = document.getElementById('rsvpForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMsg = document.getElementById('successMessage');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            if (!name) {
+                alert('Пожалуйста, напишите ваше имя 🙂');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправляем...';
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
                 });
-            document.removeEventListener('click', initAudio);
-        }
-    }, { once: true });
-</script>
 
-<script>
-    // Дополнительная отладка музыки
-    const audioDebug = document.getElementById('bgMusic');
-    audioDebug.addEventListener('error', function(e) {
-        console.error('Ошибка загрузки аудио:', e);
-        alert('Не удалось загрузить song.mp3. Проверь, что файл лежит рядом с index.html');
-    });
-    audioDebug.addEventListener('canplaythrough', function() {
-        console.log('Аудио загружено и готово к воспроизведению');
-    });
-</script>
+                if (response.ok) {
+                    form.style.display = 'none';
+                    successMsg.style.display = 'block';
+                    successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    alert('Что-то пошло не так. Попробуйте ещё раз или напишите нам лично 😊');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Подтвердить';
+                }
+            } catch (error) {
+                alert('Ошибка соединения. Проверьте интернет и попробуйте снова 🙏');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Подтвердить';
+            }
+        });
+    </script>
 
 </body>
 </html>
