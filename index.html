@@ -171,27 +171,34 @@
             max-width: 500px;
         }
 
+        /* УВЕЛИЧЕННАЯ КНОПКА МУЗЫКИ */
         .music-toggle {
             position: fixed;
             top: 24px;
             right: 24px;
             z-index: 999;
-            width: 48px;
-            height: 48px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             background: white;
-            border: none;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-            font-size: 22px;
+            border: 2px solid #b07c6a;
+            box-shadow: 0 6px 30px rgba(176, 124, 106, 0.25);
+            font-size: 28px;
             cursor: pointer;
-            transition: transform 0.25s ease;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b07c6a;
         }
-        .music-toggle:hover { transform: scale(1.08); }
-        .music-toggle.muted { color: #b09a8f; }
+        .music-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 40px rgba(176, 124, 106, 0.35);
+        }
+        .music-toggle.muted {
+            color: #b09a8f;
+            border-color: #dccfc7;
+        }
 
         section { padding: 80px 0; border-bottom: 1px solid #ede5dd; position: relative; }
         section:last-of-type { border-bottom: none; }
@@ -260,133 +267,97 @@
             font-weight: 300;
         }
 
-        .timeline {
-            max-width: 700px;
+        /* НОВАЯ ПРОГРАММА — ЗИГЗАГ */
+        .timeline-zigzag {
+            max-width: 800px;
             margin: 0 auto;
             position: relative;
-            padding-left: 30px;
+            padding: 20px 0;
         }
-        .timeline::before {
+        .timeline-zigzag::before {
             content: '';
             position: absolute;
-            left: 15px;
+            left: 50%;
             top: 0;
             bottom: 0;
-            width: 2px;
+            width: 3px;
             background: linear-gradient(180deg, #dccfc7, #b07c6a, #dccfc7);
-            opacity: 0.4;
-            border-radius: 2px;
+            transform: translateX(-50%);
+            border-radius: 4px;
+            opacity: 0.6;
         }
 
-        .timeline-item {
+        .zigzag-item {
             display: flex;
-            gap: 24px;
-            padding: 20px 0 20px 30px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
             position: relative;
-            align-items: center;
-            border-bottom: 1px dashed #f0e8e0;
-            transition: all 0.3s ease;
-            border-radius: 12px;
-            padding: 18px 20px 18px 40px;
-            margin-bottom: 4px;
-            background: rgba(255, 255, 255, 0.3);
+            width: 100%;
         }
-        .timeline-item:last-child {
-            border-bottom: none;
+        .zigzag-item:nth-child(odd) {
+            flex-direction: row;
         }
-        .timeline-item:hover {
-            background: rgba(255, 255, 255, 0.8);
-            transform: translateX(4px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        .zigzag-item:nth-child(even) {
+            flex-direction: row-reverse;
         }
 
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
-            height: 16px;
-            background: #b07c6a;
-            border-radius: 50%;
-            border: 3px solid #faf7f2;
-            box-shadow: 0 0 0 3px #b07c6a, 0 4px 12px rgba(176, 124, 106, 0.3);
-            transition: all 0.3s ease;
-        }
-        .timeline-item:hover::before {
-            transform: translateY(-50%) scale(1.2);
-            box-shadow: 0 0 0 5px #b07c6a, 0 4px 20px rgba(176, 124, 106, 0.4);
-        }
-
-        .timeline-icon {
-            font-size: 28px;
-            width: 56px;
-            height: 56px;
+        .zigzag-item .event {
+            width: 42%;
             background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-            flex-shrink: 0;
-            font-size: 24px;
-            color: #b07c6a;
-            transition: all 0.3s ease;
+            padding: 20px 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 2;
             border: 1px solid #f0e8e0;
         }
-        .timeline-item:hover .timeline-icon {
-            transform: rotate(4deg) scale(1.05);
-            border-color: #b07c6a;
+        .zigzag-item .event:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.06);
         }
-
-        .timeline-content {
-            flex: 1;
-            display: flex;
-            align-items: baseline;
-            gap: 20px;
-            flex-wrap: wrap;
+        .zigzag-item .event .icon {
+            font-size: 28px;
+            margin-bottom: 4px;
+            display: block;
         }
-
-        .timeline-time {
+        .zigzag-item .event .time {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
             font-weight: 700;
             color: #b07c6a;
-            font-size: 20px;
-            min-width: 80px;
-            font-family: 'Playfair Display', serif;
             letter-spacing: 1px;
-            position: relative;
         }
-        .timeline-time::after {
-            content: '';
-            position: absolute;
-            right: -12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 6px;
-            height: 6px;
-            background: #dccfc7;
-            border-radius: 50%;
+        .zigzag-item .event .title {
+            font-weight: 600;
+            font-size: 18px;
+            color: #3d2e2a;
+            margin: 2px 0;
+        }
+        .zigzag-item .event .place {
+            font-size: 14px;
+            color: #7a6257;
+            font-weight: 300;
         }
 
-        .timeline-text {
-            color: #3d2e2a;
-            font-weight: 300;
-            font-size: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
+        /* Маркер на линии */
+        .zigzag-item .marker {
+            width: 20px;
+            height: 20px;
+            background: #b07c6a;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px #b07c6a, 0 4px 16px rgba(176, 124, 106, 0.3);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            transition: all 0.3s ease;
         }
-        .timeline-text strong {
-            font-weight: 600;
-            color: #3d2e2a;
-            font-size: 18px;
-        }
-        .timeline-text .place {
-            font-size: 13px;
-            color: #b07c6a;
-            font-weight: 400;
-            margin-top: 2px;
+        .zigzag-item:hover .marker {
+            transform: translateX(-50%) scale(1.2);
+            box-shadow: 0 0 0 5px #b07c6a, 0 4px 24px rgba(176, 124, 106, 0.4);
         }
 
         .map-container {
@@ -576,59 +547,50 @@
             .hero-names .amp { display: inline-block; font-size: 0.8em; }
             .details-grid { grid-template-columns: 1fr; }
             .rsvp-form { padding: 28px 20px; }
-            .timeline {
-                padding-left: 12px;
-            }
-            .timeline-item {
-                flex-direction: row;
-                padding: 14px 12px 14px 28px;
-                gap: 12px;
-                flex-wrap: wrap;
-            }
-            .timeline-item::before {
-                left: -2px;
-                width: 12px;
-                height: 12px;
-            }
-            .timeline-content {
-                flex-direction: column;
-                gap: 2px;
-                align-items: flex-start;
-            }
-            .timeline-time {
-                font-size: 16px;
-                min-width: auto;
-            }
-            .timeline-time::after {
-                display: none;
-            }
-            .timeline-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-            .timeline-text strong {
-                font-size: 15px;
-            }
-            .timeline-text {
-                font-size: 14px;
-            }
-            .timeline-text .place {
-                font-size: 12px;
-            }
             .map-container iframe { height: 250px; }
             .social-links a { padding: 10px 18px; font-size: 14px; }
             .contacts-grid { grid-template-columns: 1fr; }
-            .music-toggle { top: 16px; right: 16px; width: 42px; height: 42px; font-size: 18px; }
+            .music-toggle {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+                top: 16px;
+                right: 16px;
+            }
             .section-title { font-size: 28px; }
             .hero-names { font-size: clamp(42px, 12vw, 60px); }
             .divider .line { max-width: 60px; }
             .hero { background-attachment: scroll; }
+
+            /* Адаптив зигзага */
+            .timeline-zigzag::before {
+                left: 20px;
+            }
+            .zigzag-item {
+                flex-direction: column !important;
+                align-items: flex-start;
+                padding-left: 40px;
+                gap: 4px;
+            }
+            .zigzag-item .event {
+                width: 100%;
+                padding: 14px 18px;
+            }
+            .zigzag-item .marker {
+                left: 20px;
+                transform: translateX(-50%);
+                width: 16px;
+                height: 16px;
+            }
+            .zigzag-item:hover .marker {
+                transform: translateX(-50%) scale(1.2);
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- УВЕЛИЧЕННАЯ КНОПКА МУЗЫКИ -->
     <button class="music-toggle" id="musicToggle" aria-label="Включить/выключить музыку">♪</button>
 
     <header class="hero">
@@ -646,7 +608,7 @@
         </div>
         <div class="hero-sub">
             В связи со сложившимися обстоятельствами, а именно: <br/>
-            невозможностью больше смотреть на пустые страницы наших паспортов, <br/>
+            невозможностью больше смотреть на пустующую 14 страницу наших паспортов, <br/>
             мы решили совершить обряд бракосочетания. <br/><br/>
             С большой радостью приглашаем Вас на наш первый семейный праздник — нашу свадьбу!
         </div>
@@ -691,7 +653,7 @@
             </div>
         </section>
 
-        <!-- ПРОГРАММА ДНЯ -->
+        <!-- ПРОГРАММА ДНЯ — ЗИГЗАГ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Программа дня</h2>
@@ -702,77 +664,71 @@
             </div>
             <p class="section-subtitle">Как всё будет</p>
 
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-icon">🏠</div>
-                    <div class="timeline-content">
-                        <div class="timeline-time">10:30</div>
-                        <div class="timeline-text">
-                            <strong>Сбор у жениха</strong>
-                            Подготовка к главному дню
-                            <span class="place">📍 Дом жениха</span>
-                        </div>
+            <div class="timeline-zigzag">
+                <!-- 1. Сбор у жениха (слева) -->
+                <div class="zigzag-item">
+                    <div class="event">
+                        <span class="icon">🏠</span>
+                        <div class="time">10:30</div>
+                        <div class="title">Сбор у жениха</div>
+                        <div class="place">📍 Дом жениха</div>
                     </div>
+                    <div class="marker"></div>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-icon">💄</div>
-                    <div class="timeline-content">
-                        <div class="timeline-time">12:00</div>
-                        <div class="timeline-text">
-                            <strong>Сбор у невесты</strong>
-                            Финальные сборы
-                            <span class="place">📍 Дом невесты</span>
-                        </div>
+                <!-- 2. Сбор у невесты (справа) -->
+                <div class="zigzag-item">
+                    <div class="event">
+                        <span class="icon">💄</span>
+                        <div class="time">12:00</div>
+                        <div class="title">Сбор у невесты</div>
+                        <div class="place">📍 Дом невесты</div>
                     </div>
+                    <div class="marker"></div>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-icon">💍</div>
-                    <div class="timeline-content">
-                        <div class="timeline-time">12:40</div>
-                        <div class="timeline-text">
-                            <strong>Выкуп</strong>
-                            Весёлые испытания для жениха
-                            <span class="place">📍 Дом невесты</span>
-                        </div>
+                <!-- 3. Выкуп (слева) -->
+                <div class="zigzag-item">
+                    <div class="event">
+                        <span class="icon">💍</span>
+                        <div class="time">12:40</div>
+                        <div class="title">Выкуп</div>
+                        <div class="place">📍 Дом невесты</div>
                     </div>
+                    <div class="marker"></div>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-icon">📜</div>
-                    <div class="timeline-content">
-                        <div class="timeline-time">14:00</div>
-                        <div class="timeline-text">
-                            <strong>Регистрация брака</strong>
-                            Торжественная церемония
-                            <span class="place">📍 ЗАГС</span>
-                        </div>
+                <!-- 4. Регистрация брака (справа) -->
+                <div class="zigzag-item">
+                    <div class="event">
+                        <span class="icon">📜</span>
+                        <div class="time">14:00</div>
+                        <div class="title">Регистрация брака</div>
+                        <div class="place">📍 ЗАГС</div>
                     </div>
+                    <div class="marker"></div>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-icon">🍽️</div>
-                    <div class="timeline-content">
-                        <div class="timeline-time">16:30</div>
-                        <div class="timeline-text">
-                            <strong>Банкет</strong>
-                            Ужин, тосты, танцы
-                            <span class="place">📍 Ресторан «Зелёный мыс»</span>
-                        </div>
+                <!-- 5. Банкет (слева) -->
+                <div class="zigzag-item">
+                    <div class="event">
+                        <span class="icon">🍽️</span>
+                        <div class="time">16:30</div>
+                        <div class="title">Банкет</div>
+                        <div class="place">📍 Ресторан «Зелёный мыс»</div>
                     </div>
+                    <div class="marker"></div>
                 </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-icon">🌙</div>
-                    <div class="timeline-content">
-                        <div class="timeline-time">00:00</div>
-                        <div class="timeline-text">
-                            <strong>Окончание вечера</strong>
-                            Финал прекрасного дня
-                            <span class="place">📍 Ресторан «Зелёный мыс»</span>
-                        </div>
+                <!-- 6. Окончание вечера (справа) -->
+                <div class="zigzag-item">
+                    <div class="event">
+                        <span class="icon">🌙</span>
+                        <div class="time">00:00</div>
+                        <div class="title">Окончание вечера</div>
+                        <div class="place">📍 Ресторан «Зелёный мыс»</div>
                     </div>
+                    <div class="marker"></div>
                 </div>
             </div>
         </section>
