@@ -31,7 +31,6 @@
         }
         .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
 
-        /* ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ */
         .divider {
             display: flex;
             align-items: center;
@@ -72,7 +71,6 @@
             user-select: none;
         }
 
-        /* ГЕРОЙ С ФОНОМ И АНИМАЦИЕЙ */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -118,7 +116,6 @@
             animation: fadeInScale 1.5s ease 0.2s forwards;
         }
 
-        /* АНИМАЦИЯ ДЛЯ ИМЁН */
         @keyframes fadeInScale {
             0% { opacity: 0; transform: scale(0.8); filter: blur(4px); }
             100% { opacity: 1; transform: scale(1); filter: blur(0); }
@@ -171,9 +168,9 @@
             font-weight: 300;
             opacity: 0;
             animation: fadeInScale 1.5s ease 1.5s forwards;
+            max-width: 500px;
         }
 
-        /* МУЗЫКА */
         .music-toggle {
             position: fixed;
             top: 24px;
@@ -196,7 +193,6 @@
         .music-toggle:hover { transform: scale(1.08); }
         .music-toggle.muted { color: #b09a8f; }
 
-        /* РАЗДЕЛЫ */
         section { padding: 80px 0; border-bottom: 1px solid #ede5dd; position: relative; }
         section:last-of-type { border-bottom: none; }
 
@@ -221,7 +217,6 @@
             text-transform: uppercase;
         }
 
-        /* КАРТОЧКИ */
         .details-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -265,7 +260,6 @@
             font-weight: 300;
         }
 
-        /* ПРОГРАММА ДНЯ (ОБНОВЛЁННАЯ) */
         .timeline {
             max-width: 650px;
             margin: 0 auto;
@@ -338,7 +332,6 @@
             margin-bottom: 2px;
         }
 
-        /* КАРТА */
         .map-container {
             border-radius: 20px;
             overflow: hidden;
@@ -352,7 +345,6 @@
             display: block;
         }
 
-        /* КОНТАКТЫ */
         .contacts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -391,7 +383,6 @@
         }
         .contact-card .phone:hover { color: #b07c6a; }
 
-        /* СОЦСЕТИ */
         .social-links {
             display: flex;
             justify-content: center;
@@ -421,7 +412,7 @@
             color: #9a847a;
         }
 
-        /* ФОРМА */
+        /* ОБНОВЛЁННАЯ ФОРМА RSVP */
         .rsvp-form {
             max-width: 480px;
             margin: 0 auto;
@@ -455,6 +446,29 @@
             border-color: #b07c6a;
             background: white;
         }
+        .form-group .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-top: 6px;
+        }
+        .form-group .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 400;
+            font-size: 15px;
+            color: #3d2e2a;
+            letter-spacing: 0;
+            cursor: pointer;
+        }
+        .form-group .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #b07c6a;
+            flex-shrink: 0;
+        }
+
         .btn {
             display: inline-block;
             width: 100%;
@@ -492,7 +506,6 @@
             margin-bottom: 10px;
         }
 
-        /* ФУТЕР */
         .footer {
             text-align: center;
             padding: 50px 0 40px;
@@ -503,7 +516,7 @@
         }
         .footer .heart { color: #c48b7a; font-size: 14px; }
 
-        /* АДАПТИВ */
+        /* Адаптив */
         @media (max-width: 600px) {
             .hero-names span { display: block; margin: 4px 0; }
             .hero-names .amp { display: inline-block; font-size: 0.8em; }
@@ -528,10 +541,8 @@
 </head>
 <body>
 
-    <!-- МУЗЫКА -->
     <button class="music-toggle" id="musicToggle" aria-label="Включить/выключить музыку">♪</button>
 
-    <!-- ГЕРОЙ -->
     <header class="hero">
         <div class="hero-badge">Приглашение</div>
         <h1 class="hero-names">
@@ -546,13 +557,15 @@
             <span class="line"></span>
         </div>
         <div class="hero-sub">
-            Приглашаем вас разделить с нами этот день
+            В связи со сложившимися обстоятельствами, а именно: <br/>
+            невозможностью больше смотреть на пустые страницы наших паспортов, <br/>
+            мы решили совершить обряд бракосочетания. <br/><br/>
+            С большой радостью приглашаем Вас на наш первый семейный праздник — нашу свадьбу!
         </div>
     </header>
 
     <div class="container">
 
-        <!-- ДЕТАЛИ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Детали праздника</h2>
@@ -571,7 +584,7 @@
                 <div class="detail-card">
                     <span class="icon">📍</span>
                     <h4>Место</h4>
-                    <p>Зелёный мыс<br />г. Невинномысск, ул. Менделеева, 105</p>
+                    <p>Ресторан «Зелёный мыс»<br />г. Невинномысск, ул. Менделеева, 105</p>
                 </div>
                 <div class="detail-card">
                     <span class="icon">👗</span>
@@ -581,7 +594,6 @@
             </div>
         </section>
 
-        <!-- ПРОГРАММА -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Программа дня</h2>
@@ -593,57 +605,56 @@
             <p class="section-subtitle">Как всё будет</p>
 
             <div class="timeline">
-                <div class="timeline-item" data-aos="fade-right">
+                <div class="timeline-item">
                     <div class="timeline-icon">🚹</div>
                     <div class="timeline-content">
                         <div class="timeline-time">10:30</div>
-                        <div class="timeline-text"><strong>Сбор у жениха</strong><br />Подготовка к главному дню</div>
+                        <div class="timeline-text"><strong>Сбор у жениха</strong>Подготовка к главному дню</div>
                     </div>
                 </div>
 
-                <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                <div class="timeline-item">
                     <div class="timeline-icon">🚺</div>
                     <div class="timeline-content">
                         <div class="timeline-time">12:00</div>
-                        <div class="timeline-text"><strong>Сбор у невесты</strong><br />Финальные сборы</div>
+                        <div class="timeline-text"><strong>Сбор у невесты</strong>Финальные сборы</div>
                     </div>
                 </div>
 
-                <div class="timeline-item" data-aos="fade-right" data-aos-delay="150">
+                <div class="timeline-item">
                     <div class="timeline-icon">💍</div>
                     <div class="timeline-content">
                         <div class="timeline-time">12:40</div>
-                        <div class="timeline-text"><strong>Выкуп</strong><br />Весёлые испытания для жениха</div>
+                        <div class="timeline-text"><strong>Выкуп</strong>Весёлые испытания для жениха</div>
                     </div>
                 </div>
 
-                <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
+                <div class="timeline-item">
                     <div class="timeline-icon">📜</div>
                     <div class="timeline-content">
                         <div class="timeline-time">14:00</div>
-                        <div class="timeline-text"><strong>Регистрация брака</strong><br />Торжественная церемония</div>
+                        <div class="timeline-text"><strong>Регистрация брака</strong>Торжественная церемония</div>
                     </div>
                 </div>
 
-                <div class="timeline-item" data-aos="fade-right" data-aos-delay="250">
+                <div class="timeline-item">
                     <div class="timeline-icon">🍽️</div>
                     <div class="timeline-content">
                         <div class="timeline-time">16:30</div>
-                        <div class="timeline-text"><strong>Банкет</strong><br />Ужин, тосты, танцы</div>
+                        <div class="timeline-text"><strong>Банкет</strong>Ужин, тосты, танцы</div>
                     </div>
                 </div>
 
-                <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                <div class="timeline-item">
                     <div class="timeline-icon">🌙</div>
                     <div class="timeline-content">
                         <div class="timeline-time">00:00</div>
-                        <div class="timeline-text"><strong>Окончание вечера</strong><br />Финал прекрасного дня</div>
+                        <div class="timeline-text"><strong>Окончание вечера</strong>Финал прекрасного дня</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- КАРТА -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Как нас найти</h2>
@@ -652,7 +663,7 @@
                 <span class="diamond">◆</span>
                 <span class="line"></span>
             </div>
-            <p class="section-subtitle">Зелёный мыс, г. Невинномысск, ул. Менделеева, 105</p>
+            <p class="section-subtitle">Ресторан «Зелёный мыс», г. Невинномысск, ул. Менделеева, 105</p>
             <div class="map-container">
                 <iframe 
                     src="https://yandex.ru/map-widget/v1/org/zeleny_mys/1799472245/?ll=41.913235%2C44.658006&utm_source=share&z=17" 
@@ -666,7 +677,6 @@
             <p style="text-align:center;margin-top:16px;font-size:14px;color:#9a847a;">📍 Откроется в Яндекс.Картах</p>
         </section>
 
-        <!-- КОНТАКТЫ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Контакты</h2>
@@ -690,7 +700,6 @@
             </div>
         </section>
 
-        <!-- СОЦСЕТИ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Мы в соцсетях</h2>
@@ -714,7 +723,6 @@
             </div>
         </section>
 
-        <!-- RSVP -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Ждём вас!</h2>
@@ -735,18 +743,17 @@
                 <input type="hidden" name="_next" value="#" />
 
                 <div class="form-group">
-                    <label for="name">Ваше имя *</label>
-                    <input type="text" id="name" name="Имя" placeholder="Например, Александра" required />
+                    <label for="name">Ваше имя и фамилия</label>
+                    <input type="text" id="name" name="Имя" placeholder="Напишите Ваше и все имена гостей, которые будут присутствовать с Вами" required />
                 </div>
 
                 <div class="form-group">
-                    <label for="guests">Количество гостей</label>
-                    <select id="guests" name="Количество гостей">
-                        <option value="1">Я один / одна</option>
-                        <option value="2">2 человека</option>
-                        <option value="3">3 человека</option>
-                        <option value="4">4 человека</option>
-                    </select>
+                    <label>Сможете ли Вы присутствовать на нашем дне?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="attendance" value="С удовольствием приду" checked /> С удовольствием приду</label>
+                        <label><input type="radio" name="attendance" value="К сожалению, не смогу присутствовать" /> К сожалению, не смогу присутствовать</label>
+                        <label><input type="radio" name="attendance" value="Сообщу позже" /> Сообщу позже</label>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -762,12 +769,16 @@
                 <strong>Спасибо!</strong> Мы получили ваше подтверждение и очень ждём вас!
             </div>
 
-            <p style="text-align:center;margin-top:20px;font-size:13px;color:#b09a8f;">❤️ Будем очень рады видеть вас!</p>
+            <p style="text-align:center;margin-top:20px;font-size:13px;color:#b09a8f;">
+                ❤️ Будем очень рады видеть вас!
+            </p>
+            <p style="text-align:center;margin-top:8px;font-size:13px;color:#b09a8f;">
+                <i>Главное для нас — Ваше присутствие. Будем признательны за альтернативу букетам в форме бутылочки алкогольного напитка и записки о событии, к которому приурочить её открытие.</i>
+            </p>
         </section>
 
     </div>
 
-    <!-- ФУТЕР -->
     <footer class="footer">
         <div class="divider" style="max-width:300px;margin:0 auto 20px;">
             <span class="line"></span>
@@ -781,27 +792,31 @@
         <p style="margin-top:8px;font-size:12px;opacity:0.6;">29.08.2026</p>
     </footer>
 
-    <!-- АУДИО -->
     <audio id="bgMusic" loop preload="auto">
         <source src="song.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // МУЗЫКА
         const audio = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
-        let musicStarted = false;
+        let isPlaying = false;
 
         function toggleMusic() {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    musicToggle.textContent = '♫';
-                    musicToggle.classList.remove('muted');
-                }).catch(() => alert('Не удалось запустить музыку. Проверь файл song.mp3'));
-            } else {
+            if (isPlaying) {
                 audio.pause();
                 musicToggle.textContent = '♪';
                 musicToggle.classList.add('muted');
+                isPlaying = false;
+            } else {
+                audio.play()
+                    .then(() => {
+                        musicToggle.textContent = '♫';
+                        musicToggle.classList.remove('muted');
+                        isPlaying = true;
+                    })
+                    .catch(() => {
+                        alert('Не удалось запустить музыку. Проверьте файл song.mp3');
+                    });
             }
         }
 
@@ -810,19 +825,6 @@
             toggleMusic();
         });
 
-        document.addEventListener('click', function initAudio() {
-            if (!musicStarted) {
-                audio.volume = 0.3;
-                audio.play().then(() => {
-                    musicToggle.textContent = '♫';
-                    musicToggle.classList.remove('muted');
-                    musicStarted = true;
-                }).catch(() => {});
-                document.removeEventListener('click', initAudio);
-            }
-        }, { once: true });
-
-        // ФОРМА
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMsg = document.getElementById('successMessage');
@@ -831,7 +833,7 @@
             e.preventDefault();
             const name = document.getElementById('name').value.trim();
             if (!name) {
-                alert('Пожалуйста, напишите ваше имя 🙂');
+                alert('Пожалуйста, напишите ваше имя и имена гостей 🙂');
                 return;
             }
             submitBtn.disabled = true;
