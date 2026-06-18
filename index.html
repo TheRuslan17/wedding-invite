@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Максим & Ульяна | Свадьба</title>
 
-    <!-- Open Graph для соцсетей и мессенджеров -->
+    <!-- Open Graph -->
     <meta property="og:title" content="Свадьба Максима & Ульяны" />
     <meta property="og:description" content="29 августа 2026 · Ждём вас на нашем празднике! ❤️ Подтвердите присутствие по ссылке." />
     <meta property="og:image" content="https://theruslan17.github.io/wedding-invite/invite-preview.jpg" />
@@ -13,8 +13,6 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:url" content="https://theruslan17.github.io/wedding-invite/" />
     <meta property="og:type" content="website" />
-
-    <!-- Для Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Свадьба Максима & Ульяны" />
     <meta name="twitter:description" content="29 августа 2026 · Ждём вас на нашем празднике! ❤️" />
@@ -33,7 +31,7 @@
         }
         .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
 
-        /* --- ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ --- */
+        /* ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ */
         .divider {
             display: flex;
             align-items: center;
@@ -64,7 +62,6 @@
             50% { transform: translateY(-6px) rotate(8deg); }
         }
 
-        /* Лепестки */
         .petal-decor {
             text-align: center;
             font-size: 28px;
@@ -75,7 +72,7 @@
             user-select: none;
         }
 
-        /* ГЕРОЙ С ФОНОВОЙ КАРТИНКОЙ */
+        /* ГЕРОЙ С ФОНОМ И АНИМАЦИЕЙ */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -86,13 +83,11 @@
             padding: 40px 20px;
             position: relative;
             overflow: hidden;
-            /* ЗДЕСЬ ВСТАВЬТЕ СВОЮ КАРТИНКУ */
             background-image: url('wedding-bg.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
-        /* Затемнение фона */
         .hero::before {
             content: '';
             position: absolute;
@@ -110,6 +105,7 @@
         .hero::after {
             display: none;
         }
+
         .hero-badge {
             font-family: 'Inter', sans-serif;
             font-size: 13px;
@@ -118,7 +114,34 @@
             color: #b07c6a;
             margin-bottom: 20px;
             font-weight: 400;
+            opacity: 0;
+            animation: fadeInScale 1.5s ease 0.2s forwards;
         }
+
+        /* АНИМАЦИЯ ДЛЯ ИМЁН */
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+                filter: blur(4px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
+        }
+
+        .hero-names span {
+            display: inline-block;
+            margin: 0 8px;
+            opacity: 0;
+            animation: fadeInScale 2s ease forwards;
+        }
+        .hero-names span:nth-child(1) { animation-delay: 0.3s; }
+        .hero-names span:nth-child(2) { animation-delay: 0.6s; }
+        .hero-names span:nth-child(3) { animation-delay: 0.9s; }
+
         .hero-names {
             font-family: 'Playfair Display', serif;
             font-size: clamp(52px, 14vw, 96px);
@@ -129,14 +152,15 @@
             margin-bottom: 12px;
             letter-spacing: 2px;
         }
-        .hero-names span { display: inline-block; margin: 0 8px; }
         .hero-names .amp {
             font-weight: 300;
             color: #b07c6a;
             font-size: 0.6em;
             vertical-align: middle;
             font-style: normal;
+            animation-delay: 0.6s;
         }
+
         .hero-date {
             font-family: 'Playfair Display', serif;
             font-size: 20px;
@@ -144,6 +168,8 @@
             letter-spacing: 6px;
             color: #7a6257;
             margin-top: 8px;
+            opacity: 0;
+            animation: fadeInScale 1.5s ease 1.2s forwards;
         }
         .hero-sub {
             margin-top: 40px;
@@ -151,6 +177,8 @@
             color: #9a847a;
             letter-spacing: 2px;
             font-weight: 300;
+            opacity: 0;
+            animation: fadeInScale 1.5s ease 1.5s forwards;
         }
 
         /* МУЗЫКА */
@@ -670,7 +698,7 @@
     </audio>
 
     <script>
-        // --- МУЗЫКА ---
+        // МУЗЫКА
         const audio = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
         let musicStarted = false;
@@ -705,7 +733,7 @@
             }
         }, { once: true });
 
-        // --- ФОРМА ---
+        // ФОРМА
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMsg = document.getElementById('successMessage');
