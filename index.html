@@ -120,16 +120,8 @@
 
         /* АНИМАЦИЯ ДЛЯ ИМЁН */
         @keyframes fadeInScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-                filter: blur(4px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-                filter: blur(0);
-            }
+            0% { opacity: 0; transform: scale(0.8); filter: blur(4px); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0); }
         }
 
         .hero-names span {
@@ -273,27 +265,78 @@
             font-weight: 300;
         }
 
-        /* ПРОГРАММА */
-        .timeline { max-width: 550px; margin: 0 auto; }
+        /* ПРОГРАММА ДНЯ (ОБНОВЛЁННАЯ) */
+        .timeline {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
         .timeline-item {
             display: flex;
-            gap: 24px;
-            padding: 18px 0;
+            gap: 20px;
+            padding: 20px 0;
             border-bottom: 1px solid #f0e8e0;
-            align-items: baseline;
+            align-items: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 4px;
         }
-        .timeline-item:last-child { border-bottom: none; }
-        .timeline-time {
-            font-weight: 600;
+
+        .timeline-item:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateX(6px);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-icon {
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+            font-size: 22px;
             color: #b07c6a;
-            min-width: 90px;
-            font-size: 15px;
         }
+
+        .timeline-content {
+            flex: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-time {
+            font-weight: 700;
+            color: #b07c6a;
+            font-size: 18px;
+            min-width: 80px;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 1px;
+        }
+
         .timeline-text {
             color: #3d2e2a;
             font-weight: 300;
+            font-size: 15px;
         }
-        .timeline-text strong { font-weight: 500; color: #3d2e2a; }
+
+        .timeline-text strong {
+            font-weight: 600;
+            color: #3d2e2a;
+            display: block;
+            font-size: 17px;
+            margin-bottom: 2px;
+        }
 
         /* КАРТА */
         .map-container {
@@ -466,8 +509,12 @@
             .hero-names .amp { display: inline-block; font-size: 0.8em; }
             .details-grid { grid-template-columns: 1fr; }
             .rsvp-form { padding: 28px 20px; }
-            .timeline-item { flex-direction: column; gap: 4px; }
-            .timeline-time { min-width: auto; }
+            .timeline-item { flex-direction: row; padding: 14px 12px; gap: 14px; }
+            .timeline-content { flex-direction: column; gap: 2px; align-items: flex-start; }
+            .timeline-time { font-size: 16px; min-width: auto; }
+            .timeline-icon { width: 40px; height: 40px; font-size: 18px; }
+            .timeline-text strong { font-size: 15px; }
+            .timeline-text { font-size: 14px; }
             .map-container iframe { height: 250px; }
             .social-links a { padding: 10px 18px; font-size: 14px; }
             .contacts-grid { grid-template-columns: 1fr; }
@@ -544,13 +591,55 @@
                 <span class="line"></span>
             </div>
             <p class="section-subtitle">Как всё будет</p>
+
             <div class="timeline">
-                <div class="timeline-item"><span class="timeline-time">10:30</span><span class="timeline-text"><strong>Сбор у жениха</strong> — подготовка к главному дню</span></div>
-                <div class="timeline-item"><span class="timeline-time">12:00</span><span class="timeline-text"><strong>Сбор у невесты</strong> — финальные сборы</span></div>
-                <div class="timeline-item"><span class="timeline-time">12:40</span><span class="timeline-text"><strong>Выкуп</strong> — весёлые испытания для жениха</span></div>
-                <div class="timeline-item"><span class="timeline-time">14:00</span><span class="timeline-text"><strong>Регистрация брака</strong> — торжественная церемония</span></div>
-                <div class="timeline-item"><span class="timeline-time">16:30</span><span class="timeline-text"><strong>Банкет</strong> — ужин, тосты, танцы</span></div>
-                <div class="timeline-item"><span class="timeline-time">00:00</span><span class="timeline-text"><strong>Окончание вечера</strong> — финал прекрасного дня</span></div>
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-icon">🚹</div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">10:30</div>
+                        <div class="timeline-text"><strong>Сбор у жениха</strong><br />Подготовка к главному дню</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                    <div class="timeline-icon">🚺</div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">12:00</div>
+                        <div class="timeline-text"><strong>Сбор у невесты</strong><br />Финальные сборы</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="150">
+                    <div class="timeline-icon">💍</div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">12:40</div>
+                        <div class="timeline-text"><strong>Выкуп</strong><br />Весёлые испытания для жениха</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
+                    <div class="timeline-icon">📜</div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">14:00</div>
+                        <div class="timeline-text"><strong>Регистрация брака</strong><br />Торжественная церемония</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="250">
+                    <div class="timeline-icon">🍽️</div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">16:30</div>
+                        <div class="timeline-text"><strong>Банкет</strong><br />Ужин, тосты, танцы</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                    <div class="timeline-icon">🌙</div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">00:00</div>
+                        <div class="timeline-text"><strong>Окончание вечера</strong><br />Финал прекрасного дня</div>
+                    </div>
+                </div>
             </div>
         </section>
 
