@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Максим & Ульяна | Свадьба</title>
 
+    <!-- Open Graph для соцсетей и мессенджеров -->
+    <meta property="og:title" content="Свадьба Максима & Ульяны" />
+    <meta property="og:description" content="29 августа 2026 · Ждём вас на нашем празднике! ❤️ Подтвердите присутствие по ссылке." />
+    <meta property="og:image" content="https://theruslan17.github.io/wedding-invite/invite-preview.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://theruslan17.github.io/wedding-invite/" />
+    <meta property="og:type" content="website" />
+
+    <!-- Для Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Свадьба Максима & Ульяны" />
+    <meta name="twitter:description" content="29 августа 2026 · Ждём вас на нашем празднике! ❤️" />
+    <meta name="twitter:image" content="https://theruslan17.github.io/wedding-invite/invite-preview.jpg" />
+
     <!-- Шрифты -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
 
@@ -49,7 +64,7 @@
             50% { transform: translateY(-6px) rotate(8deg); }
         }
 
-        /* Лепестки (декор в углах секций) */
+        /* Лепестки */
         .petal-decor {
             text-align: center;
             font-size: 28px;
@@ -60,7 +75,7 @@
             user-select: none;
         }
 
-        /* ГЕРОЙ */
+        /* ГЕРОЙ С ФОНОВОЙ КАРТИНКОЙ */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -69,27 +84,31 @@
             align-items: center;
             text-align: center;
             padding: 40px 20px;
-            background: linear-gradient(180deg, #faf7f2 0%, #f0e8e0 100%);
             position: relative;
             overflow: hidden;
+            /* ЗДЕСЬ ВСТАВЬТЕ СВОЮ КАРТИНКУ */
+            background-image: url('wedding-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
+        /* Затемнение фона */
         .hero::before {
-            content: '✦';
+            content: '';
             position: absolute;
-            font-size: 120px;
-            color: rgba(180, 140, 120, 0.06);
-            top: -10px;
-            right: -20px;
-            transform: rotate(15deg);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(250, 247, 242, 0.7);
+            z-index: 1;
+        }
+        .hero > * {
+            position: relative;
+            z-index: 2;
         }
         .hero::after {
-            content: '✦';
-            position: absolute;
-            font-size: 80px;
-            color: rgba(180, 140, 120, 0.05);
-            bottom: 40px;
-            left: -10px;
-            transform: rotate(-10deg);
+            display: none;
         }
         .hero-badge {
             font-family: 'Inter', sans-serif;
@@ -428,6 +447,7 @@
             .section-title { font-size: 28px; }
             .hero-names { font-size: clamp(42px, 12vw, 60px); }
             .divider .line { max-width: 60px; }
+            .hero { background-attachment: scroll; }
         }
     </style>
 </head>
@@ -445,7 +465,6 @@
             <span>Ульяна</span>
         </h1>
         <div class="hero-date">29 · 08 · 2026</div>
-        <!-- Декоративный разделитель -->
         <div class="divider" style="margin-top:30px;">
             <span class="line"></span>
             <span class="flower">🌸</span>
