@@ -598,6 +598,7 @@
             color: #9a847a;
         }
 
+        /* ===== ОБНОВЛЁННАЯ ФОРМА RSVP ===== */
         .rsvp-form {
             max-width: 480px;
             margin: 0 auto;
@@ -652,6 +653,26 @@
             height: 18px;
             accent-color: #b07c6a;
             flex-shrink: 0;
+        }
+
+        /* НОВОЕ ПОЛЕ — ВЫБОР КОЛИЧЕСТВА ГОСТЕЙ */
+        .form-group .guest-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e8ddd5;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            background: #fcfaf8;
+            transition: border 0.2s;
+            color: #3d2e2a;
+            appearance: auto;
+            cursor: pointer;
+        }
+        .form-group .guest-select:focus {
+            outline: none;
+            border-color: #b07c6a;
+            background: white;
         }
 
         .btn {
@@ -780,7 +801,6 @@
             С большой радостью приглашаем Вас на наш первый семейный праздник — нашу свадьбу!
         </div>
 
-        <!-- ===== ТАЙМЕР ===== -->
         <div class="timer-section" id="timerSection">
             <div class="timer-title">До свадьбы осталось</div>
             <div class="timer-grid">
@@ -803,7 +823,6 @@
             </div>
         </div>
 
-        <!-- ===== ФИНАЛЬНОЕ СООБЩЕНИЕ ===== -->
         <div class="final-message" id="finalMessage">
             <div class="emoji-big">🥂</div>
             <div class="big-text">Сегодня наш день!</div>
@@ -851,7 +870,7 @@
             </div>
         </section>
 
-        <!-- ===== ФОТОГАЛЕРЕЯ ===== -->
+        <!-- ФОТОГАЛЕРЕЯ -->
         <section class="gallery-section">
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Наши моменты</h2>
@@ -864,7 +883,6 @@
 
             <div class="gallery-container">
                 <div class="gallery-slide" id="gallerySlide">
-                    <!-- ===== ЗАМЕНИ ФАЙЛЫ НА СВОИ ===== -->
                     <img src="photo1.jpg" alt="Фото 1" />
                     <img src="photo2.jpg" alt="Фото 2" />
                     <img src="photo3.jpg" alt="Фото 3" />
@@ -1026,7 +1044,7 @@
             </div>
         </section>
 
-        <!-- RSVP -->
+        <!-- RSVP С ВЫБОРОМ КОЛИЧЕСТВА ГОСТЕЙ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Ждём вас!</h2>
@@ -1049,6 +1067,23 @@
                 <div class="form-group">
                     <label for="name">Ваше имя и фамилия</label>
                     <input type="text" id="name" name="Имя" placeholder="Напишите Ваше и все имена гостей, которые будут присутствовать с Вами" required />
+                </div>
+
+                <!-- ===== НОВОЕ ПОЛЕ: ВЫБОР КОЛИЧЕСТВА ГОСТЕЙ ===== -->
+                <div class="form-group">
+                    <label for="guests">Количество гостей</label>
+                    <select class="guest-select" id="guests" name="Количество гостей">
+                        <option value="1">1 человек</option>
+                        <option value="2">2 человека</option>
+                        <option value="3">3 человека</option>
+                        <option value="4">4 человека</option>
+                        <option value="5">5 человек</option>
+                        <option value="6">6 человек</option>
+                        <option value="7">7 человек</option>
+                        <option value="8">8 человек</option>
+                        <option value="9">9 человек</option>
+                        <option value="10">10 человек</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -1142,7 +1177,6 @@
                 const diff = weddingDate - now;
 
                 if (diff <= 0) {
-                    // Таймер закончился — показываем финальное сообщение
                     timerSection.classList.add('finished');
                     finalMessage.classList.add('show');
                     document.getElementById('days').textContent = '00';
