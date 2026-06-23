@@ -185,6 +185,12 @@
             z-index: 2;
             opacity: 0;
             animation: fadeInScale 1.5s ease 1.8s forwards;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .timer-section.finished {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
         }
         .timer-title {
             font-family: 'Inter', sans-serif;
@@ -216,6 +222,45 @@
             text-transform: uppercase;
             color: #9a847a;
             margin-top: 2px;
+        }
+
+        /* ===== ФИНАЛЬНОЕ СООБЩЕНИЕ ===== */
+        .final-message {
+            display: none;
+            margin: 30px auto 10px;
+            padding: 30px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            animation: fadeInScale 1s ease forwards;
+            box-shadow: 0 8px 40px rgba(176, 124, 106, 0.1);
+        }
+        .final-message.show {
+            display: block;
+        }
+        .final-message .big-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 6vw, 52px);
+            font-weight: 700;
+            color: #b07c6a;
+            line-height: 1.2;
+        }
+        .final-message .sub-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            color: #9a847a;
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+        .final-message .emoji-big {
+            font-size: 48px;
+            display: block;
+            margin-top: 12px;
         }
 
         /* УВЕЛИЧЕННАЯ КНОПКА МУЗЫКИ */
@@ -314,7 +359,7 @@
             font-weight: 300;
         }
 
-        /* ===== ФОТОГАЛЕРЕЯ (КАРУСЕЛЬ) ===== */
+        /* ===== ФОТОГАЛЕРЕЯ ===== */
         .gallery-section {
             padding: 60px 0 40px;
         }
@@ -682,6 +727,8 @@
                 font-size: 20px;
                 padding: 8px 14px;
             }
+            .final-message { padding: 24px 16px; }
+            .final-message .big-text { font-size: 28px; }
 
             .timeline-zigzag::before {
                 left: 20px;
@@ -733,6 +780,7 @@
             С большой радостью приглашаем Вас на наш первый семейный праздник — нашу свадьбу!
         </div>
 
+        <!-- ===== ТАЙМЕР ===== -->
         <div class="timer-section" id="timerSection">
             <div class="timer-title">До свадьбы осталось</div>
             <div class="timer-grid">
@@ -754,6 +802,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- ===== ФИНАЛЬНОЕ СООБЩЕНИЕ ===== -->
+        <div class="final-message" id="finalMessage">
+            <div class="emoji-big">🥂</div>
+            <div class="big-text">Сегодня наш день!</div>
+            <div class="sub-text">Спасибо, что вы с нами ❤️</div>
+        </div>
+
     </header>
 
     <div class="container">
@@ -1075,6 +1131,9 @@
         });
 
         // ===== ТАЙМЕР =====
+        const timerSection = document.getElementById('timerSection');
+        const finalMessage = document.getElementById('finalMessage');
+
         function startTimer() {
             const weddingDate = new Date('2026-08-29T00:00:00').getTime();
 
@@ -1083,6 +1142,9 @@
                 const diff = weddingDate - now;
 
                 if (diff <= 0) {
+                    // Таймер закончился — показываем финальное сообщение
+                    timerSection.classList.add('finished');
+                    finalMessage.classList.add('show');
                     document.getElementById('days').textContent = '00';
                     document.getElementById('hours').textContent = '00';
                     document.getElementById('minutes').textContent = '00';
