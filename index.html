@@ -3,23 +3,25 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Имя & Имя | Свадьба</title>
+    <title>Максим & Ульяна | Свадьба</title>
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Свадьба Имя & Имя" />
-    <meta property="og:description" content="Свадебное приглашение · Ждём вас на нашем празднике! ❤️" />
+    <meta property="og:title" content="Свадьба Максима & Ульяны" />
+    <meta property="og:description" content="29 августа 2026 · Ждём вас на нашем празднике! ❤️ Подтвердите присутствие по ссылке." />
     <meta property="og:image" content="https://theruslan17.github.io/wedding-invite/invite-preview.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:url" content="https://theruslan17.github.io/wedding-invite/" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Свадьба Имя & Имя" />
-    <meta name="twitter:description" content="Свадебное приглашение · Ждём вас на нашем празднике! ❤️" />
+    <meta name="twitter:title" content="Свадьба Максима & Ульяны" />
+    <meta name="twitter:description" content="29 августа 2026 · Ждём вас на нашем празднике! ❤️" />
     <meta name="twitter:image" content="https://theruslan17.github.io/wedding-invite/invite-preview.jpg" />
 
     <!-- Шрифты -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500&family=Great+Vibes&display=swap" rel="stylesheet"/>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,6 +30,7 @@
             background: #faf7f2;
             color: #3d2e2a;
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
         .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
 
@@ -121,6 +124,17 @@
             100% { opacity: 1; transform: scale(1); filter: blur(0); }
         }
 
+        .hero-names {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(64px, 18vw, 120px);
+            font-weight: 400;
+            line-height: 1.1;
+            color: #3d2e2a;
+            margin-bottom: 8px;
+            letter-spacing: 4px;
+            text-shadow: 0 0 40px rgba(176, 124, 106, 0.15), 0 0 80px rgba(176, 124, 106, 0.05);
+        }
+
         .hero-names span {
             display: inline-block;
             margin: 0 8px;
@@ -131,23 +145,14 @@
         .hero-names span:nth-child(2) { animation-delay: 0.6s; }
         .hero-names span:nth-child(3) { animation-delay: 0.9s; }
 
-        .hero-names {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(52px, 14vw, 96px);
-            font-weight: 600;
-            font-style: italic;
-            line-height: 1.1;
-            color: #3d2e2a;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
-        }
         .hero-names .amp {
-            font-weight: 300;
+            font-family: 'Great Vibes', cursive;
+            font-weight: 400;
             color: #b07c6a;
-            font-size: 0.6em;
+            font-size: 0.7em;
             vertical-align: middle;
-            font-style: normal;
             animation-delay: 0.6s;
+            text-shadow: 0 0 30px rgba(176, 124, 106, 0.2);
         }
 
         .hero-date {
@@ -160,32 +165,53 @@
             opacity: 0;
             animation: fadeInScale 1.5s ease 1.2s forwards;
         }
-        .hero-sub {
-            margin-top: 40px;
-            font-size: 15px;
-            color: #9a847a;
+
+        .hero-greeting {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 600;
+            font-style: italic;
+            color: #b07c6a;
+            margin-top: 20px;
+            margin-bottom: 6px;
             letter-spacing: 2px;
-            font-weight: 300;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 1.5s forwards;
-            max-width: 500px;
+            animation: fadeInScale 1.5s ease 1.4s forwards;
         }
 
-        /* ===== ТАЙМЕР ===== */
+        .hero-sub {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #5a423c;
+            letter-spacing: 0.5px;
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeInScale 1.5s ease 1.6s forwards;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+        .hero-sub .highlight {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #b07c6a;
+        }
+
+        /* ===== ТАЙМЕР С ДАТОЙ ===== */
         .timer-section {
             margin: 30px auto 10px;
             padding: 20px 16px;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(12px);
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid #dccfc7;
             max-width: 500px;
             width: 100%;
             position: relative;
             z-index: 2;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 1.8s forwards;
+            animation: fadeInScale 1.5s ease 2s forwards;
             transition: opacity 0.6s ease, transform 0.6s ease;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
         }
         .timer-section.finished {
             opacity: 0;
@@ -198,8 +224,34 @@
             letter-spacing: 4px;
             text-transform: uppercase;
             color: #b07c6a;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             font-weight: 400;
+        }
+        .timer-date {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(20px, 3vw, 32px);
+            font-weight: 700;
+            color: #3d2e2a;
+            margin: 4px 0 8px;
+            letter-spacing: 2px;
+        }
+        .timer-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            max-width: 200px;
+            margin: 0 auto 10px;
+        }
+        .timer-divider .line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #dccfc7, transparent);
+        }
+        .timer-divider .diamond {
+            font-size: 14px;
+            color: #d4b8ab;
+            opacity: 0.6;
         }
         .timer-grid {
             display: grid;
@@ -224,7 +276,6 @@
             margin-top: 2px;
         }
 
-        /* ===== ФИНАЛЬНОЕ СООБЩЕНИЕ ===== */
         .final-message {
             display: none;
             margin: 30px auto 10px;
@@ -232,17 +283,15 @@
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(12px);
             border-radius: 24px;
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            border: 2px solid #dccfc7;
             max-width: 500px;
             width: 100%;
             position: relative;
             z-index: 2;
             animation: fadeInScale 1s ease forwards;
-            box-shadow: 0 8px 40px rgba(176, 124, 106, 0.1);
+            box-shadow: 0 8px 40px rgba(176, 124, 106, 0.08);
         }
-        .final-message.show {
-            display: block;
-        }
+        .final-message.show { display: block; }
         .final-message .big-text {
             font-family: 'Playfair Display', serif;
             font-size: clamp(32px, 6vw, 52px);
@@ -263,7 +312,6 @@
             margin-top: 12px;
         }
 
-        /* УВЕЛИЧЕННАЯ КНОПКА МУЗЫКИ */
         .music-toggle {
             position: fixed;
             top: 24px;
@@ -330,6 +378,7 @@
             transition: transform 0.25s ease;
             position: relative;
             overflow: hidden;
+            border: 2px solid #dccfc7;
         }
         .detail-card:hover { transform: translateY(-4px); }
         .detail-card::after {
@@ -359,7 +408,6 @@
             font-weight: 300;
         }
 
-        /* ===== ФОТОГАЛЕРЕЯ ===== */
         .gallery-section {
             padding: 60px 0 40px;
         }
@@ -369,7 +417,8 @@
             margin: 0 auto;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 16px 60px rgba(0,0,0,0.08);
+            box-shadow: 0 16px 60px rgba(0,0,0,0.06);
+            border: 2px solid #dccfc7;
         }
         .gallery-slide {
             display: flex;
@@ -387,7 +436,7 @@
             transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid #dccfc7;
             color: #3d2e2a;
             font-size: 28px;
             padding: 12px 18px;
@@ -426,7 +475,6 @@
             border-color: #b07c6a;
         }
 
-        /* ПРОГРАММА — ЗИГЗАГ */
         .timeline-zigzag {
             max-width: 820px;
             margin: 0 auto;
@@ -470,7 +518,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             z-index: 2;
-            border: 1px solid #f0e8e0;
+            border: 2px solid #dccfc7;
         }
         .zigzag-item .event:hover {
             transform: translateY(-2px);
@@ -521,8 +569,9 @@
         .map-container {
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.06);
             margin-top: 10px;
+            border: 2px solid #dccfc7;
         }
         .map-container iframe {
             width: 100%;
@@ -545,6 +594,7 @@
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
             transition: transform 0.25s ease;
+            border: 2px solid #dccfc7;
         }
         .contact-card:hover { transform: translateY(-4px); }
         .contact-card .icon {
@@ -589,6 +639,7 @@
             font-size: 15px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.04);
             transition: transform 0.25s ease;
+            border: 2px solid #dccfc7;
         }
         .social-links a:hover { transform: translateY(-3px); }
         .social-links a .vk-icon { color: #4a76a8; font-weight: 700; }
@@ -598,7 +649,6 @@
             color: #9a847a;
         }
 
-        /* ===== ОБНОВЛЁННАЯ ФОРМА RSVP ===== */
         .rsvp-form {
             max-width: 480px;
             margin: 0 auto;
@@ -606,6 +656,7 @@
             padding: 40px 32px;
             border-radius: 20px;
             box-shadow: 0 4px 30px rgba(0,0,0,0.04);
+            border: 2px solid #dccfc7;
         }
         .form-group { margin-bottom: 20px; }
         .form-group label {
@@ -655,7 +706,6 @@
             flex-shrink: 0;
         }
 
-        /* НОВОЕ ПОЛЕ — ВЫБОР КОЛИЧЕСТВА ГОСТЕЙ */
         .form-group .guest-select {
             width: 100%;
             padding: 12px 16px;
@@ -737,12 +787,13 @@
                 right: 16px;
             }
             .section-title { font-size: 28px; }
-            .hero-names { font-size: clamp(42px, 12vw, 60px); }
+            .hero-names { font-size: clamp(48px, 15vw, 80px); }
             .divider .line { max-width: 60px; }
             .hero { background-attachment: scroll; }
             .timer-section { padding: 16px 12px; }
             .timer-item .number { font-size: 24px; }
             .timer-item .label { font-size: 9px; }
+            .timer-date { font-size: 18px; }
             .gallery-slide img { height: 320px; }
             .gallery-btn {
                 font-size: 20px;
@@ -750,6 +801,8 @@
             }
             .final-message { padding: 24px 16px; }
             .final-message .big-text { font-size: 28px; }
+            .hero-greeting { font-size: clamp(20px, 4vw, 28px); }
+            .hero-sub { font-size: 16px; }
 
             .timeline-zigzag::before {
                 left: 20px;
@@ -778,31 +831,43 @@
 </head>
 <body>
 
-    <!-- УВЕЛИЧЕННАЯ КНОПКА МУЗЫКИ -->
     <button class="music-toggle" id="musicToggle" aria-label="Включить/выключить музыку">♪</button>
 
     <header class="hero">
         <div class="hero-badge">Приглашение</div>
         <h1 class="hero-names">
-            <span>Имя</span>
+            <span>Максим</span>
             <span class="amp">&</span>
-            <span>Имя</span>
+            <span>Ульяна</span>
         </h1>
         <div class="hero-date">29 · 08 · 2026</div>
-        <div class="divider" style="margin-top:30px;">
+
+        <div class="hero-greeting">Дорогие родные и друзья!</div>
+
+        <div class="divider" style="margin-top:10px;">
             <span class="line"></span>
             <span class="flower">🌸</span>
             <span class="line"></span>
         </div>
+
         <div class="hero-sub">
             В связи со сложившимися обстоятельствами, а именно: <br/>
             невозможностью больше смотреть на пустующую 14 страницу наших паспортов, <br/>
             мы решили совершить обряд бракосочетания. <br/><br/>
-            С большой радостью приглашаем Вас на наш первый семейный праздник — нашу свадьбу!
+            С большой радостью приглашаем Вас на наш первый семейный праздник — <br/>
+            <span class="highlight">нашу свадьбу!</span>
         </div>
 
+        <!-- ТАЙМЕР С ДАТОЙ -->
         <div class="timer-section" id="timerSection">
-            <div class="timer-title">До свадьбы осталось</div>
+            <div class="timer-title">Свадьба состоится</div>
+            <div class="timer-date">29 августа 2026</div>
+            <div class="timer-divider">
+                <span class="line"></span>
+                <span class="diamond">◆</span>
+                <span class="line"></span>
+            </div>
+            <div class="timer-title" style="margin-top:8px;">До этого дня осталось</div>
             <div class="timer-grid">
                 <div class="timer-item">
                     <div class="number" id="days">00</div>
@@ -828,12 +893,10 @@
             <div class="big-text">Сегодня наш день!</div>
             <div class="sub-text">Спасибо, что вы с нами ❤️</div>
         </div>
-
     </header>
 
     <div class="container">
 
-        <!-- ДЕТАЛИ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Детали праздника</h2>
@@ -870,7 +933,6 @@
             </div>
         </section>
 
-        <!-- ФОТОГАЛЕРЕЯ -->
         <section class="gallery-section">
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Наши моменты</h2>
@@ -895,7 +957,6 @@
             <div class="gallery-dots" id="galleryDots"></div>
         </section>
 
-        <!-- ПРОГРАММА ДНЯ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Программа дня</h2>
@@ -969,7 +1030,6 @@
             </div>
         </section>
 
-        <!-- КАРТА -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Как нас найти</h2>
@@ -996,7 +1056,6 @@
             <p style="text-align:center;margin-top:16px;font-size:14px;color:#9a847a;">📍 Откроется в Яндекс.Картах</p>
         </section>
 
-        <!-- КОНТАКТЫ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Контакты</h2>
@@ -1009,18 +1068,17 @@
             <div class="contacts-grid">
                 <div class="contact-card">
                     <span class="icon">👔</span>
-                    <div class="name">Имя</div>
-                    <a href="#" class="phone">Номер телефона</a>
+                    <div class="name">Максим</div>
+                    <a href="tel:+79188771103" class="phone">8 (918) 877-11-03</a>
                 </div>
                 <div class="contact-card">
                     <span class="icon">👰</span>
-                    <div class="name">Имя</div>
-                    <a href="#" class="phone">Номер телефона</a>
+                    <div class="name">Ульяна</div>
+                    <a href="tel:+79283198455" class="phone">8 (928) 319-84-55</a>
                 </div>
             </div>
         </section>
 
-        <!-- СОЦСЕТИ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Мы в соцсетях</h2>
@@ -1031,20 +1089,19 @@
             </div>
             <p class="section-subtitle">Будем рады видеть вас среди подписчиков</p>
             <div class="social-links">
-                <a href="#" target="_blank">
+                <a href="https://vk.com/63samg" target="_blank">
                     <span class="vk-icon">VK</span>
-                    Имя
+                    Максим
                     <span>— VK</span>
                 </a>
-                <a href="#" target="_blank">
+                <a href="https://vk.com/ulianochkaaaaaa" target="_blank">
                     <span class="vk-icon">VK</span>
-                    Имя
+                    Ульяна
                     <span>— VK</span>
                 </a>
             </div>
         </section>
 
-        <!-- RSVP С ВЫБОРОМ КОЛИЧЕСТВА ГОСТЕЙ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Ждём вас!</h2>
@@ -1069,7 +1126,6 @@
                     <input type="text" id="name" name="Имя" placeholder="Напишите Ваше и все имена гостей, которые будут присутствовать с Вами" required />
                 </div>
 
-                <!-- ===== НОВОЕ ПОЛЕ: ВЫБОР КОЛИЧЕСТВА ГОСТЕЙ ===== -->
                 <div class="form-group">
                     <label for="guests">Количество гостей</label>
                     <select class="guest-select" id="guests" name="Количество гостей">
@@ -1126,7 +1182,7 @@
         </div>
         <p>
             С любовью, <span class="heart">❤</span>
-            Имя & Имя
+            Максим & Ульяна
         </p>
         <p style="margin-top:8px;font-size:12px;opacity:0.6;">29.08.2026</p>
     </footer>
@@ -1136,7 +1192,6 @@
     </audio>
 
     <script>
-        // ===== МУЗЫКА =====
         const audio = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
         let isPlaying = false;
@@ -1165,7 +1220,6 @@
             toggleMusic();
         });
 
-        // ===== ТАЙМЕР =====
         const timerSection = document.getElementById('timerSection');
         const finalMessage = document.getElementById('finalMessage');
 
@@ -1203,7 +1257,6 @@
 
         startTimer();
 
-        // ===== ФОТОГАЛЕРЕЯ =====
         const slide = document.getElementById('gallerySlide');
         const images = slide.querySelectorAll('img');
         const total = images.length;
@@ -1248,7 +1301,6 @@
 
         startAutoPlay();
 
-        // ===== ФОРМА RSVP =====
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMsg = document.getElementById('successMessage');
