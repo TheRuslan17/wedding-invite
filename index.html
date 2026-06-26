@@ -235,7 +235,6 @@
             color: #b07c6a;
         }
 
-        /* ===== ТАЙМЕР С ДАТОЙ (ОБНОВЛЁННЫЙ) ===== */
         .timer-section {
             margin: 30px auto 10px;
             padding: 20px 16px;
@@ -352,7 +351,7 @@
             margin-top: 12px;
         }
 
-        /* ===== ИСТОРИЯ ЛЮБВИ ===== */
+        /* ===== ИСТОРИЯ ЛЮБВИ (ОБНОВЛЁННАЯ) ===== */
         .story-timeline {
             max-width: 700px;
             margin: 0 auto;
@@ -370,6 +369,7 @@
             transform: translateX(-50%);
             opacity: 0.4;
         }
+
         .story-item {
             display: flex;
             align-items: center;
@@ -384,33 +384,49 @@
         .story-item:nth-child(even) {
             flex-direction: row-reverse;
         }
+
         .story-item .story-content {
             width: 42%;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(12px);
-            padding: 18px 20px;
+            padding: 20px 24px;
             border-radius: 16px;
             border: 2px solid #dccfc7;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 2;
         }
         .story-item .story-content:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 8px 30px rgba(176, 124, 106, 0.08);
         }
+
         .story-item .story-year {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
             font-weight: 700;
             color: #b07c6a;
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .story-item .story-year .icon {
+            font-size: 24px;
         }
         .story-item .story-text {
             font-size: 15px;
             color: #3d2e2a;
             font-weight: 300;
-            line-height: 1.6;
-            margin-top: 4px;
+            line-height: 1.7;
+            margin-top: 6px;
         }
+        .story-item .story-text strong {
+            font-weight: 600;
+            color: #b07c6a;
+        }
+
         .story-item .story-marker {
             width: 16px;
             height: 16px;
@@ -422,6 +438,11 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
+            transition: all 0.3s ease;
+        }
+        .story-item:hover .story-marker {
+            transform: translateX(-50%) scale(1.2);
+            box-shadow: 0 0 0 4px #b07c6a, 0 4px 16px rgba(176, 124, 106, 0.3);
         }
 
         section { padding: 80px 0; border-bottom: 1px solid #ede5dd; position: relative; }
@@ -492,12 +513,13 @@
             font-weight: 300;
         }
 
+        /* ===== ГАЛЕРЕЯ (ОБНОВЛЁННАЯ) ===== */
         .gallery-section {
             padding: 60px 0 40px;
         }
         .gallery-container {
             position: relative;
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto;
             border-radius: 24px;
             overflow: hidden;
@@ -510,33 +532,13 @@
         }
         .gallery-slide img {
             width: 100%;
-            height: 500px;
+            height: 600px;
             object-fit: cover;
             flex-shrink: 0;
         }
         .gallery-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid #dccfc7;
-            color: #3d2e2a;
-            font-size: 28px;
-            padding: 12px 18px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            display: none !important;
         }
-        .gallery-btn:hover {
-            background: #b07c6a;
-            color: #fff;
-            transform: translateY(-50%) scale(1.1);
-        }
-        .gallery-btn.prev { left: 16px; }
-        .gallery-btn.next { right: 16px; }
 
         .gallery-dots {
             display: flex;
@@ -552,6 +554,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid rgba(176, 124, 106, 0.1);
+        }
+        .gallery-dots span:hover {
+            background: rgba(176, 124, 106, 0.4);
+            transform: scale(1.2);
         }
         .gallery-dots span.active {
             background: #b07c6a;
@@ -871,11 +877,7 @@
             .timer-item .number { font-size: 24px; }
             .timer-item .label { font-size: 9px; }
             .timer-date { font-size: 24px; }
-            .gallery-slide img { height: 320px; }
-            .gallery-btn {
-                font-size: 20px;
-                padding: 8px 14px;
-            }
+            .gallery-slide img { height: 380px; }
             .final-message { padding: 24px 16px; }
             .final-message .big-text { font-size: 28px; }
             .hero-greeting { font-size: clamp(20px, 4vw, 28px); }
@@ -967,7 +969,6 @@
             <span class="highlight">нашу свадьбу!</span>
         </div>
 
-        <!-- ТАЙМЕР -->
         <div class="timer-section" id="timerSection">
             <div class="timer-title">Свадьба состоится</div>
             <div class="timer-date">29 августа 2026</div>
@@ -1020,7 +1021,7 @@
             <div class="story-timeline">
                 <div class="story-item">
                     <div class="story-content">
-                        <div class="story-year">2020</div>
+                        <div class="story-year"><span class="icon">☕</span> 2020</div>
                         <div class="story-text"><strong>Знакомство</strong> — случайная встреча в кафе переросла в разговор до утра.</div>
                     </div>
                     <div class="story-marker"></div>
@@ -1028,7 +1029,7 @@
 
                 <div class="story-item">
                     <div class="story-content">
-                        <div class="story-year">2021</div>
+                        <div class="story-year"><span class="icon">🌊</span> 2021</div>
                         <div class="story-text"><strong>Первое свидание</strong> — прогулка по набережной и первый поцелуй под звёздами.</div>
                     </div>
                     <div class="story-marker"></div>
@@ -1036,7 +1037,7 @@
 
                 <div class="story-item">
                     <div class="story-content">
-                        <div class="story-year">2023</div>
+                        <div class="story-year"><span class="icon">💍</span> 2023</div>
                         <div class="story-text"><strong>Предложение</strong> — он встал на колено на том же месте, где они встретились.</div>
                     </div>
                     <div class="story-marker"></div>
@@ -1044,7 +1045,7 @@
 
                 <div class="story-item">
                     <div class="story-content">
-                        <div class="story-year">2026</div>
+                        <div class="story-year"><span class="icon">❤️</span> 2026</div>
                         <div class="story-text"><strong>Свадьба</strong> — день, когда две судьбы становятся одной ❤️</div>
                     </div>
                     <div class="story-marker"></div>
@@ -1108,8 +1109,6 @@
                     <img src="photo4.jpg" alt="Фото 4" />
                     <img src="photo5.jpg" alt="Фото 5" />
                 </div>
-                <button class="gallery-btn prev" id="galleryPrev">‹</button>
-                <button class="gallery-btn next" id="galleryNext">›</button>
             </div>
             <div class="gallery-dots" id="galleryDots"></div>
         </section>
@@ -1354,7 +1353,7 @@
     </audio>
 
     <script>
-        // ===== МУЗЫКА =====
+        // МУЗЫКА
         const audio = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
         const musicIcon = musicBtn.querySelector('.icon');
@@ -1383,7 +1382,7 @@
             }
         });
 
-        // ===== ТАЙМЕР =====
+        // ТАЙМЕР
         const timerSection = document.getElementById('timerSection');
         const finalMessage = document.getElementById('finalMessage');
 
@@ -1421,7 +1420,7 @@
 
         startTimer();
 
-        // ===== ГАЛЕРЕЯ =====
+        // ГАЛЕРЕЯ
         const slide = document.getElementById('gallerySlide');
         const images = slide.querySelectorAll('img');
         const total = images.length;
@@ -1441,16 +1440,17 @@
             resetAutoPlay();
         }
 
-        function nextSlide() { goTo(current + 1); }
-        function prevSlide() { goTo(current - 1); }
-
-        document.getElementById('galleryNext').addEventListener('click', nextSlide);
-        document.getElementById('galleryPrev').addEventListener('click', prevSlide);
+        function nextSlide() {
+            goTo(current + 1);
+        }
 
         const dotsContainer = document.getElementById('galleryDots');
         for (let i = 0; i < total; i++) {
             const dot = document.createElement('span');
-            dot.addEventListener('click', () => goTo(i));
+            dot.addEventListener('click', function(e) {
+                e.stopPropagation();
+                goTo(i);
+            });
             dotsContainer.appendChild(dot);
         }
         updateGallery(0);
@@ -1466,7 +1466,7 @@
 
         startAutoPlay();
 
-        // ===== ФОРМА =====
+        // ФОРМА
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMsg = document.getElementById('successMessage');
