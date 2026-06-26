@@ -179,14 +179,53 @@
             animation: fadeInScale 1.5s ease 1.4s forwards;
         }
 
+        .music-btn-wrapper {
+            margin: 18px 0 10px;
+            opacity: 0;
+            animation: fadeInScale 1.5s ease 1.7s forwards;
+        }
+        .music-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border: 2px solid #dccfc7;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #3d2e2a;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            letter-spacing: 1px;
+        }
+        .music-btn:hover {
+            transform: scale(1.04);
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 30px rgba(176, 124, 106, 0.1);
+        }
+        .music-btn:active {
+            transform: scale(0.96);
+        }
+        .music-btn .icon {
+            font-size: 22px;
+            color: #b07c6a;
+        }
+        .music-btn.muted .icon {
+            color: #b09a8f;
+        }
+
         .hero-sub {
-            margin-top: 20px;
+            margin-top: 10px;
             font-size: 18px;
             color: #5a423c;
             letter-spacing: 0.5px;
             font-weight: 300;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 1.6s forwards;
+            animation: fadeInScale 1.5s ease 1.9s forwards;
             max-width: 600px;
             line-height: 1.8;
         }
@@ -196,7 +235,7 @@
             color: #b07c6a;
         }
 
-        /* ===== ТАЙМЕР С ДАТОЙ ===== */
+        /* ===== ТАЙМЕР С ДАТОЙ (ОБНОВЛЁННЫЙ) ===== */
         .timer-section {
             margin: 30px auto 10px;
             padding: 20px 16px;
@@ -209,7 +248,7 @@
             position: relative;
             z-index: 2;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 2s forwards;
+            animation: fadeInScale 1.5s ease 2.1s forwards;
             transition: opacity 0.6s ease, transform 0.6s ease;
             box-shadow: 0 8px 30px rgba(0,0,0,0.04);
         }
@@ -228,12 +267,13 @@
             font-weight: 400;
         }
         .timer-date {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(20px, 3vw, 32px);
-            font-weight: 700;
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 400;
             color: #3d2e2a;
             margin: 4px 0 8px;
             letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(176, 124, 106, 0.05);
         }
         .timer-divider {
             display: flex;
@@ -312,32 +352,76 @@
             margin-top: 12px;
         }
 
-        .music-toggle {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            z-index: 999;
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: white;
-            border: 2px solid #b07c6a;
-            box-shadow: 0 6px 30px rgba(176, 124, 106, 0.25);
-            font-size: 28px;
-            cursor: pointer;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        /* ===== ИСТОРИЯ ЛЮБВИ ===== */
+        .story-timeline {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            padding: 20px 0;
+        }
+        .story-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #dccfc7, #b07c6a, #dccfc7);
+            transform: translateX(-50%);
+            opacity: 0.4;
+        }
+        .story-item {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            position: relative;
+            width: 100%;
+        }
+        .story-item:nth-child(odd) {
+            flex-direction: row;
+        }
+        .story-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .story-item .story-content {
+            width: 42%;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(12px);
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 2px solid #dccfc7;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+        }
+        .story-item .story-content:hover {
+            transform: translateY(-3px);
+        }
+        .story-item .story-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
             color: #b07c6a;
+            letter-spacing: 1px;
         }
-        .music-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 40px rgba(176, 124, 106, 0.35);
+        .story-item .story-text {
+            font-size: 15px;
+            color: #3d2e2a;
+            font-weight: 300;
+            line-height: 1.6;
+            margin-top: 4px;
         }
-        .music-toggle.muted {
-            color: #b09a8f;
-            border-color: #dccfc7;
+        .story-item .story-marker {
+            width: 16px;
+            height: 16px;
+            background: #b07c6a;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #b07c6a, 0 2px 12px rgba(176, 124, 106, 0.2);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
         }
 
         section { padding: 80px 0; border-bottom: 1px solid #ede5dd; position: relative; }
@@ -779,13 +863,6 @@
             .map-container iframe { height: 250px; }
             .social-links a { padding: 10px 18px; font-size: 14px; }
             .contacts-grid { grid-template-columns: 1fr; }
-            .music-toggle {
-                width: 52px;
-                height: 52px;
-                font-size: 22px;
-                top: 16px;
-                right: 16px;
-            }
             .section-title { font-size: 28px; }
             .hero-names { font-size: clamp(48px, 15vw, 80px); }
             .divider .line { max-width: 60px; }
@@ -793,7 +870,7 @@
             .timer-section { padding: 16px 12px; }
             .timer-item .number { font-size: 24px; }
             .timer-item .label { font-size: 9px; }
-            .timer-date { font-size: 18px; }
+            .timer-date { font-size: 24px; }
             .gallery-slide img { height: 320px; }
             .gallery-btn {
                 font-size: 20px;
@@ -803,6 +880,7 @@
             .final-message .big-text { font-size: 28px; }
             .hero-greeting { font-size: clamp(20px, 4vw, 28px); }
             .hero-sub { font-size: 16px; }
+            .music-btn { padding: 10px 20px; font-size: 14px; }
 
             .timeline-zigzag::before {
                 left: 20px;
@@ -826,12 +904,36 @@
             .zigzag-item:hover .marker {
                 transform: translateX(-50%) scale(1.2);
             }
+
+            .story-timeline::before {
+                left: 20px;
+            }
+            .story-item {
+                flex-direction: column !important;
+                align-items: flex-start;
+                padding-left: 40px;
+                gap: 4px;
+            }
+            .story-item .story-content {
+                width: 100%;
+                padding: 14px 16px;
+            }
+            .story-item .story-marker {
+                left: 20px;
+                transform: translateX(-50%);
+                width: 14px;
+                height: 14px;
+            }
+            .story-item .story-year {
+                font-size: 22px;
+            }
+            .story-item .story-text {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
-
-    <button class="music-toggle" id="musicToggle" aria-label="Включить/выключить музыку">♪</button>
 
     <header class="hero">
         <div class="hero-badge">Приглашение</div>
@@ -844,7 +946,14 @@
 
         <div class="hero-greeting">Дорогие родные и друзья!</div>
 
-        <div class="divider" style="margin-top:10px;">
+        <div class="music-btn-wrapper">
+            <button class="music-btn" id="musicBtn">
+                <span class="icon">♫</span>
+                <span class="label">Включить музыку</span>
+            </button>
+        </div>
+
+        <div class="divider" style="margin-top:6px;">
             <span class="line"></span>
             <span class="flower">🌸</span>
             <span class="line"></span>
@@ -858,7 +967,7 @@
             <span class="highlight">нашу свадьбу!</span>
         </div>
 
-        <!-- ТАЙМЕР С ДАТОЙ -->
+        <!-- ТАЙМЕР -->
         <div class="timer-section" id="timerSection">
             <div class="timer-title">Свадьба состоится</div>
             <div class="timer-date">29 августа 2026</div>
@@ -897,6 +1006,53 @@
 
     <div class="container">
 
+        <!-- ИСТОРИЯ -->
+        <section>
+            <div class="petal-decor">✿ ✿ ✿</div>
+            <h2 class="section-title">Как мы встретились</h2>
+            <div class="divider">
+                <span class="line"></span>
+                <span class="diamond">◆</span>
+                <span class="line"></span>
+            </div>
+            <p class="section-subtitle">Немного нашей истории</p>
+
+            <div class="story-timeline">
+                <div class="story-item">
+                    <div class="story-content">
+                        <div class="story-year">2020</div>
+                        <div class="story-text"><strong>Знакомство</strong> — случайная встреча в кафе переросла в разговор до утра.</div>
+                    </div>
+                    <div class="story-marker"></div>
+                </div>
+
+                <div class="story-item">
+                    <div class="story-content">
+                        <div class="story-year">2021</div>
+                        <div class="story-text"><strong>Первое свидание</strong> — прогулка по набережной и первый поцелуй под звёздами.</div>
+                    </div>
+                    <div class="story-marker"></div>
+                </div>
+
+                <div class="story-item">
+                    <div class="story-content">
+                        <div class="story-year">2023</div>
+                        <div class="story-text"><strong>Предложение</strong> — он встал на колено на том же месте, где они встретились.</div>
+                    </div>
+                    <div class="story-marker"></div>
+                </div>
+
+                <div class="story-item">
+                    <div class="story-content">
+                        <div class="story-year">2026</div>
+                        <div class="story-text"><strong>Свадьба</strong> — день, когда две судьбы становятся одной ❤️</div>
+                    </div>
+                    <div class="story-marker"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ДЕТАЛИ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Детали праздника</h2>
@@ -933,6 +1089,7 @@
             </div>
         </section>
 
+        <!-- ГАЛЕРЕЯ -->
         <section class="gallery-section">
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Наши моменты</h2>
@@ -957,6 +1114,7 @@
             <div class="gallery-dots" id="galleryDots"></div>
         </section>
 
+        <!-- ПРОГРАММА -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Программа дня</h2>
@@ -1030,6 +1188,7 @@
             </div>
         </section>
 
+        <!-- КАРТА -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Как нас найти</h2>
@@ -1056,6 +1215,7 @@
             <p style="text-align:center;margin-top:16px;font-size:14px;color:#9a847a;">📍 Откроется в Яндекс.Картах</p>
         </section>
 
+        <!-- КОНТАКТЫ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Контакты</h2>
@@ -1079,6 +1239,7 @@
             </div>
         </section>
 
+        <!-- СОЦСЕТИ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Мы в соцсетях</h2>
@@ -1102,6 +1263,7 @@
             </div>
         </section>
 
+        <!-- RSVP -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Ждём вас!</h2>
@@ -1192,34 +1354,36 @@
     </audio>
 
     <script>
+        // ===== МУЗЫКА =====
         const audio = document.getElementById('bgMusic');
-        const musicToggle = document.getElementById('musicToggle');
+        const musicBtn = document.getElementById('musicBtn');
+        const musicIcon = musicBtn.querySelector('.icon');
+        const musicLabel = musicBtn.querySelector('.label');
         let isPlaying = false;
 
-        function toggleMusic() {
+        musicBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
             if (isPlaying) {
                 audio.pause();
-                musicToggle.textContent = '♪';
-                musicToggle.classList.add('muted');
+                musicIcon.textContent = '♫';
+                musicLabel.textContent = 'Включить музыку';
+                musicBtn.classList.add('muted');
                 isPlaying = false;
             } else {
                 audio.play()
                     .then(() => {
-                        musicToggle.textContent = '♫';
-                        musicToggle.classList.remove('muted');
+                        musicIcon.textContent = '♩';
+                        musicLabel.textContent = 'Выключить музыку';
+                        musicBtn.classList.remove('muted');
                         isPlaying = true;
                     })
                     .catch(() => {
                         alert('Не удалось запустить музыку. Проверьте файл song.mp3');
                     });
             }
-        }
-
-        musicToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleMusic();
         });
 
+        // ===== ТАЙМЕР =====
         const timerSection = document.getElementById('timerSection');
         const finalMessage = document.getElementById('finalMessage');
 
@@ -1257,6 +1421,7 @@
 
         startTimer();
 
+        // ===== ГАЛЕРЕЯ =====
         const slide = document.getElementById('gallerySlide');
         const images = slide.querySelectorAll('img');
         const total = images.length;
@@ -1301,6 +1466,7 @@
 
         startAutoPlay();
 
+        // ===== ФОРМА =====
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMsg = document.getElementById('successMessage');
