@@ -7,16 +7,11 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="Свадьба Максима & Ульяны" />
-    <meta property="og:description" content="29 августа 2026 · Ждём вас на нашем празднике! ❤️ Подтвердите присутствие по ссылке." />
+    <meta property="og:description" content="29 августа 2026 · Ждём вас на нашем празднике! ❤️" />
     <meta property="og:image" content="https://theruslan17.github.io/wedding-invite/invite-preview.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
     <meta property="og:url" content="https://theruslan17.github.io/wedding-invite/" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Свадьба Максима & Ульяны" />
-    <meta name="twitter:description" content="29 августа 2026 · Ждём вас на нашем празднике! ❤️" />
-    <meta name="twitter:image" content="https://theruslan17.github.io/wedding-invite/invite-preview.jpg" />
 
     <!-- Шрифты -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,11 +23,6 @@
         body {
             font-family: 'Inter', sans-serif;
             background: #faf7f2;
-            background-image: 
-                radial-gradient(ellipse at 10% 20%, rgba(212, 184, 171, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 90% 80%, rgba(176, 124, 106, 0.1) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 50%, rgba(212, 184, 171, 0.04) 0%, transparent 80%),
-                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4b8ab' fill-opacity='0.1'%3E%3Cpath d='M40 10c-3.3 0-6 2.7-6 6 0 2.6 1.6 4.8 4 5.7V30h4V21.7c2.4-.9 4-3.1 4-5.7 0-3.3-2.7-6-6-6zm0 10c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z'/%3E%3Ccircle cx='30' cy='20' r='2'/%3E%3Ccircle cx='50' cy='20' r='2'/%3E%3Ccircle cx='40' cy='60' r='2'/%3E%3Ccircle cx='20' cy='50' r='2'/%3E%3Ccircle cx='60' cy='50' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             color: #3d2e2a;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
@@ -113,38 +103,24 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(250, 247, 242, 0.7);
+            background: rgba(250, 247, 242, 0.75);
             z-index: 1;
         }
         .hero > * {
             position: relative;
             z-index: 2;
         }
-        .hero::after {
-            display: none;
-        }
 
-        /* --- Падающие цветочки --- */
+        /* --- Падающие цветочки (оптимизировано) --- */
         .falling-flower {
-            position: fixed; /* или absolute, но fixed лучше для всего экрана */
-            top: -40px;
+            position: fixed;
+            top: -50px;
             font-size: 28px;
             z-index: 10;
-            pointer-events: none; /* чтобы не мешали кликать */
-            opacity: 0.6;
+            pointer-events: none;
             user-select: none;
-            animation: fallDown linear forwards;
-        }
-
-        @keyframes fallDown {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(0.8);
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(calc(100vh + 100px)) rotate(720deg) scale(1.2);
-                opacity: 0.2;
-            }
+            will-change: transform, opacity;
+            opacity: 0;
         }
 
         .hero-badge {
@@ -160,8 +136,8 @@
         }
 
         @keyframes fadeInScale {
-            0% { opacity: 0; transform: scale(0.8); filter: blur(4px); }
-            100% { opacity: 1; transform: scale(1); filter: blur(0); }
+            0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .hero-names {
@@ -172,7 +148,7 @@
             color: #3d2e2a;
             margin-bottom: 8px;
             letter-spacing: 4px;
-            text-shadow: 0 0 40px rgba(176, 124, 106, 0.15), 0 0 80px rgba(176, 124, 106, 0.05);
+            text-shadow: 0 0 40px rgba(176, 124, 106, 0.1);
         }
 
         .hero-names span {
@@ -192,7 +168,6 @@
             font-size: 0.7em;
             vertical-align: middle;
             animation-delay: 0.6s;
-            text-shadow: 0 0 30px rgba(176, 124, 106, 0.2);
         }
 
         .hero-date {
@@ -238,14 +213,14 @@
             font-weight: 500;
             color: #3d2e2a;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transition: transform 0.2s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
             letter-spacing: 1px;
+            will-change: transform;
         }
         .music-btn:hover {
-            transform: scale(1.04);
+            transform: scale(1.03);
             background: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 30px rgba(176, 124, 106, 0.1);
         }
         .music-btn:active {
             transform: scale(0.96);
@@ -288,8 +263,8 @@
             z-index: 2;
             opacity: 0;
             animation: fadeInScale 1.5s ease 2.1s forwards;
-            transition: opacity 0.6s ease, transform 0.6s ease;
             box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            will-change: transform, opacity;
         }
         .timer-section.finished {
             opacity: 0;
@@ -312,7 +287,6 @@
             color: #3d2e2a;
             margin: 4px 0 8px;
             letter-spacing: 2px;
-            text-shadow: 0 0 30px rgba(176, 124, 106, 0.05);
         }
         .timer-divider {
             display: flex;
@@ -346,6 +320,7 @@
             font-weight: 700;
             color: #3d2e2a;
             line-height: 1.1;
+            will-change: contents;
         }
         .timer-item .label {
             font-size: 10px;
@@ -417,12 +392,8 @@
             position: relative;
             width: 100%;
         }
-        .story-item:nth-child(odd) {
-            flex-direction: row;
-        }
-        .story-item:nth-child(even) {
-            flex-direction: row-reverse;
-        }
+        .story-item:nth-child(odd) { flex-direction: row; }
+        .story-item:nth-child(even) { flex-direction: row-reverse; }
 
         .story-item .story-content {
             width: 42%;
@@ -432,12 +403,13 @@
             border-radius: 16px;
             border: 2px solid #dccfc7;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.2s ease;
             position: relative;
             z-index: 2;
+            will-change: transform;
         }
         .story-item .story-content:hover {
-            transform: translateY(-4px) scale(1.01);
+            transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(176, 124, 106, 0.08);
         }
 
@@ -451,9 +423,7 @@
             align-items: center;
             gap: 8px;
         }
-        .story-item .story-year .icon {
-            font-size: 24px;
-        }
+        .story-item .story-year .icon { font-size: 24px; }
         .story-item .story-text {
             font-size: 15px;
             color: #3d2e2a;
@@ -477,7 +447,8 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease;
+            will-change: transform;
         }
         .story-item:hover .story-marker {
             transform: translateX(-50%) scale(1.2);
@@ -520,21 +491,13 @@
             border-radius: 16px;
             text-align: center;
             box-shadow: 0 4px 30px rgba(0,0,0,0.03);
-            transition: transform 0.25s ease;
+            transition: transform 0.2s ease;
             position: relative;
             overflow: hidden;
             border: 2px solid #dccfc7;
+            will-change: transform;
         }
-        .detail-card:hover { transform: translateY(-4px); }
-        .detail-card::after {
-            content: '✦';
-            position: absolute;
-            bottom: 8px;
-            right: 14px;
-            font-size: 16px;
-            color: #f0e8e0;
-            opacity: 0.5;
-        }
+        .detail-card:hover { transform: translateY(-3px); }
         .detail-card .icon {
             font-size: 28px;
             color: #b07c6a;
@@ -553,9 +516,7 @@
             font-weight: 300;
         }
 
-        .gallery-section {
-            padding: 60px 0 40px;
-        }
+        .gallery-section { padding: 60px 0 40px; }
         .gallery-container {
             position: relative;
             max-width: 800px;
@@ -570,6 +531,7 @@
         .gallery-slide {
             display: flex;
             transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
         }
         .gallery-slide img {
             width: 100%;
@@ -577,10 +539,6 @@
             object-fit: cover;
             flex-shrink: 0;
         }
-        .gallery-btn {
-            display: none !important;
-        }
-
         .gallery-dots {
             display: flex;
             justify-content: center;
@@ -593,16 +551,16 @@
             border-radius: 50%;
             background: rgba(176, 124, 106, 0.25);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border: 1px solid rgba(176, 124, 106, 0.1);
         }
         .gallery-dots span:hover {
             background: rgba(176, 124, 106, 0.4);
-            transform: scale(1.2);
+            transform: scale(1.15);
         }
         .gallery-dots span.active {
             background: #b07c6a;
-            transform: scale(1.4);
+            transform: scale(1.3);
             border-color: #b07c6a;
         }
 
@@ -633,12 +591,8 @@
             position: relative;
             width: 100%;
         }
-        .zigzag-item:nth-child(odd) {
-            flex-direction: row;
-        }
-        .zigzag-item:nth-child(even) {
-            flex-direction: row-reverse;
-        }
+        .zigzag-item:nth-child(odd) { flex-direction: row; }
+        .zigzag-item:nth-child(even) { flex-direction: row-reverse; }
 
         .zigzag-item .event {
             width: 40%;
@@ -647,15 +601,13 @@
             padding: 12px 18px;
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.2s ease;
             position: relative;
             z-index: 2;
             border: 2px solid #dccfc7;
+            will-change: transform;
         }
-        .zigzag-item .event:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-        }
+        .zigzag-item .event:hover { transform: translateY(-2px); }
         .zigzag-item .event .icon {
             font-size: 22px;
             margin-bottom: 2px;
@@ -691,7 +643,8 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease;
+            will-change: transform;
         }
         .zigzag-item:hover .marker {
             transform: translateX(-50%) scale(1.15);
@@ -726,10 +679,11 @@
             border-radius: 16px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            transition: transform 0.25s ease;
+            transition: transform 0.2s ease;
             border: 2px solid #dccfc7;
+            will-change: transform;
         }
-        .contact-card:hover { transform: translateY(-4px); }
+        .contact-card:hover { transform: translateY(-3px); }
         .contact-card .icon {
             font-size: 24px;
             color: #b07c6a;
@@ -772,10 +726,11 @@
             font-weight: 500;
             font-size: 15px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-            transition: transform 0.25s ease;
+            transition: transform 0.2s ease;
             border: 2px solid #dccfc7;
+            will-change: transform;
         }
-        .social-links a:hover { transform: translateY(-3px); }
+        .social-links a:hover { transform: translateY(-2px); }
         .social-links a .vk-icon { color: #4a76a8; font-weight: 700; }
         .social-links a span {
             font-weight: 300;
@@ -874,9 +829,10 @@
             font-weight: 500;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
-            transition: transform 0.25s, box-shadow 0.25s;
+            transition: transform 0.2s, box-shadow 0.2s;
             letter-spacing: 1px;
             box-shadow: 0 4px 20px rgba(61, 46, 42, 0.15);
+            will-change: transform;
         }
         .btn:hover { 
             background: linear-gradient(135deg, #5a423c, #3d2e2a);
@@ -937,54 +893,38 @@
             .hero-sub { font-size: 16px; }
             .music-btn { padding: 10px 20px; font-size: 14px; }
 
-            .timeline-zigzag::before {
-                left: 20px;
-            }
+            .timeline-zigzag::before { left: 20px; }
             .zigzag-item {
                 flex-direction: column !important;
                 align-items: flex-start;
                 padding-left: 40px;
                 gap: 4px;
             }
-            .zigzag-item .event {
-                width: 100%;
-                padding: 14px 18px;
-            }
+            .zigzag-item .event { width: 100%; padding: 14px 18px; }
             .zigzag-item .marker {
                 left: 20px;
                 transform: translateX(-50%);
                 width: 16px;
                 height: 16px;
             }
-            .zigzag-item:hover .marker {
-                transform: translateX(-50%) scale(1.2);
-            }
+            .zigzag-item:hover .marker { transform: translateX(-50%) scale(1.2); }
 
-            .story-timeline::before {
-                left: 20px;
-            }
+            .story-timeline::before { left: 20px; }
             .story-item {
                 flex-direction: column !important;
                 align-items: flex-start;
                 padding-left: 40px;
                 gap: 4px;
             }
-            .story-item .story-content {
-                width: 100%;
-                padding: 14px 16px;
-            }
+            .story-item .story-content { width: 100%; padding: 14px 16px; }
             .story-item .story-marker {
                 left: 20px;
                 transform: translateX(-50%);
                 width: 14px;
                 height: 14px;
             }
-            .story-item .story-year {
-                font-size: 22px;
-            }
-            .story-item .story-text {
-                font-size: 14px;
-            }
+            .story-item .story-year { font-size: 22px; }
+            .story-item .story-text { font-size: 14px; }
         }
     </style>
 </head>
@@ -1153,11 +1093,11 @@
 
             <div class="gallery-container">
                 <div class="gallery-slide" id="gallerySlide">
-                    <img src="photo1.jpg" alt="Фото 1" />
-                    <img src="photo2.jpg" alt="Фото 2" />
-                    <img src="photo3.jpg" alt="Фото 3" />
-                    <img src="photo4.jpg" alt="Фото 4" />
-                    <img src="photo5.jpg" alt="Фото 5" />
+                    <img src="photo1.jpg" alt="Фото 1" loading="lazy" />
+                    <img src="photo2.jpg" alt="Фото 2" loading="lazy" />
+                    <img src="photo3.jpg" alt="Фото 3" loading="lazy" />
+                    <img src="photo4.jpg" alt="Фото 4" loading="lazy" />
+                    <img src="photo5.jpg" alt="Фото 5" loading="lazy" />
                 </div>
             </div>
             <div class="gallery-dots" id="galleryDots"></div>
@@ -1256,6 +1196,7 @@
                     height="400" 
                     frameborder="0" 
                     allowfullscreen="true" 
+                    loading="lazy"
                     style="border-radius:16px;">
                 </iframe>
             </div>
@@ -1329,7 +1270,7 @@
 
                 <div class="form-group">
                     <label for="name">Ваше имя и фамилия</label>
-                    <input type="text" id="name" name="Имя" placeholder="Напишите Ваше и все имена гостей, которые будут присутствовать с Вами" required />
+                    <input type="text" id="name" name="Имя" placeholder="Напишите Ваше и все имена гостей" required />
                 </div>
 
                 <div class="form-group">
@@ -1358,7 +1299,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="message">Пожелания или особые пожелания</label>
+                    <label for="message">Пожелания</label>
                     <input type="text" id="message" name="Пожелания" placeholder="Напишите пару слов" />
                 </div>
 
@@ -1397,12 +1338,12 @@
         <p style="margin-top:8px;font-size:12px;opacity:0.6;">29.08.2026</p>
     </footer>
 
-    <audio id="bgMusic" loop preload="auto">
+    <audio id="bgMusic" loop preload="none">
         <source src="song.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // МУЗЫКА
+        // ---- МУЗЫКА ----
         const audio = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
         const musicIcon = musicBtn.querySelector('.icon');
@@ -1431,45 +1372,46 @@
             }
         });
 
-        // ТАЙМЕР
+        // ---- ТАЙМЕР (оптимизирован) ----
         const timerSection = document.getElementById('timerSection');
         const finalMessage = document.getElementById('finalMessage');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
 
         function startTimer() {
             const weddingDate = new Date('2026-08-29T00:00:00').getTime();
+            let timerId = null;
 
             function updateTimer() {
-                const now = new Date().getTime();
+                const now = Date.now();
                 const diff = weddingDate - now;
 
                 if (diff <= 0) {
                     timerSection.classList.add('finished');
                     finalMessage.classList.add('show');
-                    document.getElementById('days').textContent = '00';
-                    document.getElementById('hours').textContent = '00';
-                    document.getElementById('minutes').textContent = '00';
-                    document.getElementById('seconds').textContent = '00';
+                    daysEl.textContent = '00';
+                    hoursEl.textContent = '00';
+                    minutesEl.textContent = '00';
+                    secondsEl.textContent = '00';
+                    if (timerId) clearInterval(timerId);
                     return;
                 }
 
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                document.getElementById('days').textContent = String(days).padStart(2, '0');
-                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+                daysEl.textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                hoursEl.textContent = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                minutesEl.textContent = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                secondsEl.textContent = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
             }
 
             updateTimer();
-            setInterval(updateTimer, 1000);
+            timerId = setInterval(updateTimer, 1000);
         }
 
         startTimer();
 
-        // ГАЛЕРЕЯ
+        // ---- ГАЛЕРЕЯ ----
         const slide = document.getElementById('gallerySlide');
         const images = slide.querySelectorAll('img');
         const total = images.length;
@@ -1477,10 +1419,11 @@
         let autoPlayInterval;
 
         function updateGallery(index) {
-            slide.style.transform = `translateX(-${index * 100}%)`;
-            document.querySelectorAll('.gallery-dots span').forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
+            slide.style.transform = 'translateX(-' + (index * 100) + '%)';
+            const dots = document.querySelectorAll('.gallery-dots span');
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].classList.toggle('active', i === index);
+            }
         }
 
         function goTo(index) {
@@ -1515,7 +1458,7 @@
 
         startAutoPlay();
 
-        // ФОРМА
+        // ---- ФОРМА ----
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMsg = document.getElementById('successMessage');
@@ -1552,56 +1495,80 @@
             }
         });
 
-        // --- Падающие цветочки 🌸 ---
+        // ---- ПАДАЮЩИЕ ЦВЕТОЧКИ (оптимизировано) ----
         (function startFallingFlowers() {
             const hero = document.getElementById('heroSection');
             if (!hero) return;
 
             const flowers = ['🌸', '🌹', '🌷', '🌼', '🌻'];
-            // Функция создания одного лепестка
+            let flowerCount = 0;
+            const MAX_FLOWERS = 12; // Максимум цветков на экране
+
             function createFlower() {
+                // Ограничиваем количество
+                const existing = hero.querySelectorAll('.falling-flower');
+                if (existing.length >= MAX_FLOWERS) return;
+
                 const el = document.createElement('div');
                 el.className = 'falling-flower';
-                // Случайный цветок
                 el.textContent = flowers[Math.floor(Math.random() * flowers.length)];
                 
-                // Случайная позиция по ширине экрана (0..100%)
                 const left = Math.random() * 100;
-                el.style.left = left + '%';
-                
-                // Случайный размер (от 20px до 40px)
                 const size = 20 + Math.random() * 20;
-                el.style.fontSize = size + 'px';
+                const duration = 14 + Math.random() * 10;
+                const startX = (Math.random() - 0.5) * 40; // небольшое смещение в стороны
                 
-                // Случайная длительность падения (от 12 до 22 секунд)
-                const duration = 12 + Math.random() * 10;
-                el.style.animationDuration = duration + 's';
+                el.style.cssText = `
+                    left: ${left}%;
+                    font-size: ${size}px;
+                    opacity: 0;
+                `;
                 
-                // Небольшая задержка перед стартом анимации (от 0 до 5с), чтобы не все падали одинаково
-                const delay = Math.random() * 5;
-                el.style.animationDelay = delay + 's';
-                
-                // Добавляем в hero
                 hero.appendChild(el);
-                
-                // Удаляем элемент после окончания анимации, чтобы не засорять DOM
-                setTimeout(() => {
-                    if (el.parentNode) {
-                        el.parentNode.removeChild(el);
+
+                // Анимируем через requestAnimationFrame для плавности
+                const startTime = performance.now();
+                const startY = -50;
+                const endY = window.innerHeight + 100;
+                const rotStart = Math.random() * 360;
+                const rotEnd = rotStart + 360 + Math.random() * 720;
+                const scaleStart = 0.6 + Math.random() * 0.4;
+                const scaleEnd = 0.8 + Math.random() * 0.6;
+                const driftX = (Math.random() - 0.5) * 100; // дрейф по X
+
+                function animateFlower(time) {
+                    const progress = (time - startTime) / (duration * 1000);
+                    if (progress >= 1) {
+                        if (el.parentNode) el.parentNode.removeChild(el);
+                        return;
                     }
-                }, (duration + delay) * 1000 + 100);
+                    
+                    // easeInOut
+                    const p = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                    
+                    const y = startY + (endY - startY) * p;
+                    const xOffset = Math.sin(p * Math.PI * 2) * driftX * 0.3;
+                    const rot = rotStart + (rotEnd - rotStart) * p;
+                    const scale = scaleStart + (scaleEnd - scaleStart) * p;
+                    const opacity = p < 0.1 ? p * 6 : (p > 0.85 ? (1 - p) / 0.15 * 0.5 : 0.5);
+                    
+                    el.style.transform = `translate(${xOffset}px, ${y}px) rotate(${rot}deg) scale(${scale})`;
+                    el.style.opacity = opacity;
+                    
+                    requestAnimationFrame(animateFlower);
+                }
+                
+                requestAnimationFrame(animateFlower);
             }
 
-            // Создаём новый цветок каждые 3-6 секунд (не часто)
+            // Создаём цветок каждые 4-8 секунд (редко)
             setInterval(() => {
                 createFlower();
-            }, 3000 + Math.random() * 3000);
+            }, 4000 + Math.random() * 4000);
 
-            // Сразу создаём несколько цветков для красоты (но не слишком много)
-            for (let i = 0; i < 6; i++) {
-                setTimeout(() => {
-                    createFlower();
-                }, i * 800);
+            // Несколько начальных цветков
+            for (let i = 0; i < 4; i++) {
+                setTimeout(() => createFlower(), i * 1000 + 500);
             }
         })();
 
