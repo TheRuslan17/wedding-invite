@@ -28,9 +28,15 @@
         body {
             font-family: 'Inter', sans-serif;
             background: #faf7f2;
+            background-image: 
+                radial-gradient(ellipse at 10% 20%, rgba(212, 184, 171, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 90% 80%, rgba(176, 124, 106, 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(212, 184, 171, 0.04) 0%, transparent 80%),
+                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4b8ab' fill-opacity='0.1'%3E%3Cpath d='M40 10c-3.3 0-6 2.7-6 6 0 2.6 1.6 4.8 4 5.7V30h4V21.7c2.4-.9 4-3.1 4-5.7 0-3.3-2.7-6-6-6zm0 10c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z'/%3E%3Ccircle cx='30' cy='20' r='2'/%3E%3Ccircle cx='50' cy='20' r='2'/%3E%3Ccircle cx='40' cy='60' r='2'/%3E%3Ccircle cx='20' cy='50' r='2'/%3E%3Ccircle cx='60' cy='50' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             color: #3d2e2a;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
         }
         .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
 
@@ -38,7 +44,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
             margin: 10px 0 30px;
             color: #c9a89b;
             font-size: 14px;
@@ -46,22 +52,33 @@
         .divider .line {
             flex: 1;
             height: 1px;
-            max-width: 120px;
+            max-width: 100px;
             background: linear-gradient(90deg, transparent, #dccfc7, transparent);
         }
-        .divider .diamond {
-            font-size: 18px;
-            color: #d4b8ab;
-            opacity: 0.6;
-        }
-        .divider .flower {
+        .divider .ornament {
+            font-family: 'Playfair Display', serif;
             font-size: 20px;
-            color: #e8c8c0;
-            animation: floatFlower 4s ease-in-out infinite;
+            color: #d4b8ab;
+            letter-spacing: 4px;
         }
-        @keyframes floatFlower {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-6px) rotate(8deg); }
+
+        .divider-ornate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 8px 0 24px;
+        }
+        .divider-ornate .line {
+            flex: 1;
+            height: 1px;
+            max-width: 80px;
+            background: linear-gradient(90deg, transparent, #dccfc7, transparent);
+        }
+        .divider-ornate .ornament {
+            font-family: 'Great Vibes', cursive;
+            font-size: 24px;
+            color: #d4b8ab;
         }
 
         .petal-decor {
@@ -105,6 +122,29 @@
         }
         .hero::after {
             display: none;
+        }
+
+        /* --- Падающие цветочки --- */
+        .falling-flower {
+            position: fixed; /* или absolute, но fixed лучше для всего экрана */
+            top: -40px;
+            font-size: 28px;
+            z-index: 10;
+            pointer-events: none; /* чтобы не мешали кликать */
+            opacity: 0.6;
+            user-select: none;
+            animation: fallDown linear forwards;
+        }
+
+        @keyframes fallDown {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(720deg) scale(1.2);
+                opacity: 0.2;
+            }
         }
 
         .hero-badge {
@@ -188,7 +228,7 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(12px);
             border: 2px solid #dccfc7;
             padding: 12px 28px;
@@ -204,7 +244,7 @@
         }
         .music-btn:hover {
             transform: scale(1.04);
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.3);
             box-shadow: 0 8px 30px rgba(176, 124, 106, 0.1);
         }
         .music-btn:active {
@@ -238,8 +278,8 @@
         .timer-section {
             margin: 30px auto 10px;
             padding: 20px 16px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
             border-radius: 20px;
             border: 2px solid #dccfc7;
             max-width: 500px;
@@ -319,7 +359,7 @@
             display: none;
             margin: 30px auto 10px;
             padding: 30px 24px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(12px);
             border-radius: 24px;
             border: 2px solid #dccfc7;
@@ -351,7 +391,6 @@
             margin-top: 12px;
         }
 
-        /* ===== ИСТОРИЯ ЛЮБВИ (ОБНОВЛЁННАЯ) ===== */
         .story-timeline {
             max-width: 700px;
             margin: 0 auto;
@@ -387,8 +426,8 @@
 
         .story-item .story-content {
             width: 42%;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(16px);
             padding: 20px 24px;
             border-radius: 16px;
             border: 2px solid #dccfc7;
@@ -454,7 +493,7 @@
             font-weight: 600;
             font-style: italic;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             color: #3d2e2a;
             letter-spacing: 2px;
         }
@@ -475,11 +514,12 @@
             gap: 30px;
         }
         .detail-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(16px);
             padding: 32px 20px;
             border-radius: 16px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.03);
             transition: transform 0.25s ease;
             position: relative;
             overflow: hidden;
@@ -513,7 +553,6 @@
             font-weight: 300;
         }
 
-        /* ===== ГАЛЕРЕЯ (ОБНОВЛЁННАЯ) ===== */
         .gallery-section {
             padding: 60px 0 40px;
         }
@@ -525,6 +564,8 @@
             overflow: hidden;
             box-shadow: 0 16px 60px rgba(0,0,0,0.06);
             border: 2px solid #dccfc7;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
         }
         .gallery-slide {
             display: flex;
@@ -581,7 +622,7 @@
             background: linear-gradient(180deg, #dccfc7, #b07c6a, #dccfc7);
             transform: translateX(-50%);
             border-radius: 2px;
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
         .zigzag-item {
@@ -601,7 +642,8 @@
 
         .zigzag-item .event {
             width: 40%;
-            background: white;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
             padding: 12px 18px;
             border-radius: 12px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.04);
@@ -678,7 +720,8 @@
             margin: 0 auto;
         }
         .contact-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
             padding: 24px 20px;
             border-radius: 16px;
             text-align: center;
@@ -721,7 +764,8 @@
             align-items: center;
             gap: 10px;
             padding: 12px 24px;
-            background: white;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(8px);
             border-radius: 40px;
             text-decoration: none;
             color: #3d2e2a;
@@ -742,7 +786,8 @@
         .rsvp-form {
             max-width: 480px;
             margin: 0 auto;
-            background: white;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(16px);
             padding: 40px 32px;
             border-radius: 20px;
             box-shadow: 0 4px 30px rgba(0,0,0,0.04);
@@ -764,14 +809,15 @@
             border-radius: 12px;
             font-size: 15px;
             font-family: 'Inter', sans-serif;
-            background: #fcfaf8;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(4px);
             transition: border 0.2s;
             color: #3d2e2a;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: #b07c6a;
-            background: white;
+            background: rgba(255, 255, 255, 0.6);
         }
         .form-group .radio-group {
             display: flex;
@@ -803,7 +849,8 @@
             border-radius: 12px;
             font-size: 15px;
             font-family: 'Inter', sans-serif;
-            background: #fcfaf8;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(4px);
             transition: border 0.2s;
             color: #3d2e2a;
             appearance: auto;
@@ -812,14 +859,14 @@
         .form-group .guest-select:focus {
             outline: none;
             border-color: #b07c6a;
-            background: white;
+            background: rgba(255, 255, 255, 0.6);
         }
 
         .btn {
             display: inline-block;
             width: 100%;
             padding: 14px;
-            background: #3d2e2a;
+            background: linear-gradient(135deg, #3d2e2a, #5a423c);
             color: white;
             border: none;
             border-radius: 12px;
@@ -827,14 +874,20 @@
             font-weight: 500;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
-            transition: background 0.25s, transform 0.15s;
+            transition: transform 0.25s, box-shadow 0.25s;
             letter-spacing: 1px;
+            box-shadow: 0 4px 20px rgba(61, 46, 42, 0.15);
         }
-        .btn:hover { background: #5a423c; transform: scale(1.01); }
+        .btn:hover { 
+            background: linear-gradient(135deg, #5a423c, #3d2e2a);
+            transform: scale(1.01); 
+            box-shadow: 0 8px 30px rgba(61, 46, 42, 0.25);
+        }
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
         .success-message {
             display: none;
@@ -937,7 +990,7 @@
 </head>
 <body>
 
-    <header class="hero">
+    <header class="hero" id="heroSection">
         <div class="hero-badge">Приглашение</div>
         <h1 class="hero-names">
             <span>Максим</span>
@@ -957,7 +1010,7 @@
 
         <div class="divider" style="margin-top:6px;">
             <span class="line"></span>
-            <span class="flower">🌸</span>
+            <span class="ornament">✦ ✦ ✦</span>
             <span class="line"></span>
         </div>
 
@@ -1007,13 +1060,12 @@
 
     <div class="container">
 
-        <!-- ИСТОРИЯ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Как мы встретились</h2>
             <div class="divider">
                 <span class="line"></span>
-                <span class="diamond">◆</span>
+                <span class="ornament">✦ ✦ ✦</span>
                 <span class="line"></span>
             </div>
             <p class="section-subtitle">Немного нашей истории</p>
@@ -1053,13 +1105,12 @@
             </div>
         </section>
 
-        <!-- ДЕТАЛИ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Детали праздника</h2>
             <div class="divider">
                 <span class="line"></span>
-                <span class="diamond">◆</span>
+                <span class="ornament">✦ ✦ ✦</span>
                 <span class="line"></span>
             </div>
             <p class="section-subtitle">Где и когда</p>
@@ -1090,13 +1141,12 @@
             </div>
         </section>
 
-        <!-- ГАЛЕРЕЯ -->
         <section class="gallery-section">
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Наши моменты</h2>
             <div class="divider">
                 <span class="line"></span>
-                <span class="diamond">◆</span>
+                <span class="ornament">✦ ✦ ✦</span>
                 <span class="line"></span>
             </div>
             <p class="section-subtitle">Немного тёплых воспоминаний</p>
@@ -1113,13 +1163,12 @@
             <div class="gallery-dots" id="galleryDots"></div>
         </section>
 
-        <!-- ПРОГРАММА -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Программа дня</h2>
             <div class="divider">
                 <span class="line"></span>
-                <span class="diamond">◆</span>
+                <span class="ornament">✦ ✦ ✦</span>
                 <span class="line"></span>
             </div>
             <p class="section-subtitle">Как всё будет</p>
@@ -1187,13 +1236,12 @@
             </div>
         </section>
 
-        <!-- КАРТА -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Как нас найти</h2>
             <div class="divider">
                 <span class="line"></span>
-                <span class="diamond">◆</span>
+                <span class="ornament">✦ ✦ ✦</span>
                 <span class="line"></span>
             </div>
             <p class="section-subtitle" style="line-height: 1.8;">
@@ -1214,13 +1262,12 @@
             <p style="text-align:center;margin-top:16px;font-size:14px;color:#9a847a;">📍 Откроется в Яндекс.Картах</p>
         </section>
 
-        <!-- КОНТАКТЫ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Контакты</h2>
             <div class="divider">
                 <span class="line"></span>
-                <span class="diamond">◆</span>
+                <span class="ornament">✦ ✦ ✦</span>
                 <span class="line"></span>
             </div>
             <p class="section-subtitle">По любым вопросам обращайтесь</p>
@@ -1238,13 +1285,12 @@
             </div>
         </section>
 
-        <!-- СОЦСЕТИ -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Мы в соцсетях</h2>
             <div class="divider">
                 <span class="line"></span>
-                <span class="diamond">◆</span>
+                <span class="ornament">✦ ✦ ✦</span>
                 <span class="line"></span>
             </div>
             <p class="section-subtitle">Будем рады видеть вас среди подписчиков</p>
@@ -1262,13 +1308,12 @@
             </div>
         </section>
 
-        <!-- RSVP -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title">Ждём вас!</h2>
             <div class="divider">
                 <span class="line"></span>
-                <span class="diamond">◆</span>
+                <span class="ornament">✦ ✦ ✦</span>
                 <span class="line"></span>
             </div>
             <p class="section-subtitle">Пожалуйста, подтвердите присутствие до 1 августа</p>
@@ -1336,9 +1381,13 @@
     </div>
 
     <footer class="footer">
-        <div class="divider" style="max-width:300px;margin:0 auto 20px;">
+        <div class="divider-ornate" style="max-width:300px;margin:0 auto 20px;">
             <span class="line"></span>
-            <span class="flower">🌸</span>
+            <span class="ornament">✧</span>
+            <span class="line"></span>
+            <span class="ornament">✧</span>
+            <span class="line"></span>
+            <span class="ornament">✧</span>
             <span class="line"></span>
         </div>
         <p>
@@ -1502,6 +1551,60 @@
                 submitBtn.textContent = '✅ Подтвердить';
             }
         });
+
+        // --- Падающие цветочки 🌸 ---
+        (function startFallingFlowers() {
+            const hero = document.getElementById('heroSection');
+            if (!hero) return;
+
+            const flowers = ['🌸', '🌹', '🌷', '🌼', '🌻'];
+            // Функция создания одного лепестка
+            function createFlower() {
+                const el = document.createElement('div');
+                el.className = 'falling-flower';
+                // Случайный цветок
+                el.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+                
+                // Случайная позиция по ширине экрана (0..100%)
+                const left = Math.random() * 100;
+                el.style.left = left + '%';
+                
+                // Случайный размер (от 20px до 40px)
+                const size = 20 + Math.random() * 20;
+                el.style.fontSize = size + 'px';
+                
+                // Случайная длительность падения (от 12 до 22 секунд)
+                const duration = 12 + Math.random() * 10;
+                el.style.animationDuration = duration + 's';
+                
+                // Небольшая задержка перед стартом анимации (от 0 до 5с), чтобы не все падали одинаково
+                const delay = Math.random() * 5;
+                el.style.animationDelay = delay + 's';
+                
+                // Добавляем в hero
+                hero.appendChild(el);
+                
+                // Удаляем элемент после окончания анимации, чтобы не засорять DOM
+                setTimeout(() => {
+                    if (el.parentNode) {
+                        el.parentNode.removeChild(el);
+                    }
+                }, (duration + delay) * 1000 + 100);
+            }
+
+            // Создаём новый цветок каждые 3-6 секунд (не часто)
+            setInterval(() => {
+                createFlower();
+            }, 3000 + Math.random() * 3000);
+
+            // Сразу создаём несколько цветков для красоты (но не слишком много)
+            for (let i = 0; i < 6; i++) {
+                setTimeout(() => {
+                    createFlower();
+                }, i * 800);
+            }
+        })();
+
     </script>
 
 </body>
