@@ -52,37 +52,37 @@
             opacity: 0;
             animation: bodyFadeIn 1s ease 0.3s forwards;
 
-    /* ===== ЗАЩИТА ОТ ВЫДЕЛЕНИЯ ===== */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+            /* ===== ЗАЩИТА ОТ ВЫДЕЛЕНИЯ ===== */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
 
-    /* ===== ЗАЩИТА ОТ ПЕРЕТАСКИВАНИЯ ===== */
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-}
+            /* ===== ЗАЩИТА ОТ ПЕРЕТАСКИВАНИЯ ===== */
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+        }
 
-/* ===== РАЗРЕШИТЬ ВЫДЕЛЕНИЕ В ФОРМЕ ===== */
-input, textarea, select {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-}
+        /* ===== РАЗРЕШИТЬ ВЫДЕЛЕНИЕ В ФОРМЕ ===== */
+        input, textarea, select {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
 
-/* ===== ЗАПРЕТ ПЕРЕТАСКИВАНИЯ КАРТИНОК ===== */
-img {
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    pointer-events: auto;
-    user-select: none;
-    -webkit-user-select: none;
-}
+        /* ===== ЗАПРЕТ ПЕРЕТАСКИВАНИЯ КАРТИНОК ===== */
+        img {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            pointer-events: auto;
+            user-select: none;
+            -webkit-user-select: none;
+        }
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -416,6 +416,11 @@ img {
             font-size: 15px;
             font-family: 'Inter', sans-serif;
         }
+        .player .track-name.loading {
+            color: #b07c6a;
+            font-weight: 500;
+            font-size: 14px;
+        }
 
         .player-controls {
             display: flex;
@@ -461,6 +466,11 @@ img {
         .player-controls .btn-play.playing {
             background: rgba(176, 124, 106, 0.25);
             border-color: #b07c6a;
+        }
+        .player-controls .btn-play.loading {
+            background: rgba(176, 124, 106, 0.1);
+            border-color: rgba(176, 124, 106, 0.3);
+            cursor: wait;
         }
 
         /* ===== HERO SUB ===== */
@@ -1474,6 +1484,42 @@ img {
             flex-shrink: 0;
         }
 
+        /* ===== БЛОК ПРО АЛКОГОЛЬ (внутри RSVP) ===== */
+        .gift-note {
+            max-width: 550px;
+            margin: 16px auto 0;
+            padding: 18px 24px;
+            background: rgba(176, 124, 106, 0.08);
+            border: 2px solid rgba(176, 124, 106, 0.25);
+            border-radius: 16px;
+            text-align: center;
+            font-size: 17px;
+            color: #3d2e2a;
+            line-height: 1.6;
+            transition: all 0.4s ease;
+        }
+        .gift-note:hover {
+            background: rgba(176, 124, 106, 0.14);
+            border-color: #b07c6a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(176, 124, 106, 0.1);
+        }
+        .gift-note .heart-icon {
+            color: #e74c6f;
+            font-size: 20px;
+        }
+        .gift-note .highlight-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #b07c6a;
+            font-size: 19px;
+        }
+        .gift-note .small-note {
+            font-size: 14px;
+            color: #9a847a;
+            margin-top: 4px;
+        }
+
         /* ===== КНОПКА "НАВЕРХ" ===== */
         #backToTop {
             position: fixed;
@@ -1684,6 +1730,13 @@ img {
             .footer-links .divider-dot {
                 width: 2px;
                 height: 2px;
+            }
+            .gift-note {
+                padding: 14px 16px;
+                font-size: 15px;
+            }
+            .gift-note .highlight-text {
+                font-size: 17px;
             }
         }
 
@@ -2135,11 +2188,20 @@ img {
                 <strong>Спасибо!</strong> Мы получили ваше подтверждение и очень ждём вас!
             </div>
 
-            <p style="text-align:center;margin-top:20px;font-size:13px;color:#b09a8f;">
+            <!-- ===== БЛОК ПРО АЛКОГОЛЬ ВНУТРИ RSVP ===== -->
+            <div class="gift-note">
+                <span class="heart-icon">❤️</span>
+                <span class="highlight-text">Главное для нас — ваше присутствие!</span>
+                <span class="heart-icon">❤️</span>
+                <br>
+                Вместо цветов будем рады 
+                <strong>бутылочке хорошего алкоголя</strong> 
+                с запиской, к какому событию её приурочить.
+                <div class="small-note">🍾 Ваше внимание — лучший подарок</div>
+            </div>
+
+            <p style="text-align:center;margin-top:8px;font-size:13px;color:#b09a8f;">
                 ❤️ Будем очень рады видеть вас!
-            </p>
-            <p style="text-align:center;margin-top:8px;font-size:13px;color:#b09a8f;font-style:italic;max-width:500px;margin-left:auto;margin-right:auto;">
-                Главное для нас — ваше присутствие. Вместо цветов будем рады бутылочке хорошего алкоголя с запиской, к какому событию её приурочить.
             </p>
         </section>
 
@@ -2161,7 +2223,6 @@ img {
         </p>
         <p style="margin-top:8px;font-size:12px;opacity:0.6;">29.08.2026</p>
 
-        <!-- ===== НИЖНИЕ КНОПКИ ===== -->
         <div class="footer-links">
             <button class="link-btn" onclick="showToast('👨‍💼 Каспарович Руслан Владиславович, г. Невинномысск', 'info')">
                 <span class="icon">©</span> Права
@@ -2195,7 +2256,7 @@ img {
 
     <script>
         // ============================================================
-        //  ПЛЕЕР
+        //  ПЛЕЕР (БЕЗ ОШИБКИ song.mp3)
         // ============================================================
         const trackName = document.getElementById('trackName');
         const playBtn = document.getElementById('playBtn');
@@ -2203,6 +2264,8 @@ img {
 
         let isPlaying = false;
         let audio = null;
+        let isLoading = false;
+        let isLoaded = false;
 
         const song = {
             file: 'song.mp3',
@@ -2210,42 +2273,107 @@ img {
             artist: 'Ed Sheeran'
         };
 
+        // Функция создания аудио
+        function createAudio() {
+            if (audio) {
+                audio.pause();
+                audio.src = '';
+                audio = null;
+            }
+            audio = new Audio();
+            audio.src = song.file;
+            audio.loop = false;
+            audio.preload = 'auto';
+            
+            audio.addEventListener('canplaythrough', function() {
+                isLoaded = true;
+                isLoading = false;
+                playBtn.classList.remove('loading');
+                if (trackName.classList.contains('loading')) {
+                    trackName.textContent = '🎵 Включить музыку';
+                    trackName.classList.remove('loading');
+                    trackName.classList.add('empty');
+                }
+            });
+
+            audio.addEventListener('ended', function() {
+                isPlaying = false;
+                updatePlayButton(false);
+                audio.currentTime = 0;
+            });
+
+            audio.addEventListener('error', function() {
+                // Если файл не найден — просто показываем, что музыка недоступна
+                isLoaded = false;
+                isLoading = false;
+                playBtn.classList.remove('loading');
+                trackName.textContent = '🎵 Музыка недоступна';
+                trackName.classList.add('empty');
+                // Не показываем alert, чтобы не раздражать
+            });
+        }
+
+        // Создаём аудио при загрузке
+        createAudio();
+
         function updateTrackDisplay() {
             trackName.innerHTML = `${song.title} <span class="artist">— ${song.artist}</span>`;
-            trackName.classList.remove('empty');
+            trackName.classList.remove('empty', 'loading');
         }
 
         function updatePlayButton(playing) {
             if (playing) {
                 playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
                 playBtn.classList.add('playing');
+                playBtn.classList.remove('loading');
             } else {
                 playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-                playBtn.classList.remove('playing');
+                playBtn.classList.remove('playing', 'loading');
             }
         }
 
         function playSong() {
+            if (isLoading) return;
+            
             if (!audio) {
-                audio = new Audio();
-                audio.src = song.file;
-                audio.loop = false;
-                audio.preload = 'auto';
-
-                audio.addEventListener('ended', function() {
-                    isPlaying = false;
-                    updatePlayButton(false);
-                    audio.currentTime = 0;
-                });
-
-                audio.addEventListener('error', function() {
-                    showToast(`Не удалось загрузить "${song.title}". Проверьте файл ${song.file}`, 'error');
-                    isPlaying = false;
-                    updatePlayButton(false);
-                    audio = null;
-                });
+                createAudio();
+                if (!audio) return;
             }
 
+            // Если аудио не загружено, пробуем загрузить
+            if (!isLoaded) {
+                isLoading = true;
+                playBtn.classList.add('loading');
+                trackName.textContent = '⏳ Загрузка...';
+                trackName.classList.add('loading');
+                audio.load();
+                // Ждём canplaythrough
+                audio.addEventListener('canplaythrough', function handler() {
+                    audio.removeEventListener('canplaythrough', handler);
+                    isLoaded = true;
+                    isLoading = false;
+                    playBtn.classList.remove('loading');
+                    if (isPlaying) {
+                        audio.play().catch(() => {});
+                    } else {
+                        trackName.textContent = '🎵 Включить музыку';
+                        trackName.classList.remove('loading');
+                        trackName.classList.add('empty');
+                    }
+                });
+                // Таймаут на случай, если файл не грузится
+                setTimeout(() => {
+                    if (isLoading) {
+                        isLoading = false;
+                        playBtn.classList.remove('loading');
+                        trackName.textContent = '🎵 Музыка недоступна';
+                        trackName.classList.add('empty');
+                    }
+                }, 5000);
+                return;
+            }
+
+            // Если аудио уже загружено
             audio.play()
                 .then(() => {
                     isPlaying = true;
@@ -2253,8 +2381,10 @@ img {
                     updateTrackDisplay();
                 })
                 .catch(() => {
-                    showToast(`Не удалось воспроизвести "${song.title}". Проверьте файл ${song.file}`, 'error');
-                    isPlaying = false;
+                    // Тихая ошибка — просто показываем, что музыка недоступна
+                    isLoaded = false;
+                    trackName.textContent = '🎵 Музыка недоступна';
+                    trackName.classList.add('empty');
                     updatePlayButton(false);
                 });
         }
@@ -2325,6 +2455,32 @@ img {
         document.addEventListener('selectstart', (e) => {
             if (!e.target.closest('form') && !e.target.closest('input') && !e.target.closest('textarea')) {
                 e.preventDefault();
+            }
+        });
+
+        // 4. Защита от просмотра кода
+        document.addEventListener('contextmenu', (e) => {
+            if (!e.target.closest('form') && !e.target.closest('button') && !e.target.closest('.link-btn')) {
+                e.preventDefault();
+                showToast('🔒 Просмотр кода защищён', 'info');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12') {
+                e.preventDefault();
+                showToast('🔒 Просмотр кода защищён', 'info');
+                return false;
+            }
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J')) {
+                e.preventDefault();
+                showToast('🔒 Просмотр кода защищён', 'info');
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'c' || e.key === 'C')) {
+                e.preventDefault();
+                showToast('🔒 Просмотр кода защищён', 'info');
+                return false;
             }
         });
 
