@@ -277,58 +277,131 @@
             animation: fadeInScale 1.5s ease 1.4s forwards;
         }
 
-        .music-btn-wrapper {
+        /* ===== МИНИМАЛИСТИЧНЫЙ ПЛЕЕР ===== */
+        .player-wrapper {
             margin: 18px 0 10px;
             opacity: 0;
             animation: fadeInScale 1.5s ease 1.7s forwards;
         }
-        .music-btn {
-            display: inline-flex;
+
+        .player {
+            display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 12px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(12px);
-            border: 2px solid #dccfc7;
-            padding: 12px 24px;
-            border-radius: 60px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            color: #3d2e2a;
-            cursor: pointer;
+            border: 1.5px solid rgba(220, 207, 199, 0.5);
+            padding: 16px 28px 18px;
+            border-radius: 16px;
+            min-width: 220px;
+            max-width: 380px;
+            width: 100%;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-            letter-spacing: 0.5px;
-            will-change: transform;
-            max-width: 95%;
-            min-width: 200px;
-        }
-        .music-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 30px rgba(176, 124, 106, 0.15);
-        }
-        .music-btn:active {
-            transform: scale(0.95);
-        }
-        .music-btn .icon {
-            font-size: 20px;
-            color: #b07c6a;
-            transition: transform 0.3s ease;
-            flex-shrink: 0;
-        }
-        .music-btn:hover .icon {
-            transform: rotate(15deg);
-        }
-        .music-btn.muted .icon {
-            color: #b09a8f;
-        }
-        .music-btn .label {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 13px;
         }
 
+        .player:hover {
+            border-color: rgba(176, 124, 106, 0.4);
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .player .track-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #3d2e2a;
+            text-align: center;
+            min-height: 28px;
+            line-height: 1.3;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+        }
+
+        .player .track-name .artist {
+            font-weight: 400;
+            color: #9a847a;
+            font-size: 14px;
+        }
+
+        .player .track-name.empty {
+            color: #b09a8f;
+            font-weight: 400;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .player-controls button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #7a6257;
+            font-size: 20px;
+            padding: 6px 8px;
+            border-radius: 50%;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+        }
+
+        .player-controls button:hover {
+            color: #b07c6a;
+            background: rgba(176, 124, 106, 0.12);
+            transform: scale(1.05);
+        }
+
+        .player-controls button:active {
+            transform: scale(0.92);
+        }
+
+        .player-controls .btn-prev svg,
+        .player-controls .btn-next svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .player-controls .btn-play svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .player-controls .btn-play {
+            width: 48px;
+            height: 48px;
+            font-size: 24px;
+            background: rgba(176, 124, 106, 0.15);
+            border: 1.5px solid rgba(176, 124, 106, 0.2);
+            color: #b07c6a;
+        }
+
+        .player-controls .btn-play:hover {
+            background: rgba(176, 124, 106, 0.25);
+            border-color: #b07c6a;
+            transform: scale(1.06);
+        }
+
+        .player-controls .btn-play.playing {
+            background: rgba(176, 124, 106, 0.2);
+            border-color: #b07c6a;
+        }
+
+        .player-controls .btn-play.playing:hover {
+            background: rgba(176, 124, 106, 0.3);
+        }
+
+        /* ===== HERO SUB ===== */
         .hero-sub {
             margin-top: 10px;
             font-size: 18px;
@@ -1293,16 +1366,40 @@
             .final-message .big-text { font-size: 28px; }
             .hero-greeting { font-size: clamp(20px, 4vw, 28px); }
             .hero-sub { font-size: 16px; }
-            .music-btn { 
-                padding: 10px 16px; 
-                font-size: 12px;
+
+            .player {
+                padding: 14px 16px 16px;
                 min-width: 160px;
+                max-width: 280px;
             }
-            .music-btn .label {
-                font-size: 11px;
+            .player .track-name {
+                font-size: 14px;
+                min-height: 24px;
             }
-            .music-btn .icon {
-                font-size: 17px;
+            .player .track-name .artist {
+                font-size: 12px;
+            }
+            .player-controls {
+                gap: 12px;
+            }
+            .player-controls button {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+            .player-controls .btn-play {
+                width: 42px;
+                height: 42px;
+                font-size: 20px;
+            }
+            .player-controls .btn-prev svg,
+            .player-controls .btn-next svg {
+                width: 15px;
+                height: 15px;
+            }
+            .player-controls .btn-play svg {
+                width: 19px;
+                height: 19px;
             }
 
             .timeline-zigzag::before { left: 20px; }
@@ -1384,11 +1481,22 @@
 
         <div class="hero-greeting">Дорогие родные и друзья!</div>
 
-        <div class="music-btn-wrapper">
-            <button class="music-btn muted" id="musicBtn">
-                <span class="icon">♫</span>
-                <span class="label">Включить музыку</span>
-            </button>
+        <!-- ===== ПЛЕЕР ===== -->
+        <div class="player-wrapper">
+            <div class="player">
+                <div class="track-name empty" id="trackName">🎵 Выберите трек</div>
+                <div class="player-controls">
+                    <button class="btn-prev" id="prevBtn" aria-label="Предыдущий">
+                        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                    </button>
+                    <button class="btn-play" id="playBtn" aria-label="Воспроизвести">
+                        <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <button class="btn-next" id="nextBtn" aria-label="Следующий">
+                        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="divider" style="margin-top:6px;">
@@ -1816,19 +1924,18 @@
         </svg>
     </button>
 
-    <audio id="bgMusic" loop preload="none">
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
         // ============================================================
-        //  МУЗЫКА С РАНДОМНЫМИ ПЕСНЯМИ
+        //  МИНИМАЛИСТИЧНЫЙ ПЛЕЕР
         // ============================================================
-        const musicBtn = document.getElementById('musicBtn');
-        const musicIcon = musicBtn.querySelector('.icon');
-        const musicLabel = musicBtn.querySelector('.label');
+        const trackName = document.getElementById('trackName');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
         let isPlaying = false;
-        let currentSongIndex = -1;
+        let currentIndex = 0;
         let audio = null;
 
         // СПИСОК ПЕСЕН
@@ -1850,90 +1957,115 @@
             }
         ];
 
-        // Функция для получения случайной песни (не той же, что сейчас)
-        function getRandomSong() {
-            if (songs.length === 0) return null;
-            if (songs.length === 1) return songs[0];
-            
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * songs.length);
-            } while (randomIndex === currentSongIndex && songs.length > 1);
-            
-            return songs[randomIndex];
-        }
-
-        // Обновление текста кнопки с названием песни
-        function updateMusicButton(song) {
+        // Обновление отображения названия трека
+        function updateTrackDisplay(index) {
+            const song = songs[index];
             if (song) {
-                musicLabel.textContent = `${song.title} — ${song.artist}`;
-                musicBtn.classList.remove('muted');
-                musicIcon.textContent = '♩';
+                trackName.innerHTML = `${song.title} <span class="artist">— ${song.artist}</span>`;
+                trackName.classList.remove('empty');
             } else {
-                musicLabel.textContent = 'Включить музыку';
-                musicBtn.classList.add('muted');
-                musicIcon.textContent = '♫';
+                trackName.textContent = '🎵 Выберите трек';
+                trackName.classList.add('empty');
             }
         }
 
-        // Воспроизведение случайной песни
-        function playRandomSong() {
-            const song = getRandomSong();
-            if (!song) {
-                alert('Нет доступных песен. Добавьте файлы в папку.');
-                return;
+        // Обновление иконки Play/Pause
+        function updatePlayButton(playing) {
+            if (playing) {
+                playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                playBtn.classList.add('playing');
+            } else {
+                playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                playBtn.classList.remove('playing');
             }
-            
-            currentSongIndex = songs.indexOf(song);
-            
-            // Если audio уже существует, останавливаем
+        }
+
+        // Загрузка и воспроизведение трека
+        function loadTrack(index, autoPlay = true) {
+            const song = songs[index];
+            if (!song) return;
+
+            // Останавливаем текущий аудио
             if (audio) {
                 audio.pause();
                 audio = null;
             }
-            
+
             audio = new Audio(song.file);
             audio.loop = false;
-            
-            // Обновляем кнопку
-            updateMusicButton(song);
-            isPlaying = true;
-            
-            // Воспроизводим
-            audio.play().catch(() => {
-                alert(`Не удалось загрузить песню "${song.title}". Проверьте файл ${song.file}`);
-                musicLabel.textContent = 'Включить музыку';
-                musicBtn.classList.add('muted');
-                musicIcon.textContent = '♫';
+
+            updateTrackDisplay(index);
+
+            if (autoPlay) {
+                audio.play()
+                    .then(() => {
+                        isPlaying = true;
+                        updatePlayButton(true);
+                    })
+                    .catch(() => {
+                        alert(`Не удалось загрузить "${song.title}". Проверьте файл ${song.file}`);
+                        isPlaying = false;
+                        updatePlayButton(false);
+                        audio = null;
+                    });
+            } else {
                 isPlaying = false;
-                audio = null;
-            });
-            
-            // Когда песня заканчивается — автоматически включаем следующую
+                updatePlayButton(false);
+            }
+
+            // Когда песня закончилась — автоматически следующая
             audio.addEventListener('ended', function() {
                 if (isPlaying) {
-                    playRandomSong(); // автоматически следующая
+                    nextTrack();
                 }
             });
         }
 
-        // Клик по кнопке
-        musicBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            if (isPlaying) {
-                // Останавливаем
-                if (audio) {
-                    audio.pause();
-                    audio = null;
-                }
-                isPlaying = false;
-                updateMusicButton(null);
-            } else {
-                // Включаем случайную песню
-                playRandomSong();
+        // Воспроизведение/пауза
+        function togglePlay() {
+            if (!audio) {
+                // Если ничего не загружено — начинаем с первого трека
+                currentIndex = 0;
+                loadTrack(currentIndex, true);
+                return;
             }
-        });
+
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                updatePlayButton(false);
+            } else {
+                audio.play()
+                    .then(() => {
+                        isPlaying = true;
+                        updatePlayButton(true);
+                    })
+                    .catch(() => {
+                        alert('Не удалось воспроизвести песню');
+                    });
+            }
+        }
+
+        // Следующий трек
+        function nextTrack() {
+            currentIndex = (currentIndex + 1) % songs.length;
+            loadTrack(currentIndex, true);
+        }
+
+        // Предыдущий трек
+        function prevTrack() {
+            currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+            loadTrack(currentIndex, true);
+        }
+
+        // Обработчики кнопок
+        playBtn.addEventListener('click', togglePlay);
+        nextBtn.addEventListener('click', nextTrack);
+        prevBtn.addEventListener('click', prevTrack);
+
+        // Инициализация
+        updateTrackDisplay(0);
+        updatePlayButton(false);
 
 
         // ---- ТАЙМЕР ----
