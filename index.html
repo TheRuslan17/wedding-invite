@@ -82,11 +82,6 @@
             50% { box-shadow: 0 0 40px rgba(176, 124, 106, 0.2); }
         }
 
-        @keyframes sunSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         /* Анимация появления при скролле */
         .reveal {
             opacity: 0;
@@ -294,35 +289,44 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(12px);
             border: 2px solid #dccfc7;
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 60px;
             font-family: 'Inter', sans-serif;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 500;
             color: #3d2e2a;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             will-change: transform;
+            max-width: 95%;
+            min-width: 200px;
         }
         .music-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.03);
             box-shadow: 0 8px 30px rgba(176, 124, 106, 0.15);
         }
         .music-btn:active {
             transform: scale(0.95);
         }
         .music-btn .icon {
-            font-size: 22px;
+            font-size: 20px;
             color: #b07c6a;
             transition: transform 0.3s ease;
+            flex-shrink: 0;
         }
         .music-btn:hover .icon {
             transform: rotate(15deg);
         }
         .music-btn.muted .icon {
             color: #b09a8f;
+        }
+        .music-btn .label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 13px;
         }
 
         .hero-sub {
@@ -1289,7 +1293,17 @@
             .final-message .big-text { font-size: 28px; }
             .hero-greeting { font-size: clamp(20px, 4vw, 28px); }
             .hero-sub { font-size: 16px; }
-            .music-btn { padding: 10px 20px; font-size: 14px; }
+            .music-btn { 
+                padding: 10px 16px; 
+                font-size: 12px;
+                min-width: 160px;
+            }
+            .music-btn .label {
+                font-size: 11px;
+            }
+            .music-btn .icon {
+                font-size: 17px;
+            }
 
             .timeline-zigzag::before { left: 20px; }
             .zigzag-item {
@@ -1371,7 +1385,7 @@
         <div class="hero-greeting">Дорогие родные и друзья!</div>
 
         <div class="music-btn-wrapper">
-            <button class="music-btn" id="musicBtn">
+            <button class="music-btn muted" id="musicBtn">
                 <span class="icon">♫</span>
                 <span class="label">Включить музыку</span>
             </button>
@@ -1807,34 +1821,120 @@
     </audio>
 
     <script>
-        // ---- МУЗЫКА ----
-        const audio = document.getElementById('bgMusic');
+        // ============================================================
+        //  МУЗЫКА С РАНДОМНЫМИ ПЕСНЯМИ
+        // ============================================================
         const musicBtn = document.getElementById('musicBtn');
         const musicIcon = musicBtn.querySelector('.icon');
         const musicLabel = musicBtn.querySelector('.label');
         let isPlaying = false;
+        let currentSongIndex = -1;
+        let audio = null;
 
-        musicBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (isPlaying) {
-                audio.pause();
-                musicIcon.textContent = '♫';
+        // СПИСОК ПЕСЕН
+        const songs = [
+            {
+                file: 'song1.mp3',
+                title: 'A Thousand Years (Part 2)',
+                artist: 'Christina Perri feat. Steve Kazee'
+            },
+            {
+                file: 'song2.mp3',
+                title: 'Perfect',
+                artist: 'Ed Sheeran'
+            },
+            {
+                file: 'song3.mp3',
+                title: 'All of Me',
+                artist: 'John Legend'
+            }
+        ];
+
+        // Функция для получения случайной песни (не той же, что сейчас)
+        function getRandomSong() {
+            if (songs.length === 0) return null;
+            if (songs.length === 1) return songs[0];
+            
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * songs.length);
+            } while (randomIndex === currentSongIndex && songs.length > 1);
+            
+            return songs[randomIndex];
+        }
+
+        // Обновление текста кнопки с названием песни
+        function updateMusicButton(song) {
+            if (song) {
+                musicLabel.textContent = `${song.title} — ${song.artist}`;
+                musicBtn.classList.remove('muted');
+                musicIcon.textContent = '♩';
+            } else {
                 musicLabel.textContent = 'Включить музыку';
                 musicBtn.classList.add('muted');
+                musicIcon.textContent = '♫';
+            }
+        }
+
+        // Воспроизведение случайной песни
+        function playRandomSong() {
+            const song = getRandomSong();
+            if (!song) {
+                alert('Нет доступных песен. Добавьте файлы в папку.');
+                return;
+            }
+            
+            currentSongIndex = songs.indexOf(song);
+            
+            // Если audio уже существует, останавливаем
+            if (audio) {
+                audio.pause();
+                audio = null;
+            }
+            
+            audio = new Audio(song.file);
+            audio.loop = false;
+            
+            // Обновляем кнопку
+            updateMusicButton(song);
+            isPlaying = true;
+            
+            // Воспроизводим
+            audio.play().catch(() => {
+                alert(`Не удалось загрузить песню "${song.title}". Проверьте файл ${song.file}`);
+                musicLabel.textContent = 'Включить музыку';
+                musicBtn.classList.add('muted');
+                musicIcon.textContent = '♫';
                 isPlaying = false;
+                audio = null;
+            });
+            
+            // Когда песня заканчивается — автоматически включаем следующую
+            audio.addEventListener('ended', function() {
+                if (isPlaying) {
+                    playRandomSong(); // автоматически следующая
+                }
+            });
+        }
+
+        // Клик по кнопке
+        musicBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            if (isPlaying) {
+                // Останавливаем
+                if (audio) {
+                    audio.pause();
+                    audio = null;
+                }
+                isPlaying = false;
+                updateMusicButton(null);
             } else {
-                audio.play()
-                    .then(() => {
-                        musicIcon.textContent = '♩';
-                        musicLabel.textContent = 'Выключить музыку';
-                        musicBtn.classList.remove('muted');
-                        isPlaying = true;
-                    })
-                    .catch(() => {
-                        alert('Не удалось запустить музыку. Проверьте файл song.mp3');
-                    });
+                // Включаем случайную песню
+                playRandomSong();
             }
         });
+
 
         // ---- ТАЙМЕР ----
         const timerSection = document.getElementById('timerSection');
@@ -1922,47 +2022,43 @@
 
         startAutoPlay();
 
-// ---- ПОГОДА (Яндекс Погода - статические данные) ----
-const weatherContent = document.getElementById('weatherContent');
-const weatherUpdateTime = document.getElementById('weatherUpdateTime');
+        // ---- ПОГОДА (статические данные) ----
+        const weatherContent = document.getElementById('weatherContent');
+        const weatherUpdateTime = document.getElementById('weatherUpdateTime');
 
-// Данные на 29 августа 2026, Невинномысск (из Яндекс Погоды)
-function displayStaticWeather() {
-    const weatherData = {
-        temp: 28,
-        feelsLike: 28,
-        description: 'Ясно, солнечно',
-        icon: '01d', // ☀️
-        windSpeed: 19, // 5.3 м/с * 3.6 ≈ 19 км/ч
-        humidity: 55,
-        pressure: 728,
-        date: '29 августа 2026'
-    };
+        function displayStaticWeather() {
+            const weatherData = {
+                temp: 28,
+                feelsLike: 28,
+                description: 'Ясно, солнечно',
+                windSpeed: 19,
+                humidity: 55,
+                pressure: 728,
+                date: '29 августа 2026'
+            };
 
-    const emoji = '☀️';
-    
-    weatherContent.innerHTML = `
-        <span class="weather-icon">${emoji}</span>
-        <div class="weather-temp">${weatherData.temp}<sup>°C</sup></div>
-        <div class="weather-desc">${weatherData.description}</div>
-        <div class="weather-feels-like">Ощущается как ${weatherData.feelsLike}°C</div>
-        <div class="weather-details">
-            <span>💨 <span class="value">${weatherData.windSpeed}</span> км/ч</span>
-            <span>💧 <span class="value">${weatherData.humidity}</span>%</span>
-            <span>📊 <span class="value">${weatherData.pressure}</span> мм рт.ст.</span>
-        </div>
-        <div style="margin-top:8px;font-size:12px;color:#b09a8f;">
-            📅 ${weatherData.date}, ~12:00
-        </div>
-        <div class="weather-source">☀️ По данным Яндекс Погоды</div>
-    `;
+            const emoji = '☀️';
+            
+            weatherContent.innerHTML = `
+                <span class="weather-icon">${emoji}</span>
+                <div class="weather-temp">${weatherData.temp}<sup>°C</sup></div>
+                <div class="weather-desc">${weatherData.description}</div>
+                <div class="weather-feels-like">Ощущается как ${weatherData.feelsLike}°C</div>
+                <div class="weather-details">
+                    <span>💨 <span class="value">${weatherData.windSpeed}</span> км/ч</span>
+                    <span>💧 <span class="value">${weatherData.humidity}</span>%</span>
+                    <span>📊 <span class="value">${weatherData.pressure}</span> мм рт.ст.</span>
+                </div>
+                <div style="margin-top:8px;font-size:12px;color:#b09a8f;">
+                    📅 ${weatherData.date}, ~12:00
+                </div>
+                <div class="weather-source">☀️ По данным Яндекс Погоды</div>
+            `;
 
-    // Убираем время обновления
-    weatherUpdateTime.textContent = '';
-}
+            weatherUpdateTime.textContent = '';
+        }
 
-// Показываем статические данные сразу
-displayStaticWeather();
+        displayStaticWeather();
 
         // ---- ФОРМА С КОНФЕТТИ ----
         const form = document.getElementById('rsvpForm');
