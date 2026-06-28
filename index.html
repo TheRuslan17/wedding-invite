@@ -348,15 +348,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(4px);
+            width: 48px;
+            height: 48px;
+            background: rgba(176, 124, 106, 0.15);
+            border: 1.5px solid rgba(176, 124, 106, 0.2);
+            color: #b07c6a;
         }
 
         .player-controls button:hover {
-            color: #b07c6a;
-            background: rgba(176, 124, 106, 0.12);
+            background: rgba(176, 124, 106, 0.25);
+            border-color: #b07c6a;
             transform: scale(1.05);
         }
 
@@ -364,41 +365,15 @@
             transform: scale(0.92);
         }
 
-        .player-controls .btn-prev svg,
-        .player-controls .btn-next svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
-
         .player-controls .btn-play svg {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             fill: currentColor;
-        }
-
-        .player-controls .btn-play {
-            width: 48px;
-            height: 48px;
-            font-size: 24px;
-            background: rgba(176, 124, 106, 0.15);
-            border: 1.5px solid rgba(176, 124, 106, 0.2);
-            color: #b07c6a;
-        }
-
-        .player-controls .btn-play:hover {
-            background: rgba(176, 124, 106, 0.25);
-            border-color: #b07c6a;
-            transform: scale(1.06);
         }
 
         .player-controls .btn-play.playing {
-            background: rgba(176, 124, 106, 0.2);
+            background: rgba(176, 124, 106, 0.25);
             border-color: #b07c6a;
-        }
-
-        .player-controls .btn-play.playing:hover {
-            background: rgba(176, 124, 106, 0.3);
         }
 
         /* ===== HERO SUB ===== */
@@ -1379,27 +1354,13 @@
             .player .track-name .artist {
                 font-size: 12px;
             }
-            .player-controls {
-                gap: 12px;
-            }
             .player-controls button {
-                width: 34px;
-                height: 34px;
-                font-size: 16px;
-            }
-            .player-controls .btn-play {
                 width: 42px;
                 height: 42px;
-                font-size: 20px;
-            }
-            .player-controls .btn-prev svg,
-            .player-controls .btn-next svg {
-                width: 15px;
-                height: 15px;
             }
             .player-controls .btn-play svg {
-                width: 19px;
-                height: 19px;
+                width: 20px;
+                height: 20px;
             }
 
             .timeline-zigzag::before { left: 20px; }
@@ -1484,16 +1445,10 @@
         <!-- ===== ПЛЕЕР ===== -->
         <div class="player-wrapper">
             <div class="player">
-                <div class="track-name empty" id="trackName">🎵 Выберите трек</div>
+                <div class="track-name empty" id="trackName">🎵 Включить музыку</div>
                 <div class="player-controls">
-                    <button class="btn-prev" id="prevBtn" aria-label="Предыдущий">
-                        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-                    </button>
                     <button class="btn-play" id="playBtn" aria-label="Воспроизвести">
                         <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <button class="btn-next" id="nextBtn" aria-label="Следующий">
-                        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                     </button>
                 </div>
             </div>
@@ -1926,105 +1881,29 @@
 
     <script>
         // ============================================================
-        //  МИНИМАЛИСТИЧНЫЙ ПЛЕЕР (ИСПРАВЛЕННЫЙ)
+        //  ПЛЕЕР — ОДНА ПЕСНЯ
         // ============================================================
         const trackName = document.getElementById('trackName');
         const playBtn = document.getElementById('playBtn');
         const playIcon = document.getElementById('playIcon');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
 
         let isPlaying = false;
-        let currentIndex = 0;
         let audio = null;
 
-        // СПИСОК ПЕСЕН
-        const songs = [
-            {
-                file: 'song1.mp3',
-                title: 'A Thousand Years (Part 2)',
-                artist: 'Christina Perri feat. Steve Kazee'
-            },
-            {
-                file: 'song2.mp3',
-                title: 'Perfect',
-                artist: 'Ed Sheeran'
-            },
-            {
-                file: 'song3.mp3',
-                title: 'All of Me',
-                artist: 'John Legend'
-            }
-        ];
+        // ИНФОРМАЦИЯ О ПЕСНЕ
+        const song = {
+            file: 'song.mp3',
+            title: 'Perfect',
+            artist: 'Ed Sheeran'
+        };
 
-        // ===== ФУНКЦИЯ ОСТАНОВКИ АУДИО (полная очистка) =====
-        function stopAudio() {
-            if (audio) {
-                audio.pause();
-                audio.currentTime = 0;
-                audio.src = '';  // Очищаем источник
-                audio.load();    // Сбрасываем
-                audio = null;
-            }
-            isPlaying = false;
-            updatePlayButton(false);
-        }
-
-        // ===== ЗАГРУЗКА НОВОГО ТРЕКА =====
-        function loadTrack(index, autoPlay = true) {
-            // 1. ПОЛНОСТЬЮ ОСТАНАВЛИВАЕМ СТАРЫЙ ТРЕК
-            stopAudio();
-
-            const song = songs[index];
-            if (!song) return;
-
-            // 2. СОЗДАЁМ НОВЫЙ АУДИО-ОБЪЕКТ
-            audio = new Audio();
-            audio.src = song.file;
-            audio.loop = false;
-            audio.preload = 'auto';
-
-            // 3. Обновляем название трека
+        // Обновление отображения
+        function updateTrackDisplay() {
             trackName.innerHTML = `${song.title} <span class="artist">— ${song.artist}</span>`;
             trackName.classList.remove('empty');
-
-            // 4. Если нужно — воспроизводим
-            if (autoPlay) {
-                audio.play()
-                    .then(() => {
-                        isPlaying = true;
-                        updatePlayButton(true);
-                    })
-                    .catch((err) => {
-                        console.warn('Ошибка воспроизведения:', err);
-                        alert(`Не удалось загрузить "${song.title}". Проверьте файл ${song.file}`);
-                        isPlaying = false;
-                        updatePlayButton(false);
-                        audio = null;
-                    });
-            } else {
-                isPlaying = false;
-                updatePlayButton(false);
-            }
-
-            // 5. Когда песня закончилась — автоматически следующая
-            audio.addEventListener('ended', function() {
-                if (isPlaying) {
-                    nextTrack();
-                }
-            });
-
-            // 6. Обработка ошибок загрузки
-            audio.addEventListener('error', function(e) {
-                console.warn('Ошибка аудио:', e);
-                alert(`Не удалось загрузить "${song.title}". Проверьте файл ${song.file}`);
-                stopAudio();
-                trackName.textContent = '🎵 Ошибка загрузки';
-                trackName.classList.add('empty');
-            });
         }
 
-        // ===== ОБНОВЛЕНИЕ ИКОНКИ PLAY =====
+        // Обновление иконки Play/Pause
         function updatePlayButton(playing) {
             if (playing) {
                 playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
@@ -2035,52 +1914,67 @@
             }
         }
 
-        // ===== ВОСПРОИЗВЕДЕНИЕ/ПАУЗА =====
-        function togglePlay() {
+        // Создание аудио и воспроизведение
+        function playSong() {
+            // Если аудио уже существует — переиспользуем
             if (!audio) {
-                // Если ничего не загружено — начинаем с первого трека
-                currentIndex = 0;
-                loadTrack(currentIndex, true);
-                return;
+                audio = new Audio();
+                audio.src = song.file;
+                audio.loop = false;
+                audio.preload = 'auto';
+
+                // Когда песня закончилась — сбрасываем состояние
+                audio.addEventListener('ended', function() {
+                    isPlaying = false;
+                    updatePlayButton(false);
+                    audio.currentTime = 0;
+                });
+
+                // Обработка ошибок
+                audio.addEventListener('error', function() {
+                    alert(`Не удалось загрузить "${song.title}". Проверьте файл ${song.file}`);
+                    isPlaying = false;
+                    updatePlayButton(false);
+                    audio = null;
+                });
             }
 
-            if (isPlaying) {
+            audio.play()
+                .then(() => {
+                    isPlaying = true;
+                    updatePlayButton(true);
+                    updateTrackDisplay();
+                })
+                .catch(() => {
+                    alert(`Не удалось воспроизвести "${song.title}". Проверьте файл ${song.file}`);
+                    isPlaying = false;
+                    updatePlayButton(false);
+                });
+        }
+
+        // Пауза
+        function pauseSong() {
+            if (audio) {
                 audio.pause();
                 isPlaying = false;
                 updatePlayButton(false);
-            } else {
-                audio.play()
-                    .then(() => {
-                        isPlaying = true;
-                        updatePlayButton(true);
-                    })
-                    .catch(() => {
-                        alert('Не удалось воспроизвести песню');
-                        isPlaying = false;
-                        updatePlayButton(false);
-                    });
             }
         }
 
-        // ===== СЛЕДУЮЩИЙ ТРЕК =====
-        function nextTrack() {
-            currentIndex = (currentIndex + 1) % songs.length;
-            loadTrack(currentIndex, true);
+        // Переключение Play/Pause
+        function togglePlay() {
+            if (isPlaying) {
+                pauseSong();
+            } else {
+                playSong();
+            }
         }
 
-        // ===== ПРЕДЫДУЩИЙ ТРЕК =====
-        function prevTrack() {
-            currentIndex = (currentIndex - 1 + songs.length) % songs.length;
-            loadTrack(currentIndex, true);
-        }
-
-        // ===== ОБРАБОТЧИКИ КНОПОК =====
+        // Обработчик кнопки
         playBtn.addEventListener('click', togglePlay);
-        nextBtn.addEventListener('click', nextTrack);
-        prevBtn.addEventListener('click', prevTrack);
 
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
-        trackName.textContent = '🎵 Выберите трек';
+        // Инициализация
+        trackName.textContent = '🎵 Включить музыку';
         trackName.classList.add('empty');
         updatePlayButton(false);
 
@@ -2171,7 +2065,7 @@
 
         startAutoPlay();
 
-        // ---- ПОГОДА (статические данные) ----
+        // ---- ПОГОДА ----
         const weatherContent = document.getElementById('weatherContent');
         const weatherUpdateTime = document.getElementById('weatherUpdateTime');
 
