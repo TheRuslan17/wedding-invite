@@ -1926,7 +1926,7 @@
 
     <script>
         // ============================================================
-        //  МИНИМАЛИСТИЧНЫЙ ПЛЕЕР
+        //  МИНИМАЛИСТИЧНЫЙ ПЛЕЕР (ИСПРАВЛЕННЫЙ)
         // ============================================================
         const trackName = document.getElementById('trackName');
         const playBtn = document.getElementById('playBtn');
@@ -1957,52 +1957,46 @@
             }
         ];
 
-        // Обновление отображения названия трека
-        function updateTrackDisplay(index) {
-            const song = songs[index];
-            if (song) {
-                trackName.innerHTML = `${song.title} <span class="artist">— ${song.artist}</span>`;
-                trackName.classList.remove('empty');
-            } else {
-                trackName.textContent = '🎵 Выберите трек';
-                trackName.classList.add('empty');
+        // ===== ФУНКЦИЯ ОСТАНОВКИ АУДИО (полная очистка) =====
+        function stopAudio() {
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+                audio.src = '';  // Очищаем источник
+                audio.load();    // Сбрасываем
+                audio = null;
             }
+            isPlaying = false;
+            updatePlayButton(false);
         }
 
-        // Обновление иконки Play/Pause
-        function updatePlayButton(playing) {
-            if (playing) {
-                playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-                playBtn.classList.add('playing');
-            } else {
-                playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-                playBtn.classList.remove('playing');
-            }
-        }
-
-        // Загрузка и воспроизведение трека
+        // ===== ЗАГРУЗКА НОВОГО ТРЕКА =====
         function loadTrack(index, autoPlay = true) {
+            // 1. ПОЛНОСТЬЮ ОСТАНАВЛИВАЕМ СТАРЫЙ ТРЕК
+            stopAudio();
+
             const song = songs[index];
             if (!song) return;
 
-            // Останавливаем текущий аудио
-            if (audio) {
-                audio.pause();
-                audio = null;
-            }
-
-            audio = new Audio(song.file);
+            // 2. СОЗДАЁМ НОВЫЙ АУДИО-ОБЪЕКТ
+            audio = new Audio();
+            audio.src = song.file;
             audio.loop = false;
+            audio.preload = 'auto';
 
-            updateTrackDisplay(index);
+            // 3. Обновляем название трека
+            trackName.innerHTML = `${song.title} <span class="artist">— ${song.artist}</span>`;
+            trackName.classList.remove('empty');
 
+            // 4. Если нужно — воспроизводим
             if (autoPlay) {
                 audio.play()
                     .then(() => {
                         isPlaying = true;
                         updatePlayButton(true);
                     })
-                    .catch(() => {
+                    .catch((err) => {
+                        console.warn('Ошибка воспроизведения:', err);
                         alert(`Не удалось загрузить "${song.title}". Проверьте файл ${song.file}`);
                         isPlaying = false;
                         updatePlayButton(false);
@@ -2013,15 +2007,35 @@
                 updatePlayButton(false);
             }
 
-            // Когда песня закончилась — автоматически следующая
+            // 5. Когда песня закончилась — автоматически следующая
             audio.addEventListener('ended', function() {
                 if (isPlaying) {
                     nextTrack();
                 }
             });
+
+            // 6. Обработка ошибок загрузки
+            audio.addEventListener('error', function(e) {
+                console.warn('Ошибка аудио:', e);
+                alert(`Не удалось загрузить "${song.title}". Проверьте файл ${song.file}`);
+                stopAudio();
+                trackName.textContent = '🎵 Ошибка загрузки';
+                trackName.classList.add('empty');
+            });
         }
 
-        // Воспроизведение/пауза
+        // ===== ОБНОВЛЕНИЕ ИКОНКИ PLAY =====
+        function updatePlayButton(playing) {
+            if (playing) {
+                playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                playBtn.classList.add('playing');
+            } else {
+                playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                playBtn.classList.remove('playing');
+            }
+        }
+
+        // ===== ВОСПРОИЗВЕДЕНИЕ/ПАУЗА =====
         function togglePlay() {
             if (!audio) {
                 // Если ничего не загружено — начинаем с первого трека
@@ -2042,29 +2056,32 @@
                     })
                     .catch(() => {
                         alert('Не удалось воспроизвести песню');
+                        isPlaying = false;
+                        updatePlayButton(false);
                     });
             }
         }
 
-        // Следующий трек
+        // ===== СЛЕДУЮЩИЙ ТРЕК =====
         function nextTrack() {
             currentIndex = (currentIndex + 1) % songs.length;
             loadTrack(currentIndex, true);
         }
 
-        // Предыдущий трек
+        // ===== ПРЕДЫДУЩИЙ ТРЕК =====
         function prevTrack() {
             currentIndex = (currentIndex - 1 + songs.length) % songs.length;
             loadTrack(currentIndex, true);
         }
 
-        // Обработчики кнопок
+        // ===== ОБРАБОТЧИКИ КНОПОК =====
         playBtn.addEventListener('click', togglePlay);
         nextBtn.addEventListener('click', nextTrack);
         prevBtn.addEventListener('click', prevTrack);
 
-        // Инициализация
-        updateTrackDisplay(0);
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        trackName.textContent = '🎵 Выберите трек';
+        trackName.classList.add('empty');
         updatePlayButton(false);
 
 
