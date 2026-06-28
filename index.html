@@ -148,6 +148,11 @@
             to { transform: rotate(360deg) scale(1.1); }
         }
 
+        @keyframes markerPulse {
+            0%, 100% { box-shadow: 0 0 0 2px #b07c6a, 0 2px 12px rgba(176, 124, 106, 0.25); }
+            50% { box-shadow: 0 0 0 6px rgba(176, 124, 106, 0.15), 0 4px 20px rgba(176, 124, 106, 0.3); }
+        }
+
         /* ===== АНИМАЦИЯ ПРИ СКРОЛЛЕ ===== */
         .reveal {
             opacity: 0;
@@ -641,7 +646,7 @@
             will-change: transform;
         }
 
-        /* ===== ИСТОРИЯ ===== */
+        /* ===== УЛУЧШЕННАЯ ИСТОРИЯ ===== */
         .story-timeline {
             max-width: 700px;
             margin: 0 auto;
@@ -654,10 +659,11 @@
             left: 50%;
             top: 0;
             bottom: 0;
-            width: 2px;
+            width: 3px;
             background: linear-gradient(180deg, #dccfc7, #b07c6a, #dccfc7);
             transform: translateX(-50%);
-            opacity: 0.4;
+            border-radius: 4px;
+            opacity: 0.5;
         }
 
         .story-item {
@@ -672,52 +678,76 @@
         .story-item:nth-child(even) { flex-direction: row-reverse; }
 
         .story-item .story-content {
-            width: 42%;
-            background: rgba(255, 255, 255, 0.4);
+            width: 44%;
+            background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(16px);
-            padding: 20px 24px;
-            border-radius: 16px;
-            border: 2px solid #dccfc7;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            padding: 22px 26px;
+            border-radius: 18px;
+            border: 2px solid rgba(220, 207, 199, 0.5);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.04);
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             z-index: 2;
             will-change: transform;
         }
         .story-item .story-content:hover {
-            transform: translateY(-5px) scale(1.02);
+            transform: translateY(-6px) scale(1.02);
             box-shadow: 0 12px 40px rgba(176, 124, 106, 0.12);
             border-color: #b07c6a;
         }
 
-        .story-item .story-year {
+        .story-item .story-number {
+            position: absolute;
+            top: -8px;
+            right: -8px;
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(176, 124, 106, 0.2);
+            letter-spacing: 1px;
+            background: rgba(255,255,255,0.6);
+            padding: 2px 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(220, 207, 199, 0.3);
+        }
+
+        .story-item .story-year {
+            font-size: 22px;
             font-weight: 700;
             color: #b07c6a;
-            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
-        .story-item .story-year .icon { 
-            font-size: 24px;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform;
+
+        .story-item .story-year .icon {
+            font-size: 26px;
+            background: rgba(176, 124, 106, 0.1);
+            padding: 6px;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s ease;
         }
         .story-item .story-content:hover .story-year .icon {
-            transform: scale(1.2) rotate(10deg);
+            transform: scale(1.15) rotate(10deg);
         }
+
         .story-item .story-text {
             font-size: 15px;
-            color: #3d2e2a;
-            font-weight: 300;
+            color: #5a423c;
             line-height: 1.7;
             margin-top: 6px;
         }
         .story-item .story-text strong {
-            font-weight: 600;
-            color: #b07c6a;
+            font-size: 17px;
+            color: #3d2e2a;
+            display: block;
+            margin-bottom: 2px;
         }
 
         .story-item .story-marker {
@@ -726,15 +756,113 @@
             background: #b07c6a;
             border-radius: 50%;
             border: 3px solid white;
-            box-shadow: 0 0 0 2px #b07c6a, 0 2px 12px rgba(176, 124, 106, 0.2);
+            box-shadow: 0 0 0 2px #b07c6a, 0 2px 12px rgba(176, 124, 106, 0.25);
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.4s ease;
             will-change: transform;
+            animation: markerPulse 2s ease-in-out infinite;
         }
         .story-item:hover .story-marker {
+            transform: translateX(-50%) scale(1.4);
+            box-shadow: 0 0 0 4px #b07c6a, 0 4px 20px rgba(176, 124, 106, 0.4);
+        }
+
+        /* ===== УЛУЧШЕННАЯ ПРОГРАММА ===== */
+        .timeline-zigzag {
+            max-width: 820px;
+            margin: 0 auto;
+            position: relative;
+            padding: 10px 0;
+        }
+        .timeline-zigzag::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #dccfc7, #b07c6a, #dccfc7);
+            transform: translateX(-50%);
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        .zigzag-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            position: relative;
+            width: 100%;
+        }
+        .zigzag-item:nth-child(odd) { flex-direction: row; }
+        .zigzag-item:nth-child(even) { flex-direction: row-reverse; }
+
+        .zigzag-item .event {
+            width: 42%;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(12px);
+            padding: 16px 22px;
+            border-radius: 16px;
+            border: 2px solid rgba(220, 207, 199, 0.5);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            z-index: 2;
+            will-change: transform;
+            text-align: left;
+        }
+        .zigzag-item .event:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(176, 124, 106, 0.12);
+            border-color: #b07c6a;
+        }
+
+        .zigzag-item .event .event-icon {
+            font-size: 26px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .zigzag-item .event .event-time {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #b07c6a;
+            letter-spacing: 0.5px;
+        }
+
+        .zigzag-item .event .event-title {
+            font-weight: 600;
+            font-size: 17px;
+            color: #3d2e2a;
+            margin: 2px 0;
+        }
+
+        .zigzag-item .event .event-place {
+            font-size: 13px;
+            color: #9a847a;
+        }
+
+        .zigzag-item .marker {
+            width: 16px;
+            height: 16px;
+            background: #b07c6a;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #b07c6a, 0 2px 12px rgba(176, 124, 106, 0.25);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            transition: all 0.4s ease;
+            will-change: transform;
+            animation: markerPulse 2s ease-in-out infinite;
+        }
+        .zigzag-item:hover .marker {
             transform: translateX(-50%) scale(1.4);
             box-shadow: 0 0 0 4px #b07c6a, 0 4px 20px rgba(176, 124, 106, 0.4);
         }
@@ -779,16 +907,16 @@
             gap: 30px;
         }
         .detail-card {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(16px);
             padding: 32px 20px;
-            border-radius: 16px;
+            border-radius: 18px;
             text-align: center;
             box-shadow: 0 4px 30px rgba(0,0,0,0.03);
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
-            border: 2px solid #dccfc7;
+            border: 2px solid rgba(220, 207, 199, 0.5);
             will-change: transform;
         }
         .detail-card:hover { 
@@ -882,103 +1010,6 @@
             border-color: #b07c6a;
         }
 
-        /* ===== ПРОГРАММА ===== */
-        .timeline-zigzag {
-            max-width: 820px;
-            margin: 0 auto;
-            position: relative;
-            padding: 10px 0;
-        }
-        .timeline-zigzag::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(180deg, #dccfc7, #b07c6a, #dccfc7);
-            transform: translateX(-50%);
-            border-radius: 2px;
-            opacity: 0.4;
-        }
-
-        .zigzag-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 0;
-            position: relative;
-            width: 100%;
-        }
-        .zigzag-item:nth-child(odd) { flex-direction: row; }
-        .zigzag-item:nth-child(even) { flex-direction: row-reverse; }
-
-        .zigzag-item .event {
-            width: 40%;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(12px);
-            padding: 12px 18px;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            z-index: 2;
-            border: 2px solid #dccfc7;
-            will-change: transform;
-        }
-        .zigzag-item .event:hover { 
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 8px 30px rgba(176, 124, 106, 0.1);
-            border-color: #b07c6a;
-        }
-        .zigzag-item .event .icon {
-            font-size: 22px;
-            margin-bottom: 2px;
-            display: block;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform;
-        }
-        .zigzag-item .event:hover .icon {
-            transform: scale(1.2) rotate(10deg);
-        }
-        .zigzag-item .event .time {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: #b07c6a;
-            letter-spacing: 0.5px;
-        }
-        .zigzag-item .event .title {
-            font-weight: 600;
-            font-size: 16px;
-            color: #3d2e2a;
-            margin: 0;
-        }
-        .zigzag-item .event .place {
-            font-size: 13px;
-            color: #7a6257;
-            font-weight: 300;
-        }
-
-        .zigzag-item .marker {
-            width: 16px;
-            height: 16px;
-            background: #b07c6a;
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 0 0 2px #b07c6a, 0 2px 12px rgba(176, 124, 106, 0.25);
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform;
-        }
-        .zigzag-item:hover .marker {
-            transform: translateX(-50%) scale(1.3);
-            box-shadow: 0 0 0 4px #b07c6a, 0 4px 20px rgba(176, 124, 106, 0.4);
-        }
-
         /* ===== КАРТА ===== */
         .map-container {
             border-radius: 20px;
@@ -1014,14 +1045,14 @@
             margin: 0 auto;
         }
         .contact-card {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(12px);
             padding: 24px 20px;
             border-radius: 16px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border: 2px solid #dccfc7;
+            border: 2px solid rgba(220, 207, 199, 0.5);
             will-change: transform;
         }
         .contact-card:hover { 
@@ -1390,6 +1421,42 @@
             will-change: transform;
         }
 
+        /* ===== БЛОК ПРО АЛКОГОЛЬ ===== */
+        .gift-note {
+            max-width: 550px;
+            margin: 16px auto 0;
+            padding: 18px 24px;
+            background: rgba(176, 124, 106, 0.08);
+            border: 2px solid rgba(176, 124, 106, 0.25);
+            border-radius: 16px;
+            text-align: center;
+            font-size: 17px;
+            color: #3d2e2a;
+            line-height: 1.6;
+            transition: all 0.4s ease;
+        }
+        .gift-note:hover {
+            background: rgba(176, 124, 106, 0.14);
+            border-color: #b07c6a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(176, 124, 106, 0.1);
+        }
+        .gift-note .heart-icon {
+            color: #e74c6f;
+            font-size: 20px;
+        }
+        .gift-note .highlight-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #b07c6a;
+            font-size: 19px;
+        }
+        .gift-note .small-note {
+            font-size: 14px;
+            color: #9a847a;
+            margin-top: 4px;
+        }
+
         /* ===== FOOTER ===== */
         .footer {
             text-align: center;
@@ -1424,7 +1491,6 @@
             color: #b07c6a;
         }
 
-        /* ===== НИЖНИЕ КНОПКИ В ЕДИНОМ СТИЛЕ ===== */
         .footer-links {
             display: flex;
             align-items: center;
@@ -1482,42 +1548,6 @@
             border-radius: 50%;
             background: #dccfc7;
             flex-shrink: 0;
-        }
-
-        /* ===== БЛОК ПРО АЛКОГОЛЬ (внутри RSVP) ===== */
-        .gift-note {
-            max-width: 550px;
-            margin: 16px auto 0;
-            padding: 18px 24px;
-            background: rgba(176, 124, 106, 0.08);
-            border: 2px solid rgba(176, 124, 106, 0.25);
-            border-radius: 16px;
-            text-align: center;
-            font-size: 17px;
-            color: #3d2e2a;
-            line-height: 1.6;
-            transition: all 0.4s ease;
-        }
-        .gift-note:hover {
-            background: rgba(176, 124, 106, 0.14);
-            border-color: #b07c6a;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(176, 124, 106, 0.1);
-        }
-        .gift-note .heart-icon {
-            color: #e74c6f;
-            font-size: 20px;
-        }
-        .gift-note .highlight-text {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            color: #b07c6a;
-            font-size: 19px;
-        }
-        .gift-note .small-note {
-            font-size: 14px;
-            color: #9a847a;
-            margin-top: 4px;
         }
 
         /* ===== КНОПКА "НАВЕРХ" ===== */
@@ -1648,38 +1678,76 @@
                 height: 20px;
             }
 
-            .timeline-zigzag::before { left: 20px; }
-            .zigzag-item {
-                flex-direction: column !important;
-                align-items: flex-start;
-                padding-left: 40px;
-                gap: 4px;
-            }
-            .zigzag-item .event { width: 100%; padding: 14px 18px; }
-            .zigzag-item .marker {
-                left: 20px;
-                transform: translateX(-50%);
-                width: 16px;
-                height: 16px;
-            }
-            .zigzag-item:hover .marker { transform: translateX(-50%) scale(1.2); }
-
             .story-timeline::before { left: 20px; }
             .story-item {
                 flex-direction: column !important;
                 align-items: flex-start;
-                padding-left: 40px;
+                padding-left: 44px;
                 gap: 4px;
             }
-            .story-item .story-content { width: 100%; padding: 14px 16px; }
+            .story-item .story-content { 
+                width: 100%; 
+                padding: 16px 18px; 
+            }
             .story-item .story-marker {
                 left: 20px;
                 transform: translateX(-50%);
                 width: 14px;
                 height: 14px;
             }
-            .story-item .story-year { font-size: 22px; }
-            .story-item .story-text { font-size: 14px; }
+            .story-item .story-number {
+                font-size: 10px;
+                top: -6px;
+                right: -6px;
+                padding: 1px 8px;
+            }
+            .story-item .story-year .icon {
+                font-size: 22px;
+                width: 38px;
+                height: 38px;
+            }
+            .story-item .story-year {
+                font-size: 20px;
+            }
+            .story-item .story-text {
+                font-size: 14px;
+            }
+            .story-item .story-text strong {
+                font-size: 15px;
+            }
+            .story-item:hover .story-marker {
+                transform: translateX(-50%) scale(1.2);
+            }
+
+            .timeline-zigzag::before { left: 20px; }
+            .zigzag-item {
+                flex-direction: column !important;
+                align-items: flex-start;
+                padding-left: 44px;
+                gap: 4px;
+            }
+            .zigzag-item .event { 
+                width: 100%; 
+                padding: 14px 16px; 
+            }
+            .zigzag-item .marker {
+                left: 20px;
+                transform: translateX(-50%);
+                width: 14px;
+                height: 14px;
+            }
+            .zigzag-item .event .event-time {
+                font-size: 18px;
+            }
+            .zigzag-item .event .event-icon {
+                font-size: 22px;
+            }
+            .zigzag-item .event .event-title {
+                font-size: 15px;
+            }
+            .zigzag-item:hover .marker {
+                transform: translateX(-50%) scale(1.2);
+            }
 
             #backToTop {
                 bottom: 20px;
@@ -1767,7 +1835,9 @@
             .petal-decor,
             .weather-card .weather-icon,
             .final-message .emoji-big,
-            .footer .heart {
+            .footer .heart,
+            .story-item .story-marker,
+            .zigzag-item .marker {
                 animation: none !important;
             }
         }
@@ -1849,7 +1919,7 @@
 
     <div class="container">
 
-        <!-- ===== ИСТОРИЯ ===== -->
+        <!-- ===== УЛУЧШЕННАЯ ИСТОРИЯ ===== -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title reveal">Как мы встретились</h2>
@@ -1863,32 +1933,56 @@
             <div class="story-timeline">
                 <div class="story-item reveal-left">
                     <div class="story-content">
-                        <div class="story-year"><span class="icon">☕</span> 2020</div>
-                        <div class="story-text"><strong>Знакомство</strong> — случайная встреча в кафе переросла в разговор до утра.</div>
+                        <div class="story-number">01</div>
+                        <div class="story-year">
+                            <span class="icon">☕</span> 2020
+                        </div>
+                        <div class="story-text">
+                            <strong>Знакомство</strong>
+                            Случайная встреча в кафе переросла в разговор до утра.
+                        </div>
                     </div>
                     <div class="story-marker"></div>
                 </div>
 
                 <div class="story-item reveal-right">
                     <div class="story-content">
-                        <div class="story-year"><span class="icon">🌊</span> 2021</div>
-                        <div class="story-text"><strong>Первое свидание</strong> — прогулка по набережной и первый поцелуй под звёздами.</div>
+                        <div class="story-number">02</div>
+                        <div class="story-year">
+                            <span class="icon">🌊</span> 2021
+                        </div>
+                        <div class="story-text">
+                            <strong>Первое свидание</strong>
+                            Прогулка по набережной и первый поцелуй под звёздами.
+                        </div>
                     </div>
                     <div class="story-marker"></div>
                 </div>
 
                 <div class="story-item reveal-left">
                     <div class="story-content">
-                        <div class="story-year"><span class="icon">💍</span> 2023</div>
-                        <div class="story-text"><strong>Предложение</strong> — он встал на колено на том же месте, где они встретились.</div>
+                        <div class="story-number">03</div>
+                        <div class="story-year">
+                            <span class="icon">💍</span> 2023
+                        </div>
+                        <div class="story-text">
+                            <strong>Предложение</strong>
+                            Он встал на колено на том же месте, где они встретились.
+                        </div>
                     </div>
                     <div class="story-marker"></div>
                 </div>
 
                 <div class="story-item reveal-right">
                     <div class="story-content">
-                        <div class="story-year"><span class="icon">❤️</span> 2026</div>
-                        <div class="story-text"><strong>Свадьба</strong> — день, когда две судьбы становятся одной ❤️</div>
+                        <div class="story-number">04</div>
+                        <div class="story-year">
+                            <span class="icon">❤️</span> 2026
+                        </div>
+                        <div class="story-text">
+                            <strong>Свадьба</strong>
+                            День, когда две судьбы становятся одной ❤️
+                        </div>
                     </div>
                     <div class="story-marker"></div>
                 </div>
@@ -1955,7 +2049,7 @@
             <div class="gallery-dots" id="galleryDots"></div>
         </section>
 
-        <!-- ===== ПРОГРАММА ===== -->
+        <!-- ===== УЛУЧШЕННАЯ ПРОГРАММА ===== -->
         <section>
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title reveal">Программа дня</h2>
@@ -1969,60 +2063,60 @@
             <div class="timeline-zigzag">
                 <div class="zigzag-item reveal-left">
                     <div class="event">
-                        <span class="icon">🏠</span>
-                        <div class="time">10:30</div>
-                        <div class="title">Сбор у жениха</div>
-                        <div class="place">📍 Дом жениха</div>
+                        <span class="event-icon">🏠</span>
+                        <div class="event-time">10:30</div>
+                        <div class="event-title">Сбор у жениха</div>
+                        <div class="event-place">📍 Дом жениха</div>
                     </div>
                     <div class="marker"></div>
                 </div>
 
                 <div class="zigzag-item reveal-right">
                     <div class="event">
-                        <span class="icon">💄</span>
-                        <div class="time">12:00</div>
-                        <div class="title">Сбор у невесты</div>
-                        <div class="place">📍 Дом невесты</div>
+                        <span class="event-icon">💄</span>
+                        <div class="event-time">12:00</div>
+                        <div class="event-title">Сбор у невесты</div>
+                        <div class="event-place">📍 Дом невесты</div>
                     </div>
                     <div class="marker"></div>
                 </div>
 
                 <div class="zigzag-item reveal-left">
                     <div class="event">
-                        <span class="icon">💍</span>
-                        <div class="time">12:40</div>
-                        <div class="title">Выкуп</div>
-                        <div class="place">📍 Дом невесты</div>
+                        <span class="event-icon">💍</span>
+                        <div class="event-time">12:40</div>
+                        <div class="event-title">Выкуп</div>
+                        <div class="event-place">📍 Дом невесты</div>
                     </div>
                     <div class="marker"></div>
                 </div>
 
                 <div class="zigzag-item reveal-right">
                     <div class="event">
-                        <span class="icon">📜</span>
-                        <div class="time">14:00</div>
-                        <div class="title">Регистрация брака</div>
-                        <div class="place">📍 ЗАГС</div>
+                        <span class="event-icon">📜</span>
+                        <div class="event-time">14:00</div>
+                        <div class="event-title">Регистрация брака</div>
+                        <div class="event-place">📍 ЗАГС</div>
                     </div>
                     <div class="marker"></div>
                 </div>
 
                 <div class="zigzag-item reveal-left">
                     <div class="event">
-                        <span class="icon">🍽️</span>
-                        <div class="time">16:30</div>
-                        <div class="title">Банкет</div>
-                        <div class="place">📍 Ресторан «Зелёный мыс»</div>
+                        <span class="event-icon">🍽️</span>
+                        <div class="event-time">16:30</div>
+                        <div class="event-title">Банкет</div>
+                        <div class="event-place">📍 Ресторан «Зелёный мыс»</div>
                     </div>
                     <div class="marker"></div>
                 </div>
 
                 <div class="zigzag-item reveal-right">
                     <div class="event">
-                        <span class="icon">🌙</span>
-                        <div class="time">00:00</div>
-                        <div class="title">Окончание вечера</div>
-                        <div class="place">📍 Ресторан «Зелёный мыс»</div>
+                        <span class="event-icon">🌙</span>
+                        <div class="event-time">00:00</div>
+                        <div class="event-title">Окончание вечера</div>
+                        <div class="event-place">📍 Ресторан «Зелёный мыс»</div>
                     </div>
                     <div class="marker"></div>
                 </div>
@@ -2188,7 +2282,6 @@
                 <strong>Спасибо!</strong> Мы получили ваше подтверждение и очень ждём вас!
             </div>
 
-            <!-- ===== БЛОК ПРО АЛКОГОЛЬ ВНУТРИ RSVP ===== -->
             <div class="gift-note">
                 <span class="heart-icon">❤️</span>
                 <span class="highlight-text">Главное для нас — ваше присутствие!</span>
@@ -2256,7 +2349,7 @@
 
     <script>
         // ============================================================
-        //  ПЛЕЕР (БЕЗ ОШИБКИ song.mp3)
+        //  ПЛЕЕР
         // ============================================================
         const trackName = document.getElementById('trackName');
         const playBtn = document.getElementById('playBtn');
@@ -2273,7 +2366,6 @@
             artist: 'Ed Sheeran'
         };
 
-        // Функция создания аудио
         function createAudio() {
             if (audio) {
                 audio.pause();
@@ -2303,17 +2395,14 @@
             });
 
             audio.addEventListener('error', function() {
-                // Если файл не найден — просто показываем, что музыка недоступна
                 isLoaded = false;
                 isLoading = false;
                 playBtn.classList.remove('loading');
                 trackName.textContent = '🎵 Музыка недоступна';
                 trackName.classList.add('empty');
-                // Не показываем alert, чтобы не раздражать
             });
         }
 
-        // Создаём аудио при загрузке
         createAudio();
 
         function updateTrackDisplay() {
@@ -2340,14 +2429,12 @@
                 if (!audio) return;
             }
 
-            // Если аудио не загружено, пробуем загрузить
             if (!isLoaded) {
                 isLoading = true;
                 playBtn.classList.add('loading');
                 trackName.textContent = '⏳ Загрузка...';
                 trackName.classList.add('loading');
                 audio.load();
-                // Ждём canplaythrough
                 audio.addEventListener('canplaythrough', function handler() {
                     audio.removeEventListener('canplaythrough', handler);
                     isLoaded = true;
@@ -2361,7 +2448,6 @@
                         trackName.classList.add('empty');
                     }
                 });
-                // Таймаут на случай, если файл не грузится
                 setTimeout(() => {
                     if (isLoading) {
                         isLoading = false;
@@ -2373,7 +2459,6 @@
                 return;
             }
 
-            // Если аудио уже загружено
             audio.play()
                 .then(() => {
                     isPlaying = true;
@@ -2381,7 +2466,6 @@
                     updateTrackDisplay();
                 })
                 .catch(() => {
-                    // Тихая ошибка — просто показываем, что музыка недоступна
                     isLoaded = false;
                     trackName.textContent = '🎵 Музыка недоступна';
                     trackName.classList.add('empty');
@@ -2436,7 +2520,6 @@
         //  ЗАЩИТА ПРАВ
         // ============================================================
 
-        // 1. Защита изображений от скачивания
         document.querySelectorAll('.gallery-slide img').forEach(img => {
             img.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
@@ -2445,20 +2528,17 @@
             img.setAttribute('draggable', 'false');
         });
 
-        // 2. Защита от копирования текста
         document.addEventListener('copy', (e) => {
             e.preventDefault();
             showToast('📝 Копирование текста запрещено', 'info');
         });
 
-        // 3. Защита от выделения текста (кроме формы)
         document.addEventListener('selectstart', (e) => {
             if (!e.target.closest('form') && !e.target.closest('input') && !e.target.closest('textarea')) {
                 e.preventDefault();
             }
         });
 
-        // 4. Защита от просмотра кода
         document.addEventListener('contextmenu', (e) => {
             if (!e.target.closest('form') && !e.target.closest('button') && !e.target.closest('.link-btn')) {
                 e.preventDefault();
