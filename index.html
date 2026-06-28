@@ -27,13 +27,69 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #faf7f2;
+            background: #f5ede8;
+            background-image: 
+                radial-gradient(ellipse at 10% 20%, rgba(176, 124, 106, 0.10) 0%, transparent 60%),
+                radial-gradient(ellipse at 90% 80%, rgba(176, 124, 106, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(212, 184, 171, 0.06) 0%, transparent 70%),
+                repeating-linear-gradient(45deg, 
+                    transparent, 
+                    transparent 35px, 
+                    rgba(176, 124, 106, 0.04) 35px, 
+                    rgba(176, 124, 106, 0.04) 36px
+                ),
+                repeating-linear-gradient(-45deg, 
+                    transparent, 
+                    transparent 35px, 
+                    rgba(176, 124, 106, 0.03) 35px, 
+                    rgba(176, 124, 106, 0.03) 36px
+                );
+            background-attachment: fixed;
             color: #3d2e2a;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
             opacity: 0;
             animation: bodyFadeIn 1s ease 0.3s forwards;
+
+    /* ===== ЗАЩИТА ОТ ВЫДЕЛЕНИЯ ===== */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    /* ===== ЗАЩИТА ОТ ПЕРЕТАСКИВАНИЯ ===== */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+}
+
+/* ===== РАЗРЕШИТЬ ВЫДЕЛЕНИЕ В ФОРМЕ ===== */
+input, textarea, select {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* ===== ЗАПРЕТ ПЕРЕТАСКИВАНИЯ КАРТИНОК ===== */
+img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
 
         @keyframes bodyFadeIn {
@@ -43,7 +99,7 @@
 
         .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
 
-        /* ===== АНИМАЦИИ ===== */
+        /* ===== ОСНОВНЫЕ АНИМАЦИИ ===== */
         @keyframes fadeInScale {
             0% { opacity: 0; transform: scale(0.8) translateY(10px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
@@ -82,13 +138,23 @@
             50% { box-shadow: 0 0 40px rgba(176, 124, 106, 0.2); }
         }
 
-        /* Анимация появления при скролле */
+        @keyframes toastFadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @keyframes spinOrnament {
+            from { transform: rotate(0deg) scale(1); }
+            to { transform: rotate(360deg) scale(1.1); }
+        }
+
+        /* ===== АНИМАЦИЯ ПРИ СКРОЛЛЕ ===== */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, opacity;
         }
-
         .reveal.visible {
             opacity: 1;
             transform: translateY(0);
@@ -97,9 +163,9 @@
         .reveal-left {
             opacity: 0;
             transform: translateX(-40px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, opacity;
         }
-
         .reveal-left.visible {
             opacity: 1;
             transform: translateX(0);
@@ -108,9 +174,9 @@
         .reveal-right {
             opacity: 0;
             transform: translateX(40px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, opacity;
         }
-
         .reveal-right.visible {
             opacity: 1;
             transform: translateX(0);
@@ -119,9 +185,9 @@
         .reveal-scale {
             opacity: 0;
             transform: scale(0.9);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, opacity;
         }
-
         .reveal-scale.visible {
             opacity: 1;
             transform: scale(1);
@@ -148,6 +214,13 @@
             font-size: 20px;
             color: #d4b8ab;
             letter-spacing: 4px;
+            display: inline-block;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.4s ease;
+            will-change: transform;
+        }
+        .divider:hover .ornament {
+            animation: spinOrnament 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            color: #b07c6a;
         }
 
         .divider-ornate {
@@ -167,6 +240,13 @@
             font-family: 'Great Vibes', cursive;
             font-size: 24px;
             color: #d4b8ab;
+            transition: transform 0.5s ease, color 0.4s ease;
+            display: inline-block;
+            will-change: transform;
+        }
+        .divider-ornate:hover .ornament {
+            transform: scale(1.3) rotate(10deg);
+            color: #b07c6a;
         }
 
         .petal-decor {
@@ -178,6 +258,7 @@
             opacity: 0.5;
             user-select: none;
             animation: float 4s ease-in-out infinite;
+            will-change: transform;
         }
 
         /* ===== HERO ===== */
@@ -220,7 +301,8 @@
             margin-bottom: 20px;
             font-weight: 400;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 0.2s forwards;
+            animation: fadeInScale 1.2s ease 0.2s forwards;
+            will-change: transform, opacity;
         }
 
         .hero-names {
@@ -238,7 +320,8 @@
             display: inline-block;
             margin: 0 8px;
             opacity: 0;
-            animation: fadeInScale 2s ease forwards;
+            animation: fadeInScale 1.5s ease forwards;
+            will-change: transform, opacity;
         }
         .hero-names span:nth-child(1) { animation-delay: 0.3s; }
         .hero-names span:nth-child(2) { animation-delay: 0.6s; }
@@ -261,7 +344,8 @@
             color: #7a6257;
             margin-top: 8px;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 1.2s forwards;
+            animation: fadeInScale 1.2s ease 1.2s forwards;
+            will-change: transform, opacity;
         }
 
         .hero-greeting {
@@ -274,14 +358,16 @@
             margin-bottom: 6px;
             letter-spacing: 2px;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 1.4s forwards;
+            animation: fadeInScale 1.2s ease 1.4s forwards;
+            will-change: transform, opacity;
         }
 
-        /* ===== МИНИМАЛИСТИЧНЫЙ ПЛЕЕР ===== */
+        /* ===== ПЛЕЕР ===== */
         .player-wrapper {
             margin: 18px 0 10px;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 1.7s forwards;
+            animation: fadeInScale 1.2s ease 1.7s forwards;
+            will-change: transform, opacity;
         }
 
         .player {
@@ -297,12 +383,14 @@
             min-width: 220px;
             max-width: 380px;
             width: 100%;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
         }
 
         .player:hover {
             border-color: rgba(176, 124, 106, 0.4);
             background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
         }
 
         .player .track-name {
@@ -322,7 +410,6 @@
             color: #9a847a;
             font-size: 14px;
         }
-
         .player .track-name.empty {
             color: #b09a8f;
             font-weight: 400;
@@ -335,7 +422,6 @@
             align-items: center;
             gap: 20px;
         }
-
         .player-controls button {
             background: none;
             border: none;
@@ -344,7 +430,7 @@
             font-size: 20px;
             padding: 6px 8px;
             border-radius: 50%;
-            transition: all 0.25s ease;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -353,24 +439,25 @@
             background: rgba(176, 124, 106, 0.15);
             border: 1.5px solid rgba(176, 124, 106, 0.2);
             color: #b07c6a;
+            will-change: transform;
         }
-
         .player-controls button:hover {
             background: rgba(176, 124, 106, 0.25);
             border-color: #b07c6a;
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
-
         .player-controls button:active {
             transform: scale(0.92);
         }
-
         .player-controls .btn-play svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
+            transition: transform 0.3s ease;
         }
-
+        .player-controls .btn-play:hover svg {
+            transform: scale(1.05);
+        }
         .player-controls .btn-play.playing {
             background: rgba(176, 124, 106, 0.25);
             border-color: #b07c6a;
@@ -384,9 +471,10 @@
             letter-spacing: 0.5px;
             font-weight: 300;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 1.9s forwards;
+            animation: fadeInScale 1.2s ease 1.9s forwards;
             max-width: 600px;
             line-height: 1.8;
+            will-change: transform, opacity;
         }
         .hero-sub .highlight {
             font-family: 'Playfair Display', serif;
@@ -407,10 +495,10 @@
             position: relative;
             z-index: 2;
             opacity: 0;
-            animation: fadeInScale 1.5s ease 2.1s forwards;
+            animation: fadeInScale 1.2s ease 2.1s forwards;
             box-shadow: 0 8px 30px rgba(0,0,0,0.04);
             will-change: transform, opacity;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             overflow: hidden;
         }
         .timer-section::before {
@@ -428,7 +516,7 @@
             opacity: 0.3;
         }
         .timer-section:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: 0 12px 40px rgba(176, 124, 106, 0.15);
         }
         .timer-section.finished {
@@ -484,7 +572,6 @@
             font-size: clamp(28px, 5vw, 42px);
             font-weight: 900;
             line-height: 1.1;
-            will-change: contents;
             transition: all 0.3s ease;
             background: linear-gradient(135deg, #3d2e2a, #b07c6a, #3d2e2a);
             background-size: 200% 200%;
@@ -492,9 +579,10 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: gradientShift 3s ease-in-out infinite;
+            will-change: transform;
         }
         .timer-item .number:hover {
-            transform: scale(1.1);
+            transform: scale(1.08);
         }
         .timer-item .label {
             font-size: 10px;
@@ -516,8 +604,9 @@
             width: 100%;
             position: relative;
             z-index: 2;
-            animation: fadeInScale 1s ease forwards;
+            animation: fadeInScale 0.8s ease forwards;
             box-shadow: 0 8px 40px rgba(176, 124, 106, 0.08);
+            will-change: transform, opacity;
         }
         .final-message.show { display: block; }
         .final-message .big-text {
@@ -539,6 +628,7 @@
             display: block;
             margin-top: 12px;
             animation: float 3s ease-in-out infinite;
+            will-change: transform;
         }
 
         /* ===== ИСТОРИЯ ===== */
@@ -602,7 +692,8 @@
         }
         .story-item .story-year .icon { 
             font-size: 24px;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
         }
         .story-item .story-content:hover .story-year .icon {
             transform: scale(1.2) rotate(10deg);
@@ -630,7 +721,7 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform;
         }
         .story-item:hover .story-marker {
@@ -641,7 +732,7 @@
         /* ===== СЕКЦИИ ===== */
         section { 
             padding: 80px 0; 
-            border-bottom: 1px solid #ede5dd; 
+            border-bottom: 1px solid rgba(220, 207, 199, 0.3); 
             position: relative; 
         }
         section:last-of-type { border-bottom: none; }
@@ -655,7 +746,7 @@
             margin-bottom: 4px;
             color: #3d2e2a;
             letter-spacing: 2px;
-            transition: color 0.3s ease;
+            transition: color 0.4s ease;
         }
         .section-title:hover {
             color: #b07c6a;
@@ -700,7 +791,8 @@
             color: #b07c6a;
             margin-bottom: 14px;
             display: block;
-            transition: transform 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
         }
         .detail-card:hover .icon {
             transform: scale(1.2) rotate(10deg);
@@ -727,29 +819,33 @@
             overflow: hidden;
             box-shadow: 0 16px 60px rgba(0,0,0,0.06);
             border: 2px solid #dccfc7;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
+            background: #e8ddd5;
             transition: box-shadow 0.4s ease;
         }
         .gallery-container:hover {
             box-shadow: 0 20px 60px rgba(176, 124, 106, 0.1);
         }
+
         .gallery-slide {
             display: flex;
             transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform;
         }
+
         .gallery-slide img {
+            display: block;
             width: 100%;
             height: 600px;
             object-fit: cover;
             flex-shrink: 0;
             transition: transform 0.5s ease;
             cursor: pointer;
+            will-change: transform;
         }
         .gallery-slide img:hover {
             transform: scale(1.02);
         }
+
         .gallery-dots {
             display: flex;
             justify-content: center;
@@ -764,6 +860,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid rgba(176, 124, 106, 0.1);
+            will-change: transform;
         }
         .gallery-dots span:hover {
             background: rgba(176, 124, 106, 0.4);
@@ -828,7 +925,8 @@
             font-size: 22px;
             margin-bottom: 2px;
             display: block;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
         }
         .zigzag-item .event:hover .icon {
             transform: scale(1.2) rotate(10deg);
@@ -863,7 +961,7 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform;
         }
         .zigzag-item:hover .marker {
@@ -878,11 +976,13 @@
             box-shadow: 0 4px 30px rgba(0,0,0,0.06);
             margin-top: 10px;
             border: 2px solid #dccfc7;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
         }
         .map-container:hover {
             box-shadow: 0 12px 40px rgba(176, 124, 106, 0.1);
             border-color: #b07c6a;
+            transform: translateY(-2px);
         }
         .map-container iframe {
             width: 100%;
@@ -920,14 +1020,14 @@
             border-color: #b07c6a;
         }
         .contact-card .icon {
-            font-size: 24px;
-            color: #b07c6a;
-            margin-bottom: 8px;
+            font-size: 34px;
             display: block;
-            transition: transform 0.3s ease;
+            margin-bottom: 10px;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
         }
         .contact-card:hover .icon {
-            transform: scale(1.2) rotate(10deg);
+            transform: scale(1.2) rotate(5deg);
         }
         .contact-card .name {
             font-family: 'Playfair Display', serif;
@@ -983,6 +1083,12 @@
             letter-spacing: -0.5px;
             color: #0077FF;
             line-height: 1;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: inline-block;
+            will-change: transform;
+        }
+        .social-links a:hover .vk-icon {
+            transform: scale(1.1) rotate(-5deg);
         }
         .social-links a span {
             font-size: 15px;
@@ -1000,10 +1106,11 @@
             border-radius: 20px;
             border: 2px solid #dccfc7;
             text-align: center;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
             animation: pulseGlow 3s ease-in-out infinite;
+            will-change: transform;
         }
         .weather-card:hover {
             transform: translateY(-4px);
@@ -1015,6 +1122,11 @@
             display: block;
             margin-bottom: 4px;
             animation: float 3s ease-in-out infinite;
+            will-change: transform;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .weather-card:hover .weather-icon {
+            transform: scale(1.1) rotate(10deg);
         }
         .weather-card .weather-temp {
             font-family: 'Playfair Display', serif;
@@ -1063,6 +1175,7 @@
         .weather-card .weather-loading .spinner {
             display: inline-block;
             animation: float 1s ease-in-out infinite;
+            will-change: transform;
         }
         .weather-card .weather-error {
             font-size: 14px;
@@ -1107,7 +1220,7 @@
             border-radius: 20px;
             box-shadow: 0 4px 30px rgba(0,0,0,0.04);
             border: 2px solid #dccfc7;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .rsvp-form:hover {
             box-shadow: 0 12px 40px rgba(176, 124, 106, 0.08);
@@ -1137,6 +1250,7 @@
             backdrop-filter: blur(4px);
             transition: all 0.3s ease;
             color: #3d2e2a;
+            will-change: transform;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
@@ -1190,6 +1304,7 @@
             color: #3d2e2a;
             appearance: auto;
             cursor: pointer;
+            will-change: transform;
         }
         .form-group .guest-select:focus {
             outline: none;
@@ -1255,12 +1370,14 @@
             color: #2e7d32;
             margin-top: 20px;
             animation: fadeInScale 0.6s ease forwards;
+            will-change: transform, opacity;
         }
         .success-message .icon {
             font-size: 32px;
             display: block;
             margin-bottom: 10px;
             animation: float 3s ease-in-out infinite;
+            will-change: transform;
         }
 
         /* ===== FOOTER ===== */
@@ -1278,6 +1395,83 @@
             display: inline-block;
             animation: heartbeat 1.2s ease-in-out infinite;
             margin: 0 4px;
+            will-change: transform;
+        }
+
+        .footer .copyright {
+            font-size: 12px;
+            color: #b09a8f;
+            margin-top: 6px;
+            opacity: 0.7;
+            letter-spacing: 0.5px;
+        }
+        .footer .copyright a {
+            color: #b09a8f;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer .copyright a:hover {
+            color: #b07c6a;
+        }
+
+        /* ===== НИЖНИЕ КНОПКИ В ЕДИНОМ СТИЛЕ ===== */
+        .footer-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(220, 207, 199, 0.3);
+        }
+
+        .footer-links .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 14px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #9a847a;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(220, 207, 199, 0.4);
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .footer-links .link-btn:hover {
+            background: rgba(176, 124, 106, 0.08);
+            border-color: #b07c6a;
+            color: #b07c6a;
+            transform: translateY(-1px);
+        }
+
+        .footer-links .link-btn .icon {
+            font-size: 12px;
+        }
+
+        .footer-links .link-btn.secure {
+            color: #6bcb77;
+            border-color: rgba(107, 203, 119, 0.3);
+            background: rgba(107, 203, 119, 0.06);
+        }
+
+        .footer-links .link-btn.secure:hover {
+            background: rgba(107, 203, 119, 0.12);
+            border-color: #6bcb77;
+        }
+
+        .footer-links .divider-dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #dccfc7;
+            flex-shrink: 0;
         }
 
         /* ===== КНОПКА "НАВЕРХ" ===== */
@@ -1300,6 +1494,7 @@
             z-index: 1000;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             padding: 0;
+            will-change: transform;
         }
         #backToTop:hover {
             transform: scale(1.15) translateY(-4px);
@@ -1317,6 +1512,50 @@
         }
         #backToTop:hover svg {
             transform: translateY(-3px);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            z-index: 99999;
+            max-width: 90%;
+            text-align: center;
+            animation: toastFadeIn 0.4s ease forwards;
+            color: white;
+            will-change: transform, opacity;
+        }
+        .toast-info { background: #b07c6a; }
+        .toast-success { background: #6bcb77; }
+        .toast-error { background: #ff6b6b; }
+
+        /* ===== МОДАЛЬНОЕ ОКНО ДЛЯ ФОТО ===== */
+        .photo-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
+            padding: 30px;
+            animation: fadeInScale 0.3s ease forwards;
+        }
+        .photo-modal img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 12px;
+            object-fit: contain;
+            animation: fadeInScale 0.4s ease forwards;
         }
 
         /* ===== АДАПТИВ ===== */
@@ -1426,6 +1665,58 @@
             .weather-card {
                 padding: 24px 20px;
             }
+            .photo-modal {
+                padding: 15px;
+            }
+            .contact-card .icon {
+                font-size: 28px;
+            }
+            .footer .copyright {
+                font-size: 10px;
+            }
+            .footer-links {
+                gap: 8px;
+            }
+            .footer-links .link-btn {
+                font-size: 10px;
+                padding: 3px 10px;
+            }
+            .footer-links .divider-dot {
+                width: 2px;
+                height: 2px;
+            }
+        }
+
+        /* Отключение анимаций для тех, у кого включено ограничение */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .hero-names span,
+            .hero-badge,
+            .hero-date,
+            .hero-greeting,
+            .player-wrapper,
+            .hero-sub,
+            .timer-section {
+                animation: none !important;
+                opacity: 1 !important;
+            }
+            .reveal,
+            .reveal-left,
+            .reveal-right,
+            .reveal-scale {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .petal-decor,
+            .weather-card .weather-icon,
+            .final-message .emoji-big,
+            .footer .heart {
+                animation: none !important;
+            }
         }
     </style>
 </head>
@@ -1442,7 +1733,6 @@
 
         <div class="hero-greeting">Дорогие родные и друзья!</div>
 
-        <!-- ===== ПЛЕЕР ===== -->
         <div class="player-wrapper">
             <div class="player">
                 <div class="track-name empty" id="trackName">🎵 Включить музыку</div>
@@ -1602,11 +1892,11 @@
 
             <div class="gallery-container reveal-scale">
                 <div class="gallery-slide" id="gallerySlide">
-                    <img src="photo1.jpg" alt="Фото 1" loading="lazy" />
-                    <img src="photo2.jpg" alt="Фото 2" loading="lazy" />
-                    <img src="photo3.jpg" alt="Фото 3" loading="lazy" />
-                    <img src="photo4.jpg" alt="Фото 4" loading="lazy" />
-                    <img src="photo5.jpg" alt="Фото 5" loading="lazy" />
+                    <img src="photo1.jpg" alt="Фото 1" loading="lazy" decoding="async" />
+                    <img src="photo2.jpg" alt="Фото 2" loading="lazy" decoding="async" />
+                    <img src="photo3.jpg" alt="Фото 3" loading="lazy" decoding="async" />
+                    <img src="photo4.jpg" alt="Фото 4" loading="lazy" decoding="async" />
+                    <img src="photo5.jpg" alt="Фото 5" loading="lazy" decoding="async" />
                 </div>
             </div>
             <div class="gallery-dots" id="galleryDots"></div>
@@ -1726,7 +2016,7 @@
             <p class="section-subtitle reveal">По любым вопросам обращайтесь</p>
             <div class="contacts-grid">
                 <div class="contact-card reveal-scale">
-                    <span class="icon">👔</span>
+                    <span class="icon">🤵</span>
                     <div class="name">Максим</div>
                     <a href="tel:+79188771103" class="phone">8 (918) 877-11-03</a>
                 </div>
@@ -1799,7 +2089,7 @@
                   id="rsvpForm">
 
                 <input type="hidden" name="_subject" value="✅ Новое подтверждение на свадьбу!" />
-                <input type="hidden" name="_replyto" value="theruslan14@gmail.com" />
+                <input type="hidden" name="_replyto" value="support.ruslan26@gmail.com" />
                 <input type="hidden" name="_next" value="#" />
 
                 <div class="form-group">
@@ -1870,6 +2160,25 @@
             Максим & Ульяна
         </p>
         <p style="margin-top:8px;font-size:12px;opacity:0.6;">29.08.2026</p>
+
+        <!-- ===== НИЖНИЕ КНОПКИ ===== -->
+        <div class="footer-links">
+            <button class="link-btn" onclick="showToast('👨‍💼 Каспарович Руслан Владиславович, г. Невинномысск', 'info')">
+                <span class="icon">©</span> Права
+            </button>
+            <span class="divider-dot"></span>
+            <button class="link-btn" onclick="showToast('📧 support.ruslan26@gmail.com', 'info')">
+                <span class="icon">✉</span> Почта
+            </button>
+            <span class="divider-dot"></span>
+            <button class="link-btn" onclick="showToast('🔒 Сайт работает по защищённому протоколу HTTPS', 'success')">
+                <span class="icon">🔒</span> HTTPS
+            </button>
+            <span class="divider-dot"></span>
+            <button class="link-btn" onclick="showToast('📝 Все права защищены. Копирование материалов запрещено.', 'info')">
+                <span class="icon">⚖️</span> Защита
+            </button>
+        </div>
     </footer>
 
     <!-- Кнопка "Наверх" -->
@@ -1879,9 +2188,14 @@
         </svg>
     </button>
 
+    <!-- Модальное окно для фото -->
+    <div class="photo-modal" id="photoModal">
+        <img id="modalImage" src="" alt="Увеличенное фото" />
+    </div>
+
     <script>
         // ============================================================
-        //  ПЛЕЕР — ОДНА ПЕСНЯ
+        //  ПЛЕЕР
         // ============================================================
         const trackName = document.getElementById('trackName');
         const playBtn = document.getElementById('playBtn');
@@ -1890,20 +2204,17 @@
         let isPlaying = false;
         let audio = null;
 
-        // ИНФОРМАЦИЯ О ПЕСНЕ
         const song = {
             file: 'song.mp3',
             title: 'Perfect',
             artist: 'Ed Sheeran'
         };
 
-        // Обновление отображения
         function updateTrackDisplay() {
             trackName.innerHTML = `${song.title} <span class="artist">— ${song.artist}</span>`;
             trackName.classList.remove('empty');
         }
 
-        // Обновление иконки Play/Pause
         function updatePlayButton(playing) {
             if (playing) {
                 playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
@@ -1914,25 +2225,21 @@
             }
         }
 
-        // Создание аудио и воспроизведение
         function playSong() {
-            // Если аудио уже существует — переиспользуем
             if (!audio) {
                 audio = new Audio();
                 audio.src = song.file;
                 audio.loop = false;
                 audio.preload = 'auto';
 
-                // Когда песня закончилась — сбрасываем состояние
                 audio.addEventListener('ended', function() {
                     isPlaying = false;
                     updatePlayButton(false);
                     audio.currentTime = 0;
                 });
 
-                // Обработка ошибок
                 audio.addEventListener('error', function() {
-                    alert(`Не удалось загрузить "${song.title}". Проверьте файл ${song.file}`);
+                    showToast(`Не удалось загрузить "${song.title}". Проверьте файл ${song.file}`, 'error');
                     isPlaying = false;
                     updatePlayButton(false);
                     audio = null;
@@ -1946,13 +2253,12 @@
                     updateTrackDisplay();
                 })
                 .catch(() => {
-                    alert(`Не удалось воспроизвести "${song.title}". Проверьте файл ${song.file}`);
+                    showToast(`Не удалось воспроизвести "${song.title}". Проверьте файл ${song.file}`, 'error');
                     isPlaying = false;
                     updatePlayButton(false);
                 });
         }
 
-        // Пауза
         function pauseSong() {
             if (audio) {
                 audio.pause();
@@ -1961,7 +2267,6 @@
             }
         }
 
-        // Переключение Play/Pause
         function togglePlay() {
             if (isPlaying) {
                 pauseSong();
@@ -1970,13 +2275,86 @@
             }
         }
 
-        // Обработчик кнопки
         playBtn.addEventListener('click', togglePlay);
 
-        // Инициализация
         trackName.textContent = '🎵 Включить музыку';
         trackName.classList.add('empty');
         updatePlayButton(false);
+
+
+        // ============================================================
+        //  TOAST
+        // ============================================================
+        function showToast(message, type = 'info') {
+            document.querySelectorAll('.toast').forEach(el => el.remove());
+            
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                toast.style.transition = 'all 0.4s ease';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+
+        // ============================================================
+        //  ЗАЩИТА ПРАВ
+        // ============================================================
+
+        // 1. Защита изображений от скачивания
+        document.querySelectorAll('.gallery-slide img').forEach(img => {
+            img.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showToast('📸 Изображения защищены авторским правом', 'info');
+            });
+            img.setAttribute('draggable', 'false');
+        });
+
+        // 2. Защита от копирования текста
+        document.addEventListener('copy', (e) => {
+            e.preventDefault();
+            showToast('📝 Копирование текста запрещено', 'info');
+        });
+
+        // 3. Защита от выделения текста (кроме формы)
+        document.addEventListener('selectstart', (e) => {
+            if (!e.target.closest('form') && !e.target.closest('input') && !e.target.closest('textarea')) {
+                e.preventDefault();
+            }
+        });
+
+
+        // ============================================================
+        //  ФОТО В ПОЛНЫЙ РАЗМЕР
+        // ============================================================
+        const modal = document.getElementById('photoModal');
+        const modalImg = document.getElementById('modalImage');
+
+        document.querySelectorAll('.gallery-slide img').forEach(img => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', () => {
+                modalImg.src = img.src;
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        modal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
 
 
         // ---- ТАЙМЕР ----
@@ -2139,7 +2517,7 @@
             e.preventDefault();
             const name = document.getElementById('name').value.trim();
             if (!name) {
-                alert('Пожалуйста, напишите ваше имя и имена гостей 🙂');
+                showToast('Пожалуйста, напишите ваше имя и имена гостей 🙂', 'error');
                 return;
             }
             submitBtn.disabled = true;
@@ -2157,13 +2535,14 @@
                     successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     fireConfetti();
                     setTimeout(fireConfetti, 1500);
+                    showToast('✅ Спасибо! Мы получили ваше подтверждение!', 'success');
                 } else {
-                    alert('Что-то пошло не так. Попробуйте ещё раз 😊');
+                    showToast('Что-то пошло не так. Попробуйте ещё раз 😊', 'error');
                     submitBtn.disabled = false;
                     submitBtn.textContent = '✅ Подтвердить';
                 }
             } catch (error) {
-                alert('Ошибка соединения. Проверьте интернет 🙏');
+                showToast('Ошибка соединения. Проверьте интернет 🙏', 'error');
                 submitBtn.disabled = false;
                 submitBtn.textContent = '✅ Подтвердить';
             }
