@@ -21,6 +21,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;700;900&family=Great+Vibes&display=swap" rel="stylesheet" />
 
+    <!-- ===== FONT AWESOME ДЛЯ ИКОНОК ===== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
     <style>
         /* ===== СБРОС ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -73,6 +76,29 @@
             display: block;
             width: 100%;
             height: auto;
+            image-rendering: auto;
+            image-orientation: from-image;
+        }
+
+        /* ===== ОПТИМИЗАЦИЯ ДЛЯ МЕДЛЕННОГО ИНТЕРНЕТА ===== */
+        .hero {
+            background-image: url('wedding-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: scroll;
+        }
+        @media (max-width: 768px) {
+            .hero {
+                background-image: url('wedding-bg.jpg');
+                background-attachment: scroll;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero {
+                background-image: url('wedding-bg.jpg');
+                background-size: cover;
+                background-attachment: scroll;
+            }
         }
 
         /* ===== ОТКЛЮЧЕНИЕ АНИМАЦИЙ ===== */
@@ -192,7 +218,7 @@
             background-image: url('wedding-bg.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            background-attachment: scroll;
         }
         .hero::before {
             content: '';
@@ -287,7 +313,7 @@
             color: #b07c6a;
         }
 
-        /* ===== ПЛЕЕР ===== */
+        /* ===== ПЛЕЕР С АДАПТИВНОЙ ЗАГРУЗКОЙ ===== */
         .player-wrapper {
             margin: 18px 0 10px;
             opacity: 0;
@@ -329,6 +355,7 @@
         .player .track-name .artist { font-weight: 400; color: #9a847a; font-size: 14px; }
         .player .track-name.empty { color: #b09a8f; font-weight: 400; font-size: 15px; font-family: 'Inter', sans-serif; }
         .player .track-name.loading { color: #b07c6a; font-weight: 500; font-size: 14px; }
+        .player .track-name.error { color: #e74c3c; font-weight: 400; font-size: 14px; }
         .player-controls { display: flex; align-items: center; gap: 20px; }
         .player-controls button {
             background: none; border: none; cursor: pointer;
@@ -880,17 +907,13 @@
             border-color: #4a76a8;
         }
         .social-links a .vk-icon {
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
+            font-size: 22px;
             color: #0077FF;
-            line-height: 1;
             transition: transform 0.3s ease;
             display: inline-block;
             will-change: transform;
         }
-        .social-links a:hover .vk-icon { transform: scale(1.1) rotate(-5deg); }
+        .social-links a:hover .vk-icon { transform: scale(1.15) rotate(-5deg); }
         .social-links a span { font-size: 15px; font-weight: 500; color: #3d2e2a; }
 
         /* ===== ПОГОДА ===== */
@@ -1333,7 +1356,7 @@
 
             #backToTop { bottom: 20px; right: 20px; width: 48px; height: 48px; }
             #backToTop svg { width: 20px; height: 20px; }
-            .social-links a .vk-icon { font-size: 14px; }
+            .social-links a .vk-icon { font-size: 18px; }
             .footer .heart { font-size: 17px; }
             .weather-card .weather-temp { font-size: 32px; }
             .weather-card .weather-icon { font-size: 48px; }
@@ -1614,10 +1637,12 @@
             <p class="section-subtitle reveal">Будем рады видеть вас среди подписчиков</p>
             <div class="social-links">
                 <a href="https://vk.com/63samg" target="_blank" class="reveal-scale">
-                    <span class="vk-icon">VK</span> <span>Максим</span>
+                    <i class="fab fa-vk vk-icon"></i>
+                    <span>Максим</span>
                 </a>
                 <a href="https://vk.com/ulianochkaaaaaa" target="_blank" class="reveal-scale" style="transition-delay:0.1s;">
-                    <span class="vk-icon">VK</span> <span>Ульяна</span>
+                    <i class="fab fa-vk vk-icon"></i>
+                    <span>Ульяна</span>
                 </a>
             </div>
         </section>
@@ -1742,40 +1767,81 @@
 
     <script>
         // ============================================================
-        //  ПЛЕЕР
+        //  ПЛЕЕР С АДАПТИВНОЙ ЗАГРУЗКОЙ
         // ============================================================
         const trackName = document.getElementById('trackName');
         const playBtn = document.getElementById('playBtn');
         const playIcon = document.getElementById('playIcon');
 
         let isPlaying = false, audio = null, isLoading = false, isLoaded = false;
+        let retryCount = 0;
+        const MAX_RETRIES = 3;
 
         const song = { file: 'song.mp3', title: 'Perfect', artist: 'Ed Sheeran' };
+
+        function getConnectionType() {
+            if (navigator.connection) {
+                return navigator.connection.effectiveType || 'unknown';
+            }
+            return 'unknown';
+        }
 
         function createAudio() {
             if (audio) { audio.pause(); audio.src = ''; audio = null; }
             audio = new Audio();
             audio.src = song.file;
             audio.loop = false;
-            audio.preload = 'auto';
+            
+            const connType = getConnectionType();
+            if (connType === '2g' || connType === '3g') {
+                audio.preload = 'metadata';
+            } else {
+                audio.preload = 'auto';
+            }
+            
             audio.addEventListener('canplaythrough', function() {
                 isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
                 if (trackName.classList.contains('loading')) {
                     trackName.textContent = '🎵 Включить музыку';
                     trackName.classList.remove('loading'); trackName.classList.add('empty');
                 }
+                retryCount = 0;
             });
-            audio.addEventListener('ended', function() { isPlaying = false; updatePlayButton(false); audio.currentTime = 0; });
-            audio.addEventListener('error', function() {
-                isLoaded = false; isLoading = false; playBtn.classList.remove('loading');
-                trackName.textContent = '🎵 Музыка недоступна'; trackName.classList.add('empty');
+            
+            audio.addEventListener('ended', function() { 
+                isPlaying = false; updatePlayButton(false); audio.currentTime = 0; 
             });
+            
+            audio.addEventListener('error', function(e) {
+                console.warn('Ошибка загрузки аудио:', e);
+                if (retryCount < MAX_RETRIES) {
+                    retryCount++;
+                    setTimeout(() => {
+                        if (!isLoaded && !isPlaying) {
+                            audio.load();
+                        }
+                    }, 2000 * retryCount);
+                } else {
+                    isLoaded = false; isLoading = false; playBtn.classList.remove('loading');
+                    trackName.textContent = '🎵 Музыка недоступна'; 
+                    trackName.classList.add('error');
+                }
+            });
+            
+            if (connType === '2g' || connType === '3g') {
+                setTimeout(() => {
+                    if (!isLoaded) {
+                        audio.load();
+                    }
+                }, 1000);
+            }
         }
-        createAudio();
+        
+        setTimeout(createAudio, 500);
 
         function updateTrackDisplay() {
             trackName.innerHTML = `${song.title} <span class="artist">— ${song.artist}</span>`;
-            trackName.classList.remove('empty', 'loading');
+            trackName.classList.remove('empty', 'loading', 'error');
         }
 
         function updatePlayButton(playing) {
@@ -1791,30 +1857,74 @@
         function playSong() {
             if (isLoading) return;
             if (!audio) { createAudio(); if (!audio) return; }
+            
             if (!isLoaded) {
                 isLoading = true; playBtn.classList.add('loading');
                 trackName.textContent = '⏳ Загрузка...'; trackName.classList.add('loading');
                 audio.load();
+                
                 audio.addEventListener('canplaythrough', function handler() {
                     audio.removeEventListener('canplaythrough', handler);
                     isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
-                    if (isPlaying) audio.play().catch(() => {});
-                    else { trackName.textContent = '🎵 Включить музыку'; trackName.classList.remove('loading'); trackName.classList.add('empty'); }
+                    if (isPlaying) {
+                        audio.play().catch(() => {});
+                    } else {
+                        trackName.textContent = '🎵 Включить музыку';
+                        trackName.classList.remove('loading'); trackName.classList.add('empty');
+                    }
                 });
-                setTimeout(() => {
-                    if (isLoading) { isLoading = false; playBtn.classList.remove('loading');
-                    trackName.textContent = '🎵 Музыка недоступна'; trackName.classList.add('empty'); }
-                }, 5000);
+                
+                const timeoutId = setTimeout(() => {
+                    if (isLoading) {
+                        isLoading = false; playBtn.classList.remove('loading');
+                        trackName.textContent = '⏳ Долгая загрузка...';
+                        trackName.classList.add('loading');
+                    }
+                }, 8000);
+                
+                audio.addEventListener('canplaythrough', function() {
+                    clearTimeout(timeoutId);
+                });
+                
                 return;
             }
-            audio.play().then(() => { isPlaying = true; updatePlayButton(true); updateTrackDisplay(); })
-                .catch(() => { isLoaded = false; trackName.textContent = '🎵 Музыка недоступна'; trackName.classList.add('empty'); updatePlayButton(false); });
+
+            audio.play()
+                .then(() => { 
+                    isPlaying = true; updatePlayButton(true); updateTrackDisplay(); 
+                })
+                .catch((err) => {
+                    console.warn('Ошибка воспроизведения:', err);
+                    isLoaded = false;
+                    trackName.textContent = '🔄 Перезагрузка...';
+                    trackName.classList.add('loading');
+                    audio.load();
+                    setTimeout(() => {
+                        if (!isLoaded) {
+                            trackName.textContent = '🎵 Музыка недоступна';
+                            trackName.classList.add('error');
+                            updatePlayButton(false);
+                        }
+                    }, 5000);
+                });
         }
 
-        function pauseSong() { if (audio) { audio.pause(); isPlaying = false; updatePlayButton(false); } }
-        function togglePlay() { isPlaying ? pauseSong() : playSong(); }
+        function pauseSong() { 
+            if (audio) { 
+                audio.pause(); 
+                isPlaying = false; 
+                updatePlayButton(false); 
+            } 
+        }
+        
+        function togglePlay() { 
+            isPlaying ? pauseSong() : playSong(); 
+        }
+        
         playBtn.addEventListener('click', togglePlay);
-        trackName.textContent = '🎵 Включить музыку'; trackName.classList.add('empty'); updatePlayButton(false);
+        trackName.textContent = '🎵 Включить музыку'; 
+        trackName.classList.add('empty'); 
+        updatePlayButton(false);
 
 
         // ============================================================
