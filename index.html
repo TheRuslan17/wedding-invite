@@ -16,10 +16,6 @@
     <!-- ===== КЕШИРОВАНИЕ ===== -->
     <meta http-equiv="Cache-Control" content="public, max-age=604800" />
 
-    <!-- ===== PWA ===== -->
-    <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#f5ede8" />
-
     <!-- ===== ШРИФТЫ ===== -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,23 +23,6 @@
 
     <!-- ===== FONT AWESOME ДЛЯ ИКОНОК ===== -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-    <!-- ===== СТРУКТУРИРОВАННЫЕ ДАННЫЕ ДЛЯ SEO ===== -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Event",
-        "name": "Свадьба Максима и Ульяны",
-        "startDate": "2026-08-29",
-        "location": {
-            "@type": "Place",
-            "name": "Ресторан «Зелёный мыс»",
-            "address": "г. Невинномысск, ул. Менделеева, 105"
-        },
-        "description": "Приглашение на свадьбу Максима и Ульяны",
-        "image": "https://theruslan17.github.io/wedding-invite/invite-preview.jpg"
-    }
-    </script>
 
     <style>
         /* ===== СБРОС ===== */
@@ -65,7 +44,6 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
-            min-height: 100dvh;
             opacity: 0;
             animation: bodyFadeIn 0.8s ease 0.2s forwards;
             overflow-x: hidden;
@@ -92,11 +70,7 @@
             display: block;
             width: 100%;
             height: auto;
-            image-rendering: auto;
-            image-orientation: from-image;
             max-width: 100%;
-            opacity: 0;
-            animation: imageFade 0.5s ease forwards;
         }
 
         /* ===== ОПТИМИЗАЦИЯ ===== */
@@ -132,7 +106,6 @@
 
         /* ===== КЛЮЧЕВЫЕ КАДРЫ ===== */
         @keyframes bodyFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes imageFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes fadeInScale { 0% { opacity: 0; transform: scale(0.8) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
@@ -143,6 +116,7 @@
         @keyframes toastFadeIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         @keyframes spinOrnament { from { transform: rotate(0deg) scale(1); } to { transform: rotate(360deg) scale(1.1); } }
         @keyframes markerPulse { 0%, 100% { box-shadow: 0 0 0 2px #b07c6a, 0 2px 12px rgba(176, 124, 106, 0.25); } 50% { box-shadow: 0 0 0 6px rgba(176, 124, 106, 0.15), 0 4px 20px rgba(176, 124, 106, 0.3); } }
+        @keyframes imageFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes loaderPulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.05); opacity: 1; } }
 
         /* ===== ПРОГРЕСС-БАР ЗАГРУЗКИ ===== */
@@ -430,13 +404,15 @@
         .player .track-name.empty { color: #b09a8f; font-weight: 400; font-size: 14px; font-family: 'Inter', sans-serif; }
         .player .track-name.loading { color: #b07c6a; font-weight: 500; font-size: 13px; }
         .player .track-name.error { color: #e74c3c; font-weight: 400; font-size: 13px; }
-        .player-controls { display: flex; align-items: center; gap: 16px; }
+        .player-controls { display: flex; align-items: center; gap: 12px; }
         .player-controls button {
             background: none; border: none; cursor: pointer;
-            color: #7a6257; font-size: 18px; padding: 4px 6px;
+            padding: 4px 6px;
             border-radius: 50%;
             transition: all 0.3s ease;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 44px; height: 44px;
             background: rgba(176, 124, 106, 0.15);
             border: 1.5px solid rgba(176, 124, 106, 0.2);
@@ -453,23 +429,24 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            width: 60px;
+            width: 80px;
         }
         .player-controls .volume-slider {
             width: 100%;
-            height: 3px;
+            height: 4px;
             -webkit-appearance: none;
             appearance: none;
             background: rgba(176, 124, 106, 0.3);
             border-radius: 2px;
             outline: none;
             transition: background 0.3s ease;
+            cursor: pointer;
         }
         .player-controls .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: #b07c6a;
             cursor: pointer;
@@ -479,19 +456,22 @@
             transform: scale(1.2);
         }
         .player-controls .volume-slider::-moz-range-thumb {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: #b07c6a;
             cursor: pointer;
             border: none;
         }
         .player-controls .volume-icon {
-            font-size: 14px;
+            font-size: 16px;
             color: #9a847a;
-            width: 18px;
+            width: 22px;
             text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
         }
+        .player-controls .volume-icon:hover { transform: scale(1.2); }
 
         /* ===== ТАЙМЕР ===== */
         .timer-section {
@@ -886,7 +866,7 @@
         .gallery-section { padding: 30px 0 20px; }
         .gallery-container {
             position: relative;
-            max-width: 800px;
+            max-width: 420px;
             margin: 0 auto;
             border-radius: 20px;
             overflow: hidden;
@@ -907,7 +887,7 @@
         .gallery-slide img {
             display: block;
             width: 100%;
-            height: 500px;
+            height: 380px;
             object-fit: cover;
             flex-shrink: 0;
             transition: transform 0.4s ease;
@@ -1139,8 +1119,6 @@
             transition: all 0.3s ease;
             color: #3d2e2a;
             will-change: transform;
-            -webkit-appearance: none;
-            appearance: none;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
@@ -1187,7 +1165,6 @@
             backdrop-filter: blur(4px);
             transition: all 0.3s ease;
             color: #3d2e2a;
-            appearance: auto;
             cursor: pointer;
             will-change: transform;
         }
@@ -1197,20 +1174,6 @@
             background: rgba(255, 255, 255, 0.6);
             box-shadow: 0 0 0 4px rgba(176, 124, 106, 0.1);
             transform: scale(1.01);
-        }
-
-        .form-group .input-error {
-            border-color: #ff6b6b !important;
-            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1) !important;
-        }
-        .form-group .error-message {
-            color: #ff6b6b;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
-        .form-group .error-message.show {
-            display: block;
         }
 
         .btn {
@@ -1454,10 +1417,6 @@
         /* ===== АДАПТИВ ДЛЯ МОБИЛЬНЫХ ===== */
         /* ============================================================ */
         @media (max-width: 768px) {
-            .hero { 
-                background-attachment: scroll;
-                background-image: url('wedding-bg.jpg');
-            }
             .container { padding: 0 12px; }
             section { padding: 32px 0 24px; }
             .section-title { font-size: 24px; }
@@ -1466,30 +1425,26 @@
             .story-item .story-year { font-size: 18px; }
             .story-item .story-year .icon { width: 32px; height: 32px; font-size: 18px; }
             .story-item .story-text { font-size: 13px; }
-            .story-item .story-text strong { font-size: 15px; }
             .zigzag-item .event { padding: 12px 14px; }
             .zigzag-item .event .event-time { font-size: 18px; }
             .zigzag-item .event .event-title { font-size: 15px; }
-            .gallery-slide img { height: 380px; }
+            .gallery-slide img { height: 300px; }
             .map-container iframe { height: 280px; }
             .weather-card { padding: 24px 18px; }
             .weather-card .weather-temp { font-size: 34px; }
             .weather-card .weather-icon { font-size: 48px; }
             .rsvp-form { padding: 24px 16px; }
             .social-links a { padding: 8px 18px; font-size: 13px; }
-            .social-links a .vk-icon { font-size: 18px; }
             .player { padding: 12px 16px 14px; }
             .player .track-name { font-size: 14px; }
             .timer-section { padding: 14px 12px; }
             .timer-item .number { font-size: 22px; }
             .gift-note { font-size: 15px; padding: 12px 14px; }
-            .gift-note .highlight-text { font-size: 16px; }
             .contacts-grid { gap: 16px; }
             .contact-card { padding: 16px 14px; }
             .contact-card .icon { font-size: 26px; }
             .contact-card .name { font-size: 16px; }
             #backToTop { bottom: 18px; right: 18px; width: 44px; height: 44px; }
-            #backToTop svg { width: 20px; height: 20px; }
             .hero-names { font-size: clamp(42px, 13vw, 72px); }
             .hero-date { font-size: 16px; letter-spacing: 4px; }
             .hero-greeting { font-size: clamp(18px, 3vw, 26px); }
@@ -1500,7 +1455,6 @@
             .detail-card { padding: 20px 14px; }
             .detail-card h4 { font-size: 16px; }
             .detail-card .icon { font-size: 22px; }
-            .detail-card p { font-size: 12px; }
             .gallery-dots span { width: 8px; height: 8px; }
             .weather-card .weather-details { gap: 16px; font-size: 12px; }
             .divider-ornate .ornament { font-size: 18px; }
@@ -1508,9 +1462,8 @@
             .final-message { padding: 16px 14px; }
             .final-message .big-text { font-size: 26px; }
             .final-message .emoji-big { font-size: 34px; }
-            .final-message .sub-text { font-size: 14px; }
             .toast { font-size: 12px; padding: 10px 18px; bottom: 18px; }
-            .player-controls .volume-control { width: 40px; }
+            .player-controls .volume-control { width: 60px; }
         }
 
         @media (max-width: 600px) {
@@ -1525,11 +1478,7 @@
             .section-title { font-size: 22px; }
             .hero-names { font-size: clamp(36px, 15vw, 60px); }
             .divider .line { max-width: 40px; }
-            .hero { 
-                background-attachment: scroll; 
-                padding: 24px 12px;
-                background-image: url('wedding-bg.jpg');
-            }
+            .hero { padding: 24px 12px; }
             .timer-section { padding: 12px 10px; }
             .timer-item .number { font-size: 20px; }
             .timer-item .label { font-size: 8px; letter-spacing: 1px; }
@@ -1544,8 +1493,9 @@
             .player .track-name .artist { font-size: 11px; }
             .player-controls button { width: 38px; height: 38px; }
             .player-controls .btn-play svg { width: 18px; height: 18px; }
-            .player-controls .volume-control { width: 30px; }
-            .player-controls .volume-slider { height: 2px; }
+            .player-controls .volume-control { width: 50px; }
+            .player-controls .volume-slider { height: 3px; }
+            .player-controls .volume-icon { font-size: 14px; width: 18px; }
 
             .story-timeline::before { left: 16px; }
             .story-item { flex-direction: column !important; align-items: flex-start; padding-left: 36px; gap: 3px; padding-top: 12px; padding-bottom: 12px; }
@@ -1593,8 +1543,10 @@
             .form-group .radio-group label { font-size: 13px; }
             .btn { font-size: 14px; padding: 10px; }
             .toast { font-size: 12px; padding: 10px 16px; bottom: 14px; max-width: 95%; }
-            .player-wrapper { max-width: 300px; }
             .timer-grid { gap: 4px; }
+            .hero { background-attachment: scroll; }
+            .gallery-container { max-width: 100%; }
+            .gallery-slide img { height: 280px; }
         }
 
         @media (max-width: 400px) {
@@ -1615,7 +1567,7 @@
             .player-controls button { width: 34px; height: 34px; }
             .player-controls .btn-play svg { width: 16px; height: 16px; }
             .player { padding: 8px 10px 10px; }
-            .player-controls .volume-control { width: 20px; }
+            .player-controls .volume-control { width: 40px; }
             .rsvp-form { padding: 16px 12px; }
             .detail-card { padding: 16px 12px; }
             .detail-card .icon { font-size: 20px; }
@@ -1637,6 +1589,7 @@
             #backToTop { bottom: 12px; right: 12px; width: 36px; height: 36px; }
             #backToTop svg { width: 16px; height: 16px; }
             .footer { padding: 24px 0 16px; font-size: 12px; }
+            .gallery-slide img { height: 200px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1813,11 +1766,11 @@
 
             <div class="gallery-container reveal-scale">
                 <div class="gallery-slide" id="gallerySlide">
-                    <img src="photo1.jpg" alt="Фото 1" loading="lazy" decoding="async" />
-                    <img src="photo2.jpg" alt="Фото 2" loading="lazy" decoding="async" />
-                    <img src="photo3.jpg" alt="Фото 3" loading="lazy" decoding="async" />
-                    <img src="photo4.jpg" alt="Фото 4" loading="lazy" decoding="async" />
-                    <img src="photo5.jpg" alt="Фото 5" loading="lazy" decoding="async" />
+                    <img src="photo1.jpg" alt="Фото 1" loading="lazy" />
+                    <img src="photo2.jpg" alt="Фото 2" loading="lazy" />
+                    <img src="photo3.jpg" alt="Фото 3" loading="lazy" />
+                    <img src="photo4.jpg" alt="Фото 4" loading="lazy" />
+                    <img src="photo5.jpg" alt="Фото 5" loading="lazy" />
                 </div>
             </div>
             <div class="gallery-dots" id="galleryDots"></div>
@@ -1958,10 +1911,9 @@
                 <input type="hidden" name="_replyto" value="support.ruslan26@gmail.com" />
                 <input type="hidden" name="_next" value="#" />
 
-                <div class="form-group" id="nameGroup">
+                <div class="form-group">
                     <label for="name">Ваше имя и фамилия</label>
                     <input type="text" id="name" name="Имя" placeholder="Напишите Ваше и все имена гостей" required />
-                    <div class="error-message" id="nameError">Пожалуйста, укажите ваше имя</div>
                 </div>
 
                 <div class="form-group">
@@ -2067,7 +2019,7 @@
         updateLoader();
 
         // ============================================================
-        //  ПЛЕЕР С АДАПТИВНОЙ ЗАГРУЗКОЙ
+        //  ПЛЕЕР
         // ============================================================
         const trackName = document.getElementById('trackName');
         const playBtn = document.getElementById('playBtn');
@@ -2081,65 +2033,48 @@
 
         const song = { file: 'song.mp3', title: 'Perfect', artist: 'Ed Sheeran' };
 
-        function getConnectionType() {
-            if (navigator.connection) {
-                return navigator.connection.effectiveType || 'unknown';
+        function createAudio() {
+            try {
+                if (audio) { audio.pause(); audio.src = ''; audio = null; }
+                audio = new Audio();
+                audio.src = song.file;
+                audio.loop = false;
+                audio.volume = parseFloat(volumeSlider.value) || 0.8;
+                audio.preload = 'auto';
+
+                audio.addEventListener('canplaythrough', function() {
+                    isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
+                    if (trackName.classList.contains('loading')) {
+                        trackName.textContent = '🎵 Включить музыку';
+                        trackName.classList.remove('loading'); trackName.classList.add('empty');
+                    }
+                    retryCount = 0;
+                });
+
+                audio.addEventListener('ended', function() { 
+                    isPlaying = false; updatePlayButton(false); audio.currentTime = 0; 
+                });
+
+                audio.addEventListener('error', function(e) {
+                    console.warn('Ошибка загрузки аудио:', e);
+                    if (retryCount < MAX_RETRIES) {
+                        retryCount++;
+                        setTimeout(() => {
+                            if (!isLoaded && !isPlaying) {
+                                try { audio.load(); } catch(err) {}
+                            }
+                        }, 2000 * retryCount);
+                    } else {
+                        isLoaded = false; isLoading = false; playBtn.classList.remove('loading');
+                        trackName.textContent = '🎵 Музыка недоступна'; 
+                        trackName.classList.add('error');
+                    }
+                });
+            } catch (e) {
+                console.warn('Ошибка создания аудио:', e);
             }
-            return 'unknown';
         }
 
-        function createAudio() {
-            if (audio) { audio.pause(); audio.src = ''; audio = null; }
-            audio = new Audio();
-            audio.src = song.file;
-            audio.loop = false;
-            audio.volume = parseFloat(volumeSlider.value);
-            
-            const connType = getConnectionType();
-            if (connType === '2g' || connType === '3g') {
-                audio.preload = 'metadata';
-            } else {
-                audio.preload = 'auto';
-            }
-            
-            audio.addEventListener('canplaythrough', function() {
-                isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
-                if (trackName.classList.contains('loading')) {
-                    trackName.textContent = '🎵 Включить музыку';
-                    trackName.classList.remove('loading'); trackName.classList.add('empty');
-                }
-                retryCount = 0;
-            });
-            
-            audio.addEventListener('ended', function() { 
-                isPlaying = false; updatePlayButton(false); audio.currentTime = 0; 
-            });
-            
-            audio.addEventListener('error', function(e) {
-                console.warn('Ошибка загрузки аудио:', e);
-                if (retryCount < MAX_RETRIES) {
-                    retryCount++;
-                    setTimeout(() => {
-                        if (!isLoaded && !isPlaying) {
-                            audio.load();
-                        }
-                    }, 2000 * retryCount);
-                } else {
-                    isLoaded = false; isLoading = false; playBtn.classList.remove('loading');
-                    trackName.textContent = '🎵 Музыка недоступна'; 
-                    trackName.classList.add('error');
-                }
-            });
-            
-            if (connType === '2g' || connType === '3g') {
-                setTimeout(() => {
-                    if (!isLoaded) {
-                        audio.load();
-                    }
-                }, 1000);
-            }
-        }
-        
         setTimeout(createAudio, 500);
 
         function updateTrackDisplay() {
@@ -2158,72 +2093,77 @@
         }
 
         function playSong() {
-            if (isLoading) return;
-            if (!audio) { createAudio(); if (!audio) return; }
-            
-            if (!isLoaded) {
-                isLoading = true; playBtn.classList.add('loading');
-                trackName.textContent = '⏳ Загрузка...'; trackName.classList.add('loading');
-                audio.load();
-                
-                audio.addEventListener('canplaythrough', function handler() {
-                    audio.removeEventListener('canplaythrough', handler);
-                    isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
-                    if (isPlaying) {
-                        audio.play().catch(() => {});
-                    } else {
-                        trackName.textContent = '🎵 Включить музыку';
-                        trackName.classList.remove('loading'); trackName.classList.add('empty');
-                    }
-                });
-                
-                const timeoutId = setTimeout(() => {
-                    if (isLoading) {
-                        isLoading = false; playBtn.classList.remove('loading');
-                        trackName.textContent = '⏳ Долгая загрузка...';
-                        trackName.classList.add('loading');
-                    }
-                }, 8000);
-                
-                audio.addEventListener('canplaythrough', function() {
-                    clearTimeout(timeoutId);
-                });
-                
-                return;
-            }
+            try {
+                if (isLoading) return;
+                if (!audio) { createAudio(); if (!audio) return; }
 
-            audio.play()
-                .then(() => { 
-                    isPlaying = true; updatePlayButton(true); updateTrackDisplay(); 
-                })
-                .catch((err) => {
-                    console.warn('Ошибка воспроизведения:', err);
-                    isLoaded = false;
-                    trackName.textContent = '🔄 Перезагрузка...';
-                    trackName.classList.add('loading');
-                    audio.load();
-                    setTimeout(() => {
-                        if (!isLoaded) {
-                            trackName.textContent = '🎵 Музыка недоступна';
-                            trackName.classList.add('error');
-                            updatePlayButton(false);
+                if (!isLoaded) {
+                    isLoading = true; playBtn.classList.add('loading');
+                    trackName.textContent = '⏳ Загрузка...'; trackName.classList.add('loading');
+                    try { audio.load(); } catch(e) {}
+
+                    const timeoutId = setTimeout(() => {
+                        if (isLoading) {
+                            isLoading = false; playBtn.classList.remove('loading');
+                            trackName.textContent = '⏳ Долгая загрузка...';
+                            trackName.classList.add('loading');
                         }
-                    }, 5000);
-                });
+                    }, 8000);
+
+                    audio.addEventListener('canplaythrough', function handler() {
+                        audio.removeEventListener('canplaythrough', handler);
+                        isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
+                        if (isPlaying) {
+                            try { audio.play().catch(() => {}); } catch(e) {}
+                        } else {
+                            trackName.textContent = '🎵 Включить музыку';
+                            trackName.classList.remove('loading'); trackName.classList.add('empty');
+                        }
+                        clearTimeout(timeoutId);
+                    });
+
+                    return;
+                }
+
+                audio.play()
+                    .then(() => { 
+                        isPlaying = true; updatePlayButton(true); updateTrackDisplay(); 
+                    })
+                    .catch((err) => {
+                        console.warn('Ошибка воспроизведения:', err);
+                        isLoaded = false;
+                        trackName.textContent = '🔄 Перезагрузка...';
+                        trackName.classList.add('loading');
+                        try { audio.load(); } catch(e) {}
+                        setTimeout(() => {
+                            if (!isLoaded) {
+                                trackName.textContent = '🎵 Музыка недоступна';
+                                trackName.classList.add('error');
+                                updatePlayButton(false);
+                            }
+                        }, 5000);
+                    });
+            } catch (e) {
+                console.warn('Ошибка в playSong:', e);
+            }
         }
 
         function pauseSong() { 
-            if (audio) { 
-                audio.pause(); 
-                isPlaying = false; 
-                updatePlayButton(false); 
-            } 
+            try {
+                if (audio) { 
+                    audio.pause(); 
+                    isPlaying = false; 
+                    updatePlayButton(false); 
+                }
+            } catch (e) {}
         }
-        
+
         function togglePlay() { 
-            isPlaying ? pauseSong() : playSong(); 
+            try {
+                isPlaying ? pauseSong() : playSong(); 
+            } catch (e) {}
         }
-        
+
         playBtn.addEventListener('click', togglePlay);
         trackName.textContent = '🎵 Включить музыку'; 
         trackName.classList.add('empty'); 
@@ -2231,21 +2171,42 @@
 
         // Управление громкостью
         volumeSlider.addEventListener('input', function() {
-            if (audio) audio.volume = parseFloat(this.value);
-            updateVolumeIcon(this.value);
+            try {
+                if (audio) audio.volume = parseFloat(this.value) || 0;
+                updateVolumeIcon(this.value);
+            } catch (e) {}
+        });
+
+        volumeIcon.addEventListener('click', function() {
+            try {
+                const currentVal = parseFloat(volumeSlider.value);
+                if (currentVal > 0) {
+                    volumeSlider.dataset.prevValue = currentVal;
+                    volumeSlider.value = 0;
+                    if (audio) audio.volume = 0;
+                    updateVolumeIcon(0);
+                } else {
+                    const prev = parseFloat(volumeSlider.dataset.prevValue) || 0.8;
+                    volumeSlider.value = prev;
+                    if (audio) audio.volume = prev;
+                    updateVolumeIcon(prev);
+                }
+            } catch (e) {}
         });
 
         function updateVolumeIcon(value) {
-            const v = parseFloat(value);
-            if (v === 0) {
-                volumeIcon.textContent = '🔇';
-            } else if (v < 0.3) {
-                volumeIcon.textContent = '🔈';
-            } else if (v < 0.7) {
-                volumeIcon.textContent = '🔉';
-            } else {
-                volumeIcon.textContent = '🔊';
-            }
+            try {
+                const v = parseFloat(value);
+                if (v === 0) {
+                    volumeIcon.textContent = '🔇';
+                } else if (v < 0.3) {
+                    volumeIcon.textContent = '🔈';
+                } else if (v < 0.7) {
+                    volumeIcon.textContent = '🔉';
+                } else {
+                    volumeIcon.textContent = '🔊';
+                }
+            } catch (e) {}
         }
         updateVolumeIcon(volumeSlider.value);
 
@@ -2253,34 +2214,20 @@
         //  TOAST
         // ============================================================
         function showToast(message, type = 'info') {
-            document.querySelectorAll('.toast').forEach(el => el.remove());
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(-50%) translateY(20px)';
-                toast.style.transition = 'all 0.4s ease';
-                setTimeout(() => toast.remove(), 500);
-            }, 3000);
+            try {
+                document.querySelectorAll('.toast').forEach(el => el.remove());
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(-50%) translateY(20px)';
+                    toast.style.transition = 'all 0.4s ease';
+                    setTimeout(() => toast.remove(), 500);
+                }, 3000);
+            } catch (e) {}
         }
-
-        // ============================================================
-        //  ОБРАБОТЧИКИ ОШИБОК
-        // ============================================================
-        window.addEventListener('error', function(e) {
-            console.error('Глобальная ошибка:', e);
-            showToast('Произошла ошибка. Пожалуйста, обновите страницу.', 'error');
-        });
-
-        window.addEventListener('online', function() {
-            showToast('Интернет восстановлен ✅', 'success');
-        });
-
-        window.addEventListener('offline', function() {
-            showToast('Потеряно соединение с интернетом ⚠️', 'error');
-        });
 
         // ============================================================
         //  ЗАЩИТА
@@ -2289,19 +2236,19 @@
             img.addEventListener('contextmenu', (e) => { e.preventDefault(); showToast('📸 Изображения защищены', 'info'); });
             img.setAttribute('draggable', 'false');
         });
-        document.addEventListener('copy', (e) => { e.preventDefault(); showToast('📝 Копирование запрещено', 'info'); });
-        document.addEventListener('selectstart', (e) => {
-            if (!e.target.closest('form') && !e.target.closest('input') && !e.target.closest('textarea')) e.preventDefault();
-        });
+
         document.addEventListener('contextmenu', (e) => {
             if (!e.target.closest('form') && !e.target.closest('button') && !e.target.closest('.link-btn')) {
-                e.preventDefault(); showToast('🔒 Просмотр кода защищён', 'info');
+                e.preventDefault();
+                showToast('🔒 Просмотр кода защищён', 'info');
             }
         });
+
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J')) ||
-                (e.ctrlKey && e.shiftKey && (e.key === 'c' || e.key === 'C'))) {
-                e.preventDefault(); showToast('🔒 Просмотр кода защищён', 'info'); return false;
+            if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'i' || e.key === 'I'))) {
+                e.preventDefault();
+                showToast('🔒 Просмотр кода защищён', 'info');
+                return false;
             }
         });
 
@@ -2312,10 +2259,26 @@
         const modalImg = document.getElementById('modalImage');
         document.querySelectorAll('.gallery-slide img').forEach(img => {
             img.style.cursor = 'pointer';
-            img.addEventListener('click', () => { modalImg.src = img.src; modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; });
+            img.addEventListener('click', () => {
+                try {
+                    modalImg.src = img.src;
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                } catch (e) {}
+            });
         });
-        modal.addEventListener('click', () => { modal.style.display = 'none'; document.body.style.overflow = 'auto'; });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.style.display === 'flex') { modal.style.display = 'none'; document.body.style.overflow = 'auto'; } });
+        modal.addEventListener('click', () => {
+            try {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            } catch (e) {}
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
 
         // ============================================================
         //  ТАЙМЕР
@@ -2377,7 +2340,6 @@
         //  ПОГОДА
         // ============================================================
         const weatherContent = document.getElementById('weatherContent');
-        const weatherUpdateTime = document.getElementById('weatherUpdateTime');
 
         function displayStaticWeather() {
             weatherContent.innerHTML = `
@@ -2393,7 +2355,6 @@
                 <div style="margin-top:6px;font-size:11px;color:#b09a8f;">📅 29 августа 2026, ~12:00</div>
                 <div class="weather-source">☀️ По данным Яндекс Погоды</div>
             `;
-            weatherUpdateTime.textContent = '';
         }
         displayStaticWeather();
 
@@ -2403,31 +2364,6 @@
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMsg = document.getElementById('successMessage');
-        const nameInput = document.getElementById('name');
-        const nameError = document.getElementById('nameError');
-        const nameGroup = document.getElementById('nameGroup');
-
-        // Валидация имени в реальном времени
-        nameInput.addEventListener('input', function() {
-            if (this.value.trim().length > 0) {
-                this.classList.remove('input-error');
-                nameError.classList.remove('show');
-            }
-        });
-
-        function validateForm() {
-            let isValid = true;
-            const name = nameInput.value.trim();
-            if (!name) {
-                nameInput.classList.add('input-error');
-                nameError.classList.add('show');
-                isValid = false;
-            } else {
-                nameInput.classList.remove('input-error');
-                nameError.classList.remove('show');
-            }
-            return isValid;
-        }
 
         function fireConfetti() {
             const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff6fb7', '#ff9f43', '#a29bfe', '#fd79a8', '#fdcb6e', '#00cec9'];
@@ -2453,10 +2389,8 @@
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            if (!validateForm()) {
-                showToast('Пожалуйста, заполните все обязательные поля 🙂', 'error');
-                return;
-            }
+            const name = document.getElementById('name').value.trim();
+            if (!name) { showToast('Пожалуйста, напишите ваше имя и имена гостей 🙂', 'error'); return; }
             submitBtn.disabled = true; submitBtn.textContent = '⏳ Отправляем...';
             try {
                 const formData = new FormData(form);
@@ -2498,34 +2432,7 @@
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
 
-        // ============================================================
-        //  SERVICE WORKER ДЛЯ PWA
-        // ============================================================
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js').catch(function(err) {
-                    console.warn('Service Worker не зарегистрирован:', err);
-                });
-            });
-        }
-
-        // ============================================================
-        //  ПРОВЕРКА ЗАГРУЗКИ ФОНА
-        // ============================================================
-        function checkBackgroundLoading() {
-            const hero = document.querySelector('.hero');
-            const bgImage = new Image();
-            bgImage.src = 'wedding-bg.jpg';
-            bgImage.onload = function() {
-                console.log('✅ Фон загружен: wedding-bg.jpg');
-            };
-            bgImage.onerror = function() {
-                console.warn('⚠️ Фон не загружен: wedding-bg.jpg');
-                hero.style.backgroundColor = '#f5ede8';
-                hero.style.backgroundImage = 'none';
-            };
-        }
-        setTimeout(checkBackgroundLoading, 1000);
+        console.log('✅ Сайт загружен со всеми анимациями!');
     </script>
 
 </body>
