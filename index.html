@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
     <title>Максим & Ульяна | Свадьба</title>
 
     <!-- Open Graph -->
@@ -31,8 +31,8 @@
 
         /* ===== КАСТОМНЫЙ СКРОЛЛ ===== */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: rgba(220, 207, 199, 0.3);
@@ -42,10 +42,6 @@
             background: linear-gradient(180deg, #b07c6a, #d4b8ab);
             border-radius: 10px;
             transition: all 0.3s ease;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #8a6555, #b07c6a);
-            transform: scale(1.1);
         }
         * {
             scrollbar-width: thin;
@@ -72,10 +68,6 @@
             overflow-x: hidden;
             width: 100%;
             max-width: 100vw;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         input, textarea, select {
@@ -107,19 +99,6 @@
             background-attachment: scroll;
             background-color: #f5ede8;
         }
-        @media (max-width: 768px) {
-            .hero {
-                background-image: url('wedding-bg.jpg');
-                background-attachment: scroll;
-            }
-        }
-        @media (max-width: 480px) {
-            .hero {
-                background-image: url('wedding-bg.jpg');
-                background-size: cover;
-                background-attachment: scroll;
-            }
-        }
 
         /* ===== ОТКЛЮЧЕНИЕ АНИМАЦИЙ ===== */
         @media (prefers-reduced-motion: reduce) {
@@ -150,7 +129,7 @@
         @keyframes blurIn { from { filter: blur(20px); opacity: 0; } to { filter: blur(0); opacity: 1; } }
 
         /* ============================================================ */
-        /* ===== 2. МИНИ-ПЛЕЕР С ВИЗУАЛИЗАЦИЕЙ ===== */
+        /* ===== ПЛЕЕР С ВИЗУАЛИЗАЦИЕЙ ===== */
         /* ============================================================ */
         .player-wrapper {
             margin: 18px 0 10px;
@@ -178,11 +157,6 @@
             transition: all 0.3s ease;
             will-change: transform;
             margin: 0 auto;
-        }
-        .player:hover {
-            border-color: rgba(176, 124, 106, 0.4);
-            background: rgba(255, 255, 255, 0.18);
-            transform: translateY(-2px);
         }
         .player .track-name {
             font-family: 'Playfair Display', serif;
@@ -255,20 +229,20 @@
         .equalizer.active span:nth-child(8) { animation-delay: 0.3s; }
 
         /* ============================================================ */
-        /* ===== 9. КНОПКА НАВЕРХ С ПРОГРЕССОМ ===== */
+        /* ===== КНОПКА НАВЕРХ С ПРОГРЕССОМ ===== */
         /* ============================================================ */
         #backToTop {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 56px;
-            height: 56px;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: linear-gradient(135deg, #b07c6a, #8a6555);
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 22px;
+            font-size: 20px;
             display: none;
             align-items: center;
             justify-content: center;
@@ -283,8 +257,8 @@
             position: absolute;
             top: -4px;
             left: -4px;
-            width: 64px;
-            height: 64px;
+            width: 56px;
+            height: 56px;
             transform: rotate(-90deg);
         }
         #backToTop .progress-ring circle {
@@ -297,8 +271,8 @@
         }
         #backToTop .progress-ring .progress {
             stroke: rgba(255,255,255,0.8);
-            stroke-dasharray: 188.5;
-            stroke-dashoffset: 188.5;
+            stroke-dasharray: 163.36;
+            stroke-dashoffset: 163.36;
             transition: stroke-dashoffset 0.1s ease;
         }
         #backToTop:hover {
@@ -319,7 +293,7 @@
         #backToTop:hover svg:not(.progress-ring) { transform: translateY(-2px); }
 
         /* ============================================================ */
-        /* ===== 11. АНИМИРОВАННЫЕ ИКОНКИ В РАЗДЕЛИТЕЛЯХ ===== */
+        /* ===== АНИМИРОВАННЫЕ ИКОНКИ В РАЗДЕЛИТЕЛЯХ ===== */
         /* ============================================================ */
         .divider .ornament {
             display: inline-block;
@@ -348,14 +322,8 @@
         }
 
         /* ============================================================ */
-        /* ===== 19. СКЕЛЕТОН ДЛЯ ЛЕНИВОЙ ЗАГРУЗКИ ===== */
+        /* ===== СКЕЛЕТОН ДЛЯ ЛЕНИВОЙ ЗАГРУЗКИ ===== */
         /* ============================================================ */
-        .skeleton {
-            background: linear-gradient(90deg, rgba(220, 207, 199, 0.3) 25%, rgba(220, 207, 199, 0.5) 50%, rgba(220, 207, 199, 0.3) 75%);
-            background-size: 200% 100%;
-            animation: skeletonPulse 1.5s ease-in-out infinite;
-            border-radius: 12px;
-        }
         .gallery-slide .skeleton-img {
             width: 100%;
             height: 600px;
@@ -367,7 +335,7 @@
         }
 
         /* ============================================================ */
-        /* ===== 7. ГАЛЕРЕЯ С АВТОПРОКРУТКОЙ ===== */
+        /* ===== ГАЛЕРЕЯ С АВТОПРОКРУТКОЙ ===== */
         /* ============================================================ */
         .gallery-container {
             position: relative;
@@ -383,9 +351,6 @@
             touch-action: pan-y;
         }
         .gallery-container:hover { box-shadow: 0 20px 60px rgba(176, 124, 106, 0.1); }
-        .gallery-container.paused .gallery-slide {
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
 
         .gallery-slide {
             display: flex;
@@ -411,7 +376,7 @@
         .gallery-slide img:hover { transform: scale(1.02); }
 
         /* ============================================================ */
-        /* ===== 12. МИНИ-ГАЛЕРЕЯ С ПРЕВЬЮ ПОД ФОТО ===== */
+        /* ===== МИНИ-ГАЛЕРЕЯ С ПРЕВЬЮ ===== */
         /* ============================================================ */
         .gallery-thumbs {
             display: flex;
@@ -442,15 +407,9 @@
             opacity: 1;
             transform: scale(1.05);
         }
-        @media (max-width: 600px) {
-            .gallery-thumbs .thumb {
-                width: 50px;
-                height: 38px;
-            }
-        }
 
         /* ============================================================ */
-        /* ===== 16. ЭФФЕКТ РАЗМЫТИЯ ПРИ ОТКРЫТИИ ФОТО ===== */
+        /* ===== ЭФФЕКТ РАЗМЫТИЯ ПРИ ОТКРЫТИИ ФОТО ===== */
         /* ============================================================ */
         .photo-modal {
             position: fixed;
@@ -461,7 +420,7 @@
             justify-content: center;
             z-index: 10000;
             cursor: pointer;
-            padding: 30px;
+            padding: 20px;
             animation: fadeInScale 0.3s ease forwards;
         }
         .photo-modal img {
@@ -478,7 +437,7 @@
         .container { 
             max-width: 900px; 
             margin: 0 auto; 
-            padding: 0 24px; 
+            padding: 0 16px; 
             width: 100%;
             overflow: visible;
         }
@@ -487,40 +446,40 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
-            margin: 10px 0 30px;
+            gap: 12px;
+            margin: 10px 0 20px;
             color: #c9a89b;
             font-size: 14px;
         }
         .divider .line {
             flex: 1;
             height: 1px;
-            max-width: 100px;
+            max-width: 80px;
             background: linear-gradient(90deg, transparent, #dccfc7, transparent);
         }
         .divider .ornament {
             font-family: 'Playfair Display', serif;
-            font-size: 20px;
+            font-size: 18px;
             color: #d4b8ab;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
         }
 
         .divider-ornate {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin: 8px 0 24px;
+            gap: 10px;
+            margin: 6px 0 16px;
         }
         .divider-ornate .line {
             flex: 1;
             height: 1px;
-            max-width: 80px;
+            max-width: 60px;
             background: linear-gradient(90deg, transparent, #dccfc7, transparent);
         }
         .divider-ornate .ornament {
             font-family: 'Great Vibes', cursive;
-            font-size: 24px;
+            font-size: 20px;
             color: #d4b8ab;
             transition: transform 0.4s ease, color 0.3s ease;
             display: inline-block;
@@ -529,10 +488,10 @@
 
         .petal-decor {
             text-align: center;
-            font-size: 28px;
+            font-size: 24px;
             color: #e8d5cc;
-            letter-spacing: 18px;
-            margin: -10px 0 10px;
+            letter-spacing: 14px;
+            margin: -8px 0 8px;
             opacity: 0.5;
             user-select: none;
         }
@@ -547,7 +506,7 @@
         .reveal.visible { opacity: 1; transform: translateY(0); }
         .reveal-left { 
             opacity: 0; 
-            transform: translateX(-40px); 
+            transform: translateX(-30px); 
             transition: opacity 0.6s ease, transform 0.6s ease; 
             will-change: transform, opacity;
             backface-visibility: hidden;
@@ -555,7 +514,7 @@
         .reveal-left.visible { opacity: 1; transform: translateX(0); }
         .reveal-right { 
             opacity: 0; 
-            transform: translateX(40px); 
+            transform: translateX(30px); 
             transition: opacity 0.6s ease, transform 0.6s ease; 
             will-change: transform, opacity;
             backface-visibility: hidden;
@@ -578,7 +537,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 40px 20px 70px;
+            padding: 30px 16px 60px;
             position: relative;
             overflow: hidden;
             background-image: url('wedding-bg.jpg');
@@ -592,40 +551,38 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(250, 247, 242, 0.75);
+            background: rgba(250, 247, 242, 0.7);
             z-index: 1;
         }
         .hero > * { position: relative; z-index: 2; }
 
         .hero-badge {
             font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            letter-spacing: 6px;
+            font-size: 12px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             color: #b07c6a;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
             font-weight: 400;
             opacity: 0;
             animation: fadeInScale 1s ease 0.2s forwards;
-            will-change: transform, opacity;
         }
 
         .hero-names {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(48px, 15vw, 120px);
+            font-size: clamp(56px, 12vw, 120px);
             font-weight: 400;
             line-height: 1.1;
             color: #3d2e2a;
-            margin-bottom: 8px;
-            letter-spacing: 4px;
+            margin-bottom: 6px;
+            letter-spacing: 3px;
             text-shadow: 0 0 40px rgba(176, 124, 106, 0.1);
         }
         .hero-names span {
             display: inline-block;
-            margin: 0 8px;
+            margin: 0 6px;
             opacity: 0;
             animation: fadeInScale 1.2s ease forwards;
-            will-change: transform, opacity;
         }
         .hero-names span:nth-child(1) { animation-delay: 0.3s; }
         .hero-names span:nth-child(2) { animation-delay: 0.6s; }
@@ -641,39 +598,37 @@
 
         .hero-date {
             font-family: 'Playfair Display', serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 400;
-            letter-spacing: 6px;
+            letter-spacing: 5px;
             color: #7a6257;
-            margin-top: 8px;
+            margin-top: 6px;
             opacity: 0;
             animation: fadeInScale 1s ease 1.2s forwards;
-            will-change: transform, opacity;
         }
         .hero-greeting {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(20px, 3vw, 36px);
+            font-size: clamp(20px, 3vw, 32px);
             font-weight: 600;
             font-style: italic;
             color: #b07c6a;
-            margin-top: 20px;
-            margin-bottom: 6px;
-            letter-spacing: 2px;
+            margin-top: 14px;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
             opacity: 0;
             animation: fadeInScale 1s ease 1.4s forwards;
-            will-change: transform, opacity;
         }
         .hero-sub {
-            margin-top: 10px;
-            font-size: 18px;
+            margin-top: 8px;
+            font-size: 16px;
             color: #5a423c;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             font-weight: 300;
             opacity: 0;
             animation: fadeInScale 1s ease 1.9s forwards;
             max-width: 600px;
             line-height: 1.8;
-            will-change: transform, opacity;
+            padding: 0 4px;
         }
         .hero-sub .highlight {
             font-family: 'Playfair Display', serif;
@@ -683,26 +638,22 @@
 
         .scroll-indicator {
             position: absolute;
-            bottom: 20px;
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
             color: #b07c6a;
-            font-size: 30px;
+            font-size: 24px;
             opacity: 0;
             animation: scrollIndicator 2s ease-in-out infinite, fadeInScale 1s ease 3s forwards;
             cursor: pointer;
             transition: color 0.3s ease, transform 0.3s ease;
         }
-        .scroll-indicator:hover {
-            color: #8a6555;
-            transform: translateX(-50%) scale(1.2);
-        }
 
         /* ===== ТАЙМЕР ===== */
         .timer-section {
-            margin: 30px auto 10px;
-            padding: 20px 16px;
+            margin: 20px auto 8px;
+            padding: 16px 14px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(16px);
             border-radius: 20px;
@@ -714,8 +665,6 @@
             opacity: 0;
             animation: fadeInScale 1s ease 2.1s forwards;
             box-shadow: 0 8px 30px rgba(0,0,0,0.04);
-            will-change: transform, opacity;
-            transition: all 0.3s ease;
             overflow: hidden;
         }
         .timer-section::before {
@@ -729,40 +678,39 @@
             animation: gradientShift 4s ease-in-out infinite;
             opacity: 0.3;
         }
-        .timer-section:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(176, 124, 106, 0.15); }
         .timer-section.finished { opacity: 0; transform: scale(0.9); pointer-events: none; }
         .timer-title {
             font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            letter-spacing: 4px;
+            font-size: 12px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             color: #b07c6a;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-weight: 400;
         }
         .timer-date {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(28px, 4vw, 44px);
+            font-size: clamp(24px, 4vw, 40px);
             font-weight: 400;
             color: #3d2e2a;
-            margin: 4px 0 8px;
+            margin: 3px 0 6px;
             letter-spacing: 2px;
         }
         .timer-divider {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            max-width: 200px;
-            margin: 0 auto 10px;
+            gap: 10px;
+            max-width: 160px;
+            margin: 0 auto 8px;
         }
         .timer-divider .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #dccfc7, transparent); }
-        .timer-divider .diamond { font-size: 14px; color: #d4b8ab; opacity: 0.6; }
-        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .timer-divider .diamond { font-size: 12px; color: #d4b8ab; opacity: 0.6; }
+        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
         .timer-item { text-align: center; }
         .timer-item .number {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(28px, 5vw, 42px);
+            font-size: clamp(22px, 5vw, 38px);
             font-weight: 900;
             line-height: 1.1;
             transition: all 0.3s ease;
@@ -772,12 +720,10 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: gradientShift 3s ease-in-out infinite;
-            will-change: transform;
         }
-        .timer-item .number:hover { transform: scale(1.08); }
         .timer-item .label {
-            font-size: 10px;
-            letter-spacing: 2px;
+            font-size: 9px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             color: #9a847a;
             margin-top: 2px;
@@ -785,8 +731,8 @@
 
         .final-message {
             display: none;
-            margin: 30px auto 10px;
-            padding: 30px 24px;
+            margin: 20px auto 8px;
+            padding: 20px 16px;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(12px);
             border-radius: 24px;
@@ -797,29 +743,27 @@
             z-index: 2;
             animation: fadeInScale 0.6s ease forwards;
             box-shadow: 0 8px 40px rgba(176, 124, 106, 0.08);
-            will-change: transform, opacity;
         }
         .final-message.show { display: block; }
         .final-message .big-text {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(32px, 6vw, 52px);
+            font-size: clamp(28px, 6vw, 48px);
             font-weight: 700;
             color: #b07c6a;
             line-height: 1.2;
         }
         .final-message .sub-text {
             font-family: 'Inter', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             color: #9a847a;
-            margin-top: 8px;
-            letter-spacing: 2px;
+            margin-top: 6px;
+            letter-spacing: 1.5px;
         }
         .final-message .emoji-big {
-            font-size: 48px;
+            font-size: 40px;
             display: block;
-            margin-top: 12px;
+            margin-top: 10px;
             animation: float 3s ease-in-out infinite;
-            will-change: transform;
         }
 
         /* ===== ИСТОРИЯ ===== */
@@ -845,7 +789,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 0;
+            padding: 16px 0;
             position: relative;
             width: 100%;
         }
@@ -856,14 +800,13 @@
             width: 44%;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(16px);
-            padding: 22px 26px;
+            padding: 18px 20px;
             border-radius: 18px;
             border: 2px solid rgba(220, 207, 199, 0.5);
             box-shadow: 0 4px 30px rgba(0,0,0,0.04);
             transition: all 0.3s ease;
             position: relative;
             z-index: 2;
-            will-change: transform;
         }
         .story-item .story-content:hover {
             transform: translateY(-6px) scale(1.02);
@@ -873,59 +816,56 @@
 
         .story-item .story-number {
             position: absolute;
-            top: -8px; right: -8px;
+            top: -6px; right: -6px;
             font-family: 'Playfair Display', serif;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: rgba(176, 124, 106, 0.2);
             letter-spacing: 1px;
             background: rgba(255,255,255,0.6);
-            padding: 2px 10px;
+            padding: 2px 8px;
             border-radius: 20px;
             backdrop-filter: blur(4px);
             border: 1px solid rgba(220, 207, 199, 0.3);
         }
 
         .story-item .story-year {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: #b07c6a;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .story-item .story-year .icon {
-            font-size: 26px;
+            font-size: 22px;
             background: rgba(176, 124, 106, 0.1);
-            padding: 6px;
+            padding: 5px;
             border-radius: 50%;
-            width: 42px; height: 42px;
+            width: 36px; height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: transform 0.3s ease;
+            flex-shrink: 0;
             animation: iconFloat 4s ease-in-out infinite;
-        }
-        .story-item .story-content:hover .story-year .icon { 
-            transform: scale(1.15) rotate(10deg); 
-            animation-play-state: paused;
         }
 
         .story-item .story-text {
-            font-size: 15px;
+            font-size: 14px;
             color: #5a423c;
             line-height: 1.7;
-            margin-top: 6px;
+            margin-top: 4px;
         }
         .story-item .story-text strong {
-            font-size: 17px;
+            font-size: 16px;
             color: #3d2e2a;
             display: block;
             margin-bottom: 2px;
         }
 
         .story-item .story-marker {
-            width: 16px; height: 16px;
+            width: 14px; height: 14px;
             background: #b07c6a;
             border-radius: 50%;
             border: 3px solid white;
@@ -935,12 +875,7 @@
             transform: translateX(-50%);
             z-index: 3;
             transition: all 0.3s ease;
-            will-change: transform;
             animation: markerPulse 2s ease-in-out infinite;
-        }
-        .story-item:hover .story-marker {
-            transform: translateX(-50%) scale(1.4);
-            box-shadow: 0 0 0 4px #b07c6a, 0 4px 20px rgba(176, 124, 106, 0.4);
         }
 
         /* ===== ПРОГРАММА ===== */
@@ -966,7 +901,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 8px 0;
             position: relative;
             width: 100%;
         }
@@ -977,14 +912,13 @@
             width: 42%;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(12px);
-            padding: 16px 22px;
+            padding: 14px 16px;
             border-radius: 16px;
             border: 2px solid rgba(220, 207, 199, 0.5);
             box-shadow: 0 2px 20px rgba(0,0,0,0.04);
             transition: all 0.3s ease;
             position: relative;
             z-index: 2;
-            will-change: transform;
             text-align: left;
         }
         .zigzag-item .event:hover {
@@ -993,27 +927,23 @@
             border-color: #b07c6a;
         }
         .zigzag-item .event .event-icon { 
-            font-size: 26px; 
+            font-size: 22px; 
             display: block; 
             margin-bottom: 2px;
             animation: iconFloat 4s ease-in-out infinite;
         }
-        .zigzag-item .event:hover .event-icon {
-            animation-play-state: paused;
-            transform: scale(1.2) rotate(10deg);
-        }
         .zigzag-item .event .event-time {
             font-family: 'Playfair Display', serif;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: #b07c6a;
             letter-spacing: 0.5px;
         }
-        .zigzag-item .event .event-title { font-weight: 600; font-size: 17px; color: #3d2e2a; margin: 2px 0; }
+        .zigzag-item .event .event-title { font-weight: 600; font-size: 16px; color: #3d2e2a; margin: 2px 0; }
         .zigzag-item .event .event-place { font-size: 13px; color: #9a847a; }
 
         .zigzag-item .marker {
-            width: 16px; height: 16px;
+            width: 14px; height: 14px;
             background: #b07c6a;
             border-radius: 50%;
             border: 3px solid white;
@@ -1023,17 +953,12 @@
             transform: translateX(-50%);
             z-index: 3;
             transition: all 0.3s ease;
-            will-change: transform;
             animation: markerPulse 2s ease-in-out infinite;
-        }
-        .zigzag-item:hover .marker {
-            transform: translateX(-50%) scale(1.4);
-            box-shadow: 0 0 0 4px #b07c6a, 0 4px 20px rgba(176, 124, 106, 0.4);
         }
 
         /* ===== СЕКЦИИ ===== */
         section { 
-            padding: 80px 0; 
+            padding: 50px 0 30px; 
             border-bottom: 1px solid rgba(220, 207, 199, 0.3); 
             position: relative;
             width: 100%;
@@ -1043,38 +968,37 @@
 
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 34px;
+            font-size: clamp(24px, 4vw, 34px);
             font-weight: 600;
             font-style: italic;
             text-align: center;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             color: #3d2e2a;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             transition: color 0.3s ease;
         }
-        .section-title:hover { color: #b07c6a; }
         .section-subtitle {
             font-family: 'Inter', sans-serif;
             text-align: center;
             color: #9a847a;
             font-weight: 300;
-            font-size: 16px;
-            margin-bottom: 48px;
-            letter-spacing: 3px;
+            font-size: 14px;
+            margin-bottom: 32px;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         /* ===== ДЕТАЛИ ===== */
         .details-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
             padding: 4px 0;
         }
         .detail-card {
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(16px);
-            padding: 32px 20px;
+            padding: 24px 16px;
             border-radius: 18px;
             text-align: center;
             box-shadow: 0 4px 30px rgba(0,0,0,0.03);
@@ -1082,8 +1006,6 @@
             position: relative;
             overflow: visible;
             border: 2px solid rgba(220, 207, 199, 0.5);
-            will-change: transform;
-            transform: translateZ(0);
         }
         .detail-card::before {
             content: '';
@@ -1110,46 +1032,44 @@
         }
         .detail-card:hover::after { opacity: 0; }
         .detail-card:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-8px) scale(1.02);
             box-shadow: 0 16px 50px rgba(176, 124, 106, 0.15);
             border-color: transparent;
             z-index: 10;
         }
         .detail-card .icon {
-            font-size: 28px;
+            font-size: 24px;
             color: #b07c6a;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
             display: block;
             transition: transform 0.3s ease;
-            will-change: transform;
         }
         .detail-card:hover .icon { transform: scale(1.2) rotate(10deg); }
         .detail-card h4 { 
             font-family: 'Playfair Display', serif; 
-            font-size: 20px; 
+            font-size: 18px; 
             font-weight: 600; 
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             transition: color 0.3s ease;
         }
         .detail-card:hover h4 { color: #b07c6a; }
-        .detail-card p { font-size: 14px; color: #7a6257; font-weight: 300; }
+        .detail-card p { font-size: 13px; color: #7a6257; font-weight: 300; }
 
         /* ===== ГАЛЕРЕЯ ===== */
-        .gallery-section { padding: 60px 0 40px; }
+        .gallery-section { padding: 40px 0 20px; }
         .gallery-dots {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            padding: 20px 0 0;
+            gap: 10px;
+            padding: 16px 0 0;
         }
         .gallery-dots span {
-            width: 10px; height: 10px;
+            width: 9px; height: 9px;
             border-radius: 50%;
             background: rgba(176, 124, 106, 0.25);
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid rgba(176, 124, 106, 0.1);
-            will-change: transform;
         }
         .gallery-dots span:hover { background: rgba(176, 124, 106, 0.4); transform: scale(1.2); }
         .gallery-dots span.active { background: #b07c6a; transform: scale(1.4); border-color: #b07c6a; }
@@ -1162,7 +1082,6 @@
             margin-top: 10px;
             border: 2px solid #dccfc7;
             transition: all 0.3s ease;
-            will-change: transform;
             width: 100%;
         }
         .map-container:hover {
@@ -1172,31 +1091,29 @@
         }
         .map-container iframe {
             width: 100%;
-            height: 400px;
+            height: 350px;
             border: none;
             display: block;
             transition: transform 0.4s ease;
         }
-        .map-container:hover iframe { transform: scale(1.01); }
 
         /* ===== КОНТАКТЫ ===== */
         .contacts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
             max-width: 500px;
             margin: 0 auto;
         }
         .contact-card {
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(12px);
-            padding: 24px 20px;
+            padding: 20px 16px;
             border-radius: 16px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
             transition: all 0.3s ease;
             border: 2px solid rgba(220, 207, 199, 0.5);
-            will-change: transform;
             position: relative;
         }
         .contact-card::before {
@@ -1224,62 +1141,61 @@
         }
         .contact-card:hover::after { opacity: 0; }
         .contact-card:hover {
-            transform: translateY(-8px) scale(1.03);
+            transform: translateY(-6px) scale(1.03);
             box-shadow: 0 12px 40px rgba(176, 124, 106, 0.12);
             border-color: transparent;
         }
         .contact-card .icon {
-            font-size: 34px;
+            font-size: 30px;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             transition: transform 0.3s ease;
-            will-change: transform;
             color: #b07c6a;
+            animation: iconFloat 4s ease-in-out infinite;
         }
         .contact-card:hover .icon { 
             transform: scale(1.2) rotate(5deg); 
+            animation-play-state: paused;
         }
         .contact-card .name { 
             font-family: 'Playfair Display', serif; 
             font-weight: 600; 
-            font-size: 18px; 
+            font-size: 17px; 
             color: #3d2e2a; 
         }
         .contact-card .phone {
-            font-size: 14px;
+            font-size: 13px;
             color: #7a6257;
             font-weight: 300;
             text-decoration: none;
             display: block;
-            margin-top: 4px;
+            margin-top: 3px;
             transition: color 0.3s ease;
         }
-        .contact-card .phone:hover { color: #b07c6a; }
 
         /* ===== СОЦСЕТИ ===== */
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 24px;
-            margin-top: 10px;
+            gap: 16px;
+            margin-top: 8px;
             flex-wrap: wrap;
         }
         .social-links a {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 28px;
+            gap: 10px;
+            padding: 10px 22px;
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(8px);
             border-radius: 40px;
             text-decoration: none;
             color: #3d2e2a;
             font-weight: 500;
-            font-size: 15px;
+            font-size: 14px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.04);
             transition: all 0.3s ease;
             border: 2px solid #dccfc7;
-            will-change: transform;
         }
         .social-links a:hover {
             transform: translateY(-4px) scale(1.04);
@@ -1287,14 +1203,13 @@
             border-color: #4a76a8;
         }
         .social-links a .vk-icon {
-            font-size: 22px;
+            font-size: 20px;
             color: #0077FF !important;
             transition: transform 0.3s ease;
             display: inline-block;
-            will-change: transform;
         }
         .social-links a:hover .vk-icon { transform: scale(1.15) rotate(-5deg); }
-        .social-links a span { font-size: 15px; font-weight: 500; color: #3d2e2a; }
+        .social-links a span { font-size: 14px; font-weight: 500; color: #3d2e2a; }
 
         /* ===== ПОГОДА ===== */
         .weather-card {
@@ -1302,7 +1217,7 @@
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(16px);
-            padding: 32px 28px;
+            padding: 24px 20px;
             border-radius: 20px;
             border: 2px solid #dccfc7;
             text-align: center;
@@ -1310,7 +1225,6 @@
             position: relative;
             overflow: hidden;
             animation: pulseGlow 3s ease-in-out infinite;
-            will-change: transform;
         }
         .weather-card:hover {
             transform: translateY(-4px);
@@ -1318,39 +1232,37 @@
             border-color: #b07c6a;
         }
         .weather-card .weather-icon {
-            font-size: 64px;
+            font-size: 48px;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             animation: float 3s ease-in-out infinite;
-            will-change: transform;
             transition: transform 0.4s ease;
             color: #b07c6a;
         }
         .weather-card:hover .weather-icon { transform: scale(1.1) rotate(10deg); }
         .weather-card .weather-temp {
             font-family: 'Playfair Display', serif;
-            font-size: 42px;
+            font-size: 36px;
             font-weight: 700;
             color: #3d2e2a;
         }
-        .weather-card .weather-temp sup { font-size: 20px; color: #b07c6a; }
-        .weather-card .weather-desc { font-size: 18px; color: #7a6257; margin-top: 2px; font-weight: 400; }
+        .weather-card .weather-temp sup { font-size: 18px; color: #b07c6a; }
+        .weather-card .weather-desc { font-size: 16px; color: #7a6257; margin-top: 2px; font-weight: 400; }
         .weather-card .weather-details {
             display: flex;
             justify-content: center;
-            gap: 32px;
-            margin-top: 14px;
-            font-size: 14px;
+            gap: 20px;
+            margin-top: 12px;
+            font-size: 13px;
             color: #9a847a;
+            flex-wrap: wrap;
         }
-        .weather-card .weather-details span { display: flex; align-items: center; gap: 6px; }
+        .weather-card .weather-details span { display: flex; align-items: center; gap: 5px; }
         .weather-card .weather-details .value { font-weight: 600; color: #3d2e2a; }
-        .weather-card .weather-update { font-size: 11px; color: #b09a8f; margin-top: 12px; letter-spacing: 0.5px; }
-        .weather-card .weather-loading { font-size: 15px; color: #9a847a; padding: 25px 0; }
-        .weather-card .weather-loading .spinner { display: inline-block; animation: float 1s ease-in-out infinite; will-change: transform; }
-        .weather-card .weather-error { font-size: 14px; color: #e74c3c; padding: 20px 0; }
-        .weather-card .weather-feels-like { font-size: 13px; color: #b09a8f; margin-top: 4px; }
-        .weather-card .weather-source { font-size: 11px; color: #b09a8f; margin-top: 8px; opacity: 0.7; }
+        .weather-card .weather-feels-like { font-size: 12px; color: #b09a8f; margin-top: 3px; }
+        .weather-card .weather-source { font-size: 10px; color: #b09a8f; margin-top: 6px; opacity: 0.7; }
+        .weather-card .weather-loading { font-size: 14px; color: #9a847a; padding: 20px 0; }
+        .weather-card .weather-loading .spinner { display: inline-block; animation: float 1s ease-in-out infinite; color: #b07c6a; }
 
         /* ===== RSVP ===== */
         .rsvp-wrapper {
@@ -1360,7 +1272,7 @@
             backdrop-filter: blur(20px);
             border-radius: 24px;
             border: 2px solid rgba(220, 207, 199, 0.5);
-            padding: 8px;
+            padding: 6px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.06);
             transition: all 0.3s ease;
         }
@@ -1372,7 +1284,7 @@
         .rsvp-header {
             background: linear-gradient(135deg, #b07c6a, #d4b8ab);
             border-radius: 18px 18px 0 0;
-            padding: 24px 28px;
+            padding: 20px 24px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -1388,22 +1300,22 @@
             pointer-events: none;
         }
         .rsvp-header .rsvp-icon {
-            font-size: 32px;
+            font-size: 28px;
             color: rgba(255,255,255,0.9);
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .rsvp-header h3 {
             font-family: 'Playfair Display', serif;
             color: white;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
             letter-spacing: 1px;
             position: relative;
         }
         .rsvp-header p {
             color: rgba(255,255,255,0.85);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 300;
             margin-top: 2px;
             letter-spacing: 0.5px;
@@ -1411,28 +1323,28 @@
         }
 
         .rsvp-body {
-            padding: 28px 28px 32px;
+            padding: 20px 20px 24px;
             background: rgba(255,255,255,0.3);
             border-radius: 0 0 18px 18px;
         }
 
         .rsvp-form { width: 100%; }
-        .form-group { margin-bottom: 18px; }
+        .form-group { margin-bottom: 16px; }
         .form-group label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             letter-spacing: 0.5px;
             color: #5a423c;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
         .form-group label .required { color: #c97a6a; margin-left: 2px; }
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 2px solid rgba(220, 207, 199, 0.5);
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14px;
             font-family: 'Inter', sans-serif;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(4px);
@@ -1446,24 +1358,23 @@
             box-shadow: 0 0 0 4px rgba(176, 124, 106, 0.08);
             transform: translateY(-1px);
         }
-        .form-group input::placeholder { color: #b09a8f; font-weight: 300; }
 
         .radio-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             padding-top: 4px;
         }
         .radio-group label {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-weight: 400;
-            font-size: 15px;
+            font-size: 14px;
             color: #3d2e2a;
             cursor: pointer;
             transition: all 0.3s ease;
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 10px;
             background: rgba(255,255,255,0.3);
             border: 2px solid transparent;
@@ -1474,16 +1385,16 @@
             color: #b07c6a;
         }
         .radio-group input[type="radio"] {
-            width: 18px; height: 18px;
+            width: 16px; height: 16px;
             accent-color: #b07c6a;
             flex-shrink: 0;
             cursor: pointer;
             margin: 0;
         }
         .radio-group .radio-icon {
-            font-size: 18px;
+            font-size: 16px;
             color: #b07c6a;
-            width: 24px;
+            width: 22px;
             text-align: center;
         }
         .radio-group label:has(input:checked) {
@@ -1493,12 +1404,12 @@
 
         .btn-submit {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: linear-gradient(135deg, #3d2e2a, #5a423c);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
@@ -1510,7 +1421,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
         .btn-submit::after {
             content: '';
@@ -1529,12 +1440,12 @@
         }
         .btn-submit:active { transform: scale(0.98); }
         .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
-        .btn-submit .btn-icon { font-size: 18px; }
+        .btn-submit .btn-icon { font-size: 16px; }
 
         .success-message {
             display: none;
             text-align: center;
-            padding: 30px 20px;
+            padding: 24px 16px;
             background: linear-gradient(135deg, rgba(176, 124, 106, 0.06), rgba(212, 184, 171, 0.06));
             border-radius: 16px;
             border: 2px solid rgba(176, 124, 106, 0.2);
@@ -1542,34 +1453,34 @@
             animation: scaleIn 0.5s ease forwards;
         }
         .success-message .icon {
-            font-size: 48px;
+            font-size: 40px;
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             animation: float 3s ease-in-out infinite;
             color: #b07c6a;
         }
         .success-message .title {
             font-family: 'Playfair Display', serif;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
             color: #3d2e2a;
         }
         .success-message .desc {
             color: #7a6257;
-            font-size: 14px;
+            font-size: 13px;
             margin-top: 4px;
         }
 
         /* ===== АЛКОГОЛЬ ===== */
         .gift-note {
             max-width: 550px;
-            margin: 16px auto 0;
-            padding: 18px 24px;
+            margin: 14px auto 0;
+            padding: 14px 18px;
             background: rgba(176, 124, 106, 0.08);
             border: 2px solid rgba(176, 124, 106, 0.25);
             border-radius: 16px;
             text-align: center;
-            font-size: 17px;
+            font-size: 15px;
             color: #3d2e2a;
             line-height: 1.6;
             transition: all 0.3s ease;
@@ -1582,7 +1493,7 @@
         }
         .gift-note .heart-icon { 
             color: #c97a6a; 
-            font-size: 20px;
+            font-size: 18px;
             display: inline-block;
             animation: heartbeat 1.5s ease-in-out infinite;
         }
@@ -1590,31 +1501,30 @@
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             color: #b07c6a;
-            font-size: 19px;
+            font-size: 17px;
         }
-        .gift-note .small-note { font-size: 14px; color: #9a847a; margin-top: 4px; }
+        .gift-note .small-note { font-size: 13px; color: #9a847a; margin-top: 3px; }
 
         /* ===== FOOTER ===== */
         .footer {
             text-align: center;
-            padding: 50px 0 40px;
-            font-size: 14px;
+            padding: 36px 0 24px;
+            font-size: 13px;
             color: #b09a8f;
             font-weight: 300;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
         }
         .footer .heart {
             color: #c97a6a;
-            font-size: 20px;
+            font-size: 18px;
             display: inline-block;
             animation: heartbeat 1.2s ease-in-out infinite;
-            margin: 0 4px;
-            will-change: transform;
+            margin: 0 3px;
         }
         .footer .copyright {
-            font-size: 12px;
+            font-size: 11px;
             color: #b09a8f;
-            margin-top: 6px;
+            margin-top: 5px;
             opacity: 0.7;
             letter-spacing: 0.5px;
         }
@@ -1629,18 +1539,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-top: 10px;
-            padding-top: 12px;
+            margin-top: 8px;
+            padding-top: 10px;
             border-top: 1px solid rgba(220, 207, 199, 0.3);
         }
         .footer-links .link-btn {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 4px 14px;
-            font-size: 11px;
+            gap: 4px;
+            padding: 3px 10px;
+            font-size: 10px;
             font-weight: 500;
             color: #9a847a;
             background: rgba(255, 255, 255, 0.3);
@@ -1658,7 +1568,7 @@
             color: #b07c6a;
             transform: translateY(-1px);
         }
-        .footer-links .link-btn .icon { font-size: 12px; color: #b07c6a; }
+        .footer-links .link-btn .icon { font-size: 11px; color: #b07c6a; }
         .footer-links .link-btn.secure {
             color: #7a9a7a;
             border-color: rgba(107, 203, 119, 0.3);
@@ -1679,13 +1589,13 @@
         /* ===== TOAST ===== */
         .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 14px 28px;
+            padding: 12px 20px;
             border-radius: 12px;
             font-family: 'Inter', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             z-index: 99999;
@@ -1693,216 +1603,267 @@
             text-align: center;
             animation: toastFadeIn 0.3s ease forwards;
             color: white;
-            will-change: transform, opacity;
         }
         .toast-info { background: #b07c6a; }
         .toast-success { background: #8aaa8a; }
         .toast-error { background: #cc8a7a; }
 
-        /* ============================================================ */
-        /* ===== АДАПТИВ ===== */
-        /* ============================================================ */
-        @media (max-width: 768px) {
-            ::-webkit-scrollbar { width: 5px; height: 5px; }
-            .container { padding: 0 16px; }
-            section { padding: 60px 0; }
-            .section-title { font-size: 28px; }
-            .section-subtitle { font-size: 14px; margin-bottom: 32px; }
-            .gallery-slide img, .gallery-slide .skeleton-img { height: 450px; }
-            .map-container iframe { height: 300px; }
-            .weather-card { padding: 24px 18px; }
-            .weather-card .weather-temp { font-size: 34px; }
-            .weather-card .weather-icon { font-size: 48px; }
-            .rsvp-wrapper { padding: 6px; }
-            .rsvp-header { padding: 20px 20px; }
-            .rsvp-header h3 { font-size: 20px; }
-            .rsvp-body { padding: 20px 20px 24px; }
-            .social-links a { padding: 10px 20px; font-size: 14px; }
-            .player { padding: 14px 20px 16px; max-width: 320px; }
-            .timer-section { padding: 16px 14px; }
-            .timer-item .number { font-size: 24px; }
-            .hero { padding: 30px 16px 60px; }
-            .hero-names { font-size: clamp(48px, 13vw, 80px); }
-            .divider .ornament { font-size: 18px; }
-            .divider .line { max-width: 60px; }
-            .details-grid { gap: 20px; }
-            .detail-card { padding: 24px 16px; }
-            .detail-card h4 { font-size: 18px; }
-            .detail-card .icon { font-size: 24px; }
-            .gallery-dots span { width: 8px; height: 8px; }
-            .weather-card .weather-details { gap: 20px; font-size: 13px; }
-            .divider-ornate .ornament { font-size: 20px; }
-            .divider-ornate .line { max-width: 50px; }
-            .final-message { padding: 24px 18px; }
-            .final-message .big-text { font-size: 28px; }
-            .final-message .emoji-big { font-size: 40px; }
-            .toast { font-size: 13px; padding: 12px 20px; bottom: 20px; }
-            #backToTop { bottom: 20px; right: 20px; width: 48px; height: 48px; }
-            #backToTop .progress-ring { width: 56px; height: 56px; }
-            .scroll-indicator { font-size: 24px; bottom: 15px; }
-            .radio-group label { font-size: 14px; padding: 8px 12px; }
-            .btn-submit { font-size: 15px; padding: 12px; }
-            .gallery-thumbs .thumb { width: 50px; height: 38px; }
-            .hero-date { font-size: 18px; }
-            .hero-greeting { font-size: clamp(20px, 3vw, 28px); }
-            .hero-sub { font-size: 16px; }
-            .story-item .story-year { font-size: 20px; }
-            .story-item .story-text { font-size: 14px; }
-            .story-item .story-text strong { font-size: 15px; }
-            .zigzag-item .event .event-time { font-size: 18px; }
-            .zigzag-item .event .event-title { font-size: 15px; }
-            .player-wrapper { max-width: 320px; }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
 
+        /* ============================================================ */
+        /* ===== АДАПТИВ ДЛЯ МОБИЛЬНЫХ ===== */
+        /* ============================================================ */
         @media (max-width: 600px) {
-            .hero-names span { display: block; margin: 2px 0; }
-            .hero-names .amp { display: inline-block; font-size: 0.8em; }
-            .hero-names { font-size: clamp(42px, 12vw, 64px); }
-            .details-grid { grid-template-columns: 1fr; }
-            .rsvp-wrapper { padding: 4px; border-radius: 18px; }
-            .rsvp-header { padding: 16px 16px; border-radius: 14px 14px 0 0; }
-            .rsvp-header h3 { font-size: 18px; }
-            .rsvp-header p { font-size: 12px; }
-            .rsvp-body { padding: 16px 16px 20px; }
-            .map-container iframe { height: 250px; }
-            .social-links a { padding: 8px 16px; font-size: 13px; gap: 8px; }
-            .social-links { gap: 16px; }
-            .contacts-grid { grid-template-columns: 1fr; }
-            .section-title { font-size: 24px; }
+            ::-webkit-scrollbar { width: 4px; height: 4px; }
+            
+            .container { padding: 0 12px; }
+            section { padding: 40px 0 24px; }
+            
+            .hero-names { 
+                font-size: clamp(48px, 12vw, 72px) !important; 
+                margin-bottom: 4px;
+            }
+            .hero-names span { 
+                display: inline-block; 
+                margin: 0 3px;
+            }
+            .hero-names .amp { 
+                display: inline-block; 
+                font-size: 0.7em;
+            }
             .hero-date { font-size: 16px; letter-spacing: 4px; }
-            .divider .line { max-width: 50px; }
-            .hero { background-attachment: scroll; padding: 24px 12px 60px; }
-            .timer-section { padding: 14px 10px; }
-            .timer-item .number { font-size: 22px; }
-            .timer-item .label { font-size: 8px; letter-spacing: 1px; }
-            .timer-date { font-size: 22px; }
-            .gallery-slide img, .gallery-slide .skeleton-img { height: 320px; }
-            .final-message { padding: 20px 14px; }
-            .final-message .big-text { font-size: 24px; }
-            .hero-greeting { font-size: clamp(18px, 4vw, 24px); }
+            .hero-greeting { font-size: 18px; }
             .hero-sub { font-size: 15px; }
-
+            .hero-badge { font-size: 10px; letter-spacing: 3px; }
+            .hero { padding: 20px 12px 50px; }
+            
+            .section-title { font-size: 24px; }
+            .section-subtitle { font-size: 13px; margin-bottom: 24px; }
+            
+            .gallery-slide img, .gallery-slide .skeleton-img { height: 320px !important; }
+            .gallery-thumbs .thumb { width: 40px; height: 32px; }
+            
             .player-wrapper { max-width: 280px; }
-            .player {
-                padding: 12px 16px 14px;
+            .player { 
+                padding: 10px 14px 12px; 
                 min-width: 160px;
                 max-width: 280px;
             }
-            .player .track-name { font-size: 14px; min-height: 24px; }
-            .player .track-name .artist { font-size: 12px; }
-            .player-controls button { width: 42px; height: 42px; }
-            .player-controls .btn-play svg { width: 20px; height: 20px; }
-            .equalizer { height: 24px; }
+            .player .track-name { font-size: 13px; min-height: 22px; }
+            .player .track-name .artist { font-size: 11px; }
+            .player-controls button { width: 38px; height: 38px; }
+            .player-controls .btn-play svg { width: 18px; height: 18px; }
+            .equalizer { height: 20px; }
             .equalizer span { width: 3px; }
-
-            .story-timeline::before { left: 20px; }
-            .story-item { flex-direction: column !important; align-items: flex-start; padding-left: 44px; gap: 4px; padding-top: 14px; padding-bottom: 14px; }
-            .story-item .story-content { width: 100%; padding: 14px 16px; }
-            .story-item .story-marker { left: 20px; transform: translateX(-50%); width: 14px; height: 14px; }
-            .story-item .story-number { font-size: 10px; top: -6px; right: -6px; padding: 1px 8px; }
-            .story-item .story-year .icon { font-size: 22px; width: 38px; height: 38px; }
-            .story-item .story-year { font-size: 20px; }
-            .story-item .story-text { font-size: 14px; }
-            .story-item .story-text strong { font-size: 15px; }
-            .story-item:hover .story-marker { transform: translateX(-50%) scale(1.2); }
-
-            .timeline-zigzag::before { left: 20px; }
-            .zigzag-item { flex-direction: column !important; align-items: flex-start; padding-left: 44px; gap: 4px; padding-top: 6px; padding-bottom: 6px; }
-            .zigzag-item .event { width: 100%; padding: 12px 14px; }
-            .zigzag-item .marker { left: 20px; transform: translateX(-50%); width: 14px; height: 14px; }
-            .zigzag-item .event .event-time { font-size: 18px; }
-            .zigzag-item .event .event-icon { font-size: 22px; }
-            .zigzag-item .event .event-title { font-size: 15px; }
-            .zigzag-item:hover .marker { transform: translateX(-50%) scale(1.2); }
-
-            #backToTop { bottom: 16px; right: 16px; width: 44px; height: 44px; }
-            #backToTop .progress-ring { width: 52px; height: 52px; }
-            #backToTop svg:not(.progress-ring) { width: 18px; height: 18px; }
-            .social-links a .vk-icon { font-size: 18px; }
-            .footer .heart { font-size: 17px; }
-            .weather-card .weather-temp { font-size: 30px; }
-            .weather-card .weather-icon { font-size: 44px; }
-            .weather-card .weather-details { flex-direction: column; gap: 6px; }
-            .weather-card { padding: 20px 16px; }
-            .photo-modal { padding: 15px; }
-            .contact-card .icon { font-size: 28px; }
-            .footer .copyright { font-size: 10px; }
-            .footer-links { gap: 8px; }
-            .footer-links .link-btn { font-size: 10px; padding: 3px 10px; }
-            .footer-links .divider-dot { width: 2px; height: 2px; }
-            .gift-note { padding: 14px 16px; font-size: 15px; }
-            .gift-note .highlight-text { font-size: 17px; }
-            .scroll-indicator { font-size: 20px; bottom: 12px; }
-            .container { padding: 0 12px; }
-            section { padding: 40px 0; }
-            .radio-group label { font-size: 13px; padding: 6px 10px; }
-            .radio-group .radio-icon { font-size: 16px; width: 20px; }
-            .btn-submit { font-size: 14px; padding: 10px; }
-            .btn-submit .btn-icon { font-size: 16px; }
-            .success-message .title { font-size: 20px; }
-            .success-message .icon { font-size: 40px; }
-            .form-group input, .form-group select { padding: 10px 14px; font-size: 14px; }
-            .gallery-thumbs .thumb { width: 40px; height: 32px; }
-            .detail-card h4 { font-size: 16px; }
+            
+            .timer-section { padding: 12px 10px; }
+            .timer-item .number { font-size: 20px; }
+            .timer-item .label { font-size: 8px; letter-spacing: 1px; }
+            .timer-date { font-size: 20px; }
+            
+            .map-container iframe { height: 220px; }
+            
+            .weather-card { padding: 18px 14px; }
+            .weather-card .weather-temp { font-size: 28px; }
+            .weather-card .weather-icon { font-size: 40px; }
+            .weather-card .weather-details { flex-direction: column; gap: 4px; }
+            
+            .rsvp-wrapper { padding: 4px; }
+            .rsvp-header { padding: 14px 16px; }
+            .rsvp-header h3 { font-size: 17px; }
+            .rsvp-header p { font-size: 11px; }
+            .rsvp-body { padding: 16px 14px 18px; }
+            
+            .details-grid { grid-template-columns: 1fr; gap: 16px; }
+            .detail-card { padding: 18px 14px; }
             .detail-card .icon { font-size: 22px; }
+            .detail-card h4 { font-size: 16px; }
             .detail-card p { font-size: 12px; }
-            .hero-badge { font-size: 11px; letter-spacing: 4px; }
+            
+            .social-links a { padding: 8px 14px; font-size: 12px; gap: 8px; }
+            .social-links { gap: 12px; }
+            .social-links a .vk-icon { font-size: 18px; }
+            
+            .contacts-grid { grid-template-columns: 1fr; gap: 16px; }
+            .contact-card { padding: 16px 14px; }
+            .contact-card .icon { font-size: 26px; }
+            .contact-card .name { font-size: 16px; }
+            
+            #backToTop { bottom: 14px; right: 14px; width: 40px; height: 40px; }
+            #backToTop .progress-ring { width: 48px; height: 48px; top: -4px; left: -4px; }
+            #backToTop svg:not(.progress-ring) { width: 18px; height: 18px; }
+            
+            .scroll-indicator { font-size: 18px; bottom: 10px; }
+            
+            .footer { padding: 24px 0 16px; font-size: 12px; }
+            .footer .heart { font-size: 16px; }
+            .footer .copyright { font-size: 10px; }
+            .footer-links { gap: 6px; }
+            .footer-links .link-btn { font-size: 9px; padding: 2px 8px; }
+            .footer-links .divider-dot { width: 2px; height: 2px; }
+            
+            .gift-note { font-size: 14px; padding: 12px 14px; }
+            .gift-note .highlight-text { font-size: 16px; }
+            .gift-note .small-note { font-size: 12px; }
+            
+            .final-message { padding: 16px 12px; }
+            .final-message .big-text { font-size: 24px; }
+            .final-message .emoji-big { font-size: 34px; }
+            .final-message .sub-text { font-size: 14px; }
+            
+            .toast { font-size: 12px; padding: 10px 16px; bottom: 14px; max-width: 95%; }
+            
+            .photo-modal { padding: 12px; }
+            
+            .divider { gap: 8px; margin: 8px 0 16px; }
+            .divider .line { max-width: 40px; }
+            .divider .ornament { font-size: 14px; }
+            
+            .divider-ornate .ornament { font-size: 16px; }
+            .divider-ornate .line { max-width: 30px; }
+            
+            .petal-decor { font-size: 18px; letter-spacing: 10px; }
+            
+            .btn-submit { font-size: 14px; padding: 10px; }
+            .btn-submit .btn-icon { font-size: 14px; }
+            
+            .form-group input, .form-group select { padding: 8px 12px; font-size: 13px; }
+            .radio-group label { font-size: 13px; padding: 6px 10px; }
+            .radio-group .radio-icon { font-size: 14px; width: 18px; }
+            
+            .success-message .title { font-size: 18px; }
+            .success-message .icon { font-size: 34px; }
+            
+            .story-timeline::before { left: 16px; }
+            .story-item { 
+                flex-direction: column !important; 
+                align-items: flex-start; 
+                padding-left: 36px; 
+                gap: 3px; 
+                padding-top: 12px; 
+                padding-bottom: 12px; 
+            }
+            .story-item .story-content { 
+                width: 100%; 
+                padding: 12px 14px; 
+            }
+            .story-item .story-marker { 
+                left: 16px; 
+                transform: translateX(-50%); 
+                width: 12px; 
+                height: 12px; 
+            }
+            .story-item .story-number { 
+                font-size: 9px; 
+                top: -5px; 
+                right: -5px; 
+                padding: 1px 6px; 
+            }
+            .story-item .story-year .icon { 
+                font-size: 18px; 
+                width: 30px; 
+                height: 30px; 
+            }
+            .story-item .story-year { font-size: 17px; }
+            .story-item .story-text { font-size: 13px; }
+            .story-item .story-text strong { font-size: 14px; }
+            
+            .timeline-zigzag::before { left: 16px; }
+            .zigzag-item { 
+                flex-direction: column !important; 
+                align-items: flex-start; 
+                padding-left: 36px; 
+                gap: 3px; 
+                padding-top: 6px; 
+                padding-bottom: 6px; 
+            }
+            .zigzag-item .event { 
+                width: 100%; 
+                padding: 10px 12px; 
+            }
+            .zigzag-item .marker { 
+                left: 16px; 
+                transform: translateX(-50%); 
+                width: 12px; 
+                height: 12px; 
+            }
+            .zigzag-item .event .event-time { font-size: 16px; }
+            .zigzag-item .event .event-icon { font-size: 18px; }
+            .zigzag-item .event .event-title { font-size: 14px; }
         }
 
         @media (max-width: 400px) {
-            .hero-names { font-size: clamp(34px, 12vw, 48px); }
+            .hero-names { font-size: clamp(36px, 11vw, 52px) !important; }
             .hero-date { font-size: 14px; letter-spacing: 3px; }
             .hero-greeting { font-size: 16px; }
             .hero-sub { font-size: 14px; line-height: 1.6; }
-            .section-title { font-size: 22px; }
-            .container { padding: 0 8px; }
-            section { padding: 30px 0; }
-            .gallery-slide img, .gallery-slide .skeleton-img { height: 260px; }
-            .map-container iframe { height: 200px; }
-            .weather-card .weather-temp { font-size: 26px; }
-            .weather-card .weather-icon { font-size: 38px; }
-            .timer-item .number { font-size: 18px; }
-            .timer-date { font-size: 20px; }
-            .player .track-name { font-size: 13px; }
-            .player-controls button { width: 38px; height: 38px; }
-            .player-controls .btn-play svg { width: 18px; height: 18px; }
-            .player { padding: 10px 14px 12px; max-width: 240px; }
-            .player-wrapper { max-width: 240px; }
-            .rsvp-wrapper { padding: 3px; border-radius: 14px; }
-            .rsvp-header { padding: 14px 14px; }
-            .rsvp-header h3 { font-size: 16px; }
-            .rsvp-body { padding: 14px 14px 16px; }
-            .detail-card { padding: 20px 14px; }
-            .detail-card .icon { font-size: 20px; }
-            .detail-card h4 { font-size: 15px; }
-            .zigzag-item .event { padding: 10px 12px; }
-            .zigzag-item .event .event-time { font-size: 16px; }
-            .zigzag-item .event .event-title { font-size: 14px; }
-            .story-item .story-content { padding: 12px 14px; }
-            .story-item .story-text { font-size: 13px; }
-            .story-item .story-text strong { font-size: 14px; }
-            .contact-card { padding: 16px 14px; }
-            .contact-card .icon { font-size: 24px; }
-            .contact-card .name { font-size: 16px; }
-            .gift-note { font-size: 14px; padding: 12px 14px; }
-            .gift-note .highlight-text { font-size: 16px; }
-            .final-message .big-text { font-size: 22px; }
-            .social-links a { font-size: 12px; padding: 6px 14px; }
-            .social-links a .vk-icon { font-size: 16px; }
-            #backToTop { bottom: 12px; right: 12px; width: 38px; height: 38px; }
-            #backToTop .progress-ring { width: 46px; height: 46px; }
-            #backToTop svg:not(.progress-ring) { width: 16px; height: 16px; }
-            .footer { padding: 30px 0 20px; font-size: 12px; }
-            .scroll-indicator { font-size: 18px; bottom: 10px; }
-            .gallery-slide img, .gallery-slide .skeleton-img { height: 220px; }
-            .radio-group label { font-size: 12px; padding: 5px 8px; }
-            .btn-submit { font-size: 13px; padding: 8px; }
-            .form-group input, .form-group select { padding: 8px 12px; font-size: 13px; }
+            .section-title { font-size: 20px; }
+            
+            .gallery-slide img, .gallery-slide .skeleton-img { height: 240px !important; }
             .gallery-thumbs .thumb { width: 32px; height: 26px; }
-            .hero-badge { font-size: 10px; letter-spacing: 3px; }
-            .divider .ornament { font-size: 14px; }
-            .divider .line { max-width: 30px; }
-            .divider { gap: 10px; }
+            
+            .player-wrapper { max-width: 220px; }
+            .player { padding: 8px 10px 10px; max-width: 220px; }
+            .player .track-name { font-size: 12px; min-height: 18px; }
+            .player .track-name .artist { font-size: 10px; }
+            .player-controls button { width: 32px; height: 32px; }
+            .player-controls .btn-play svg { width: 16px; height: 16px; }
+            .equalizer { height: 16px; gap: 2px; }
+            .equalizer span { width: 2px; }
+            
+            .timer-item .number { font-size: 16px; }
+            .timer-date { font-size: 18px; }
+            
+            .map-container iframe { height: 180px; }
+            
+            .weather-card .weather-temp { font-size: 24px; }
+            .weather-card .weather-icon { font-size: 34px; }
+            
+            .rsvp-header { padding: 12px 12px; }
+            .rsvp-header h3 { font-size: 15px; }
+            .rsvp-body { padding: 12px 10px 14px; }
+            
+            .detail-card { padding: 14px 10px; }
+            .detail-card .icon { font-size: 18px; }
+            .detail-card h4 { font-size: 14px; }
+            
+            .contact-card { padding: 12px 10px; }
+            .contact-card .icon { font-size: 22px; }
+            .contact-card .name { font-size: 14px; }
+            .contact-card .phone { font-size: 12px; }
+            
+            .social-links a { padding: 6px 12px; font-size: 11px; }
+            .social-links a .vk-icon { font-size: 16px; }
+            
+            #backToTop { bottom: 12px; right: 12px; width: 34px; height: 34px; }
+            #backToTop .progress-ring { width: 42px; height: 42px; }
+            #backToTop svg:not(.progress-ring) { width: 14px; height: 14px; }
+            
+            .scroll-indicator { font-size: 16px; bottom: 8px; }
+            
+            .footer { padding: 20px 0 14px; font-size: 11px; }
+            .footer-links .link-btn { font-size: 8px; padding: 2px 6px; }
+            
+            .gift-note { font-size: 13px; padding: 8px 10px; }
+            .gift-note .highlight-text { font-size: 14px; }
+            
+            .final-message .big-text { font-size: 20px; }
+            .final-message .emoji-big { font-size: 28px; }
+            
+            .form-group input, .form-group select { padding: 6px 10px; font-size: 12px; }
+            .radio-group label { font-size: 12px; padding: 4px 8px; }
+            .btn-submit { font-size: 13px; padding: 8px; }
+            
+            .story-item .story-content { padding: 10px 12px; }
+            .story-item .story-text { font-size: 12px; }
+            .story-item .story-text strong { font-size: 13px; }
+            
+            .zigzag-item .event { padding: 8px 10px; }
+            .zigzag-item .event .event-time { font-size: 14px; }
+            .zigzag-item .event .event-title { font-size: 13px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1938,7 +1899,6 @@
 
         <div class="hero-greeting">Дорогие родные и друзья!</div>
 
-        <!-- ===== ПЛЕЕР С ВИЗУАЛИЗАЦИЕЙ ===== -->
         <div class="player-wrapper">
             <div class="player">
                 <div class="track-name empty" id="trackName">🎵 Включить музыку</div>
@@ -1955,7 +1915,7 @@
             </div>
         </div>
 
-        <div class="divider" style="margin-top:6px;">
+        <div class="divider" style="margin-top:4px;">
             <span class="line"></span>
             <span class="ornament">✦ ✦ ✦</span>
             <span class="line"></span>
@@ -1977,7 +1937,7 @@
                 <span class="diamond">◆</span>
                 <span class="line"></span>
             </div>
-            <div class="timer-title" style="margin-top:8px;">До этого дня осталось</div>
+            <div class="timer-title" style="margin-top:6px;">До этого дня осталось</div>
             <div class="timer-grid">
                 <div class="timer-item"><div class="number" id="days">00</div><div class="label">Дней</div></div>
                 <div class="timer-item"><div class="number" id="hours">00</div><div class="label">Часов</div></div>
@@ -2070,7 +2030,7 @@
                 <div class="detail-card reveal-scale" style="transition-delay:0.2s;">
                     <span class="icon">😊</span>
                     <h4>Дресс-код: ваша улыбка!</h4>
-                    <p>Приходите в том, в чём вы чувствуете себя прекрасно.<br /><span style="font-size:13px;color:#b07c6a;font-style:italic;">P.S. Если решите нарядиться — будем рады!</span></p>
+                    <p>Приходите в том, в чём вы чувствуете себя прекрасно.<br /><span style="font-size:12px;color:#b07c6a;font-style:italic;">P.S. Если решите нарядиться — будем рады!</span></p>
                 </div>
             </div>
         </section>
@@ -2164,7 +2124,7 @@
             <div class="map-container reveal-scale">
                 <iframe src="https://yandex.ru/map-widget/v1/org/zeleny_mys/1799472245/?ll=41.913235%2C44.658006&utm_source=share&z=17" width="100%" height="400" frameborder="0" allowfullscreen="true" loading="lazy" style="border-radius:16px;"></iframe>
             </div>
-            <p style="text-align:center;margin-top:16px;font-size:14px;color:#9a847a;">📍 Откроется в Яндекс.Картах</p>
+            <p style="text-align:center;margin-top:14px;font-size:13px;color:#9a847a;">📍 Откроется в Яндекс.Картах</p>
         </section>
 
         <!-- ===== КОНТАКТЫ ===== -->
@@ -2228,7 +2188,7 @@
                     <div class="weather-loading"><span class="spinner">☀️</span><br>Загружаем прогноз погоды...</div>
                 </div>
             </div>
-            <p style="text-align:center;margin-top:12px;font-size:12px;color:#b09a8f;" id="weatherUpdateTime"></p>
+            <p style="text-align:center;margin-top:10px;font-size:11px;color:#b09a8f;" id="weatherUpdateTime"></p>
         </section>
 
         <!-- ===== RSVP ===== -->
@@ -2324,20 +2284,20 @@
                 <div class="small-note"><i class="fas fa-wine-bottle"></i> Ваше внимание — лучший подарок</div>
             </div>
 
-            <p style="text-align:center;margin-top:8px;font-size:13px;color:#b09a8f;"><i class="fas fa-heart" style="color:#c97a6a;"></i> Будем очень рады видеть вас!</p>
+            <p style="text-align:center;margin-top:6px;font-size:12px;color:#b09a8f;"><i class="fas fa-heart" style="color:#c97a6a;"></i> Будем очень рады видеть вас!</p>
         </section>
 
     </div>
 
     <footer class="footer">
-        <div class="divider-ornate" style="max-width:300px;margin:0 auto 20px;">
+        <div class="divider-ornate" style="max-width:300px;margin:0 auto 16px;">
             <span class="line"></span><span class="ornament">✧</span>
             <span class="line"></span><span class="ornament">✧</span>
             <span class="line"></span><span class="ornament">✧</span>
             <span class="line"></span>
         </div>
         <p>С любовью, <span class="heart"><i class="fas fa-heart"></i></span> Максим & Ульяна</p>
-        <p style="margin-top:8px;font-size:12px;opacity:0.6;">29.08.2026</p>
+        <p style="margin-top:6px;font-size:11px;opacity:0.6;">29.08.2026</p>
 
         <div class="footer-links">
             <button class="link-btn" onclick="showToast('👨‍💼 Каспарович Руслан Владиславович, г. Невинномысск', 'info')"><span class="icon"><i class="fas fa-copyright"></i></span> Права</button>
@@ -2352,11 +2312,11 @@
 
     <!-- ===== КНОПКА НАВЕРХ С ПРОГРЕССОМ ===== -->
     <button id="backToTop" aria-label="Наверх">
-        <svg class="progress-ring" viewBox="0 0 64 64">
-            <circle class="bg" cx="32" cy="32" r="30" />
-            <circle class="progress" id="progressCircle" cx="32" cy="32" r="30" />
+        <svg class="progress-ring" viewBox="0 0 56 56">
+            <circle class="bg" cx="28" cy="28" r="26" />
+            <circle class="progress" id="progressCircle" cx="28" cy="28" r="26" />
         </svg>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4L12 20M12 4L18 10M12 4L6 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
     </button>
@@ -2523,14 +2483,14 @@
         // ============================================================
         const backToTopBtn = document.getElementById('backToTop');
         const progressCircle = document.getElementById('progressCircle');
-        const circumference = 2 * Math.PI * 30;
+        const circumference = 2 * Math.PI * 26;
 
         window.addEventListener('scroll', function() {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
             
-            if (scrollTop > 500) {
+            if (scrollTop > 400) {
                 backToTopBtn.classList.add('show');
             } else {
                 backToTopBtn.classList.remove('show');
@@ -2772,7 +2732,7 @@
                     <span><i class="fas fa-droplet"></i> <span class="value">55</span>%</span>
                     <span><i class="fas fa-gauge-high"></i> <span class="value">728</span> мм рт.ст.</span>
                 </div>
-                <div style="margin-top:8px;font-size:12px;color:#b09a8f;"><i class="fas fa-calendar-day"></i> 29 августа 2026, ~12:00</div>
+                <div style="margin-top:6px;font-size:11px;color:#b09a8f;"><i class="fas fa-calendar-day"></i> 29 августа 2026, ~12:00</div>
                 <div class="weather-source"><i class="fas fa-sun"></i> По данным Яндекс Погоды</div>
             `;
             weatherUpdateTime.textContent = '';
@@ -2849,7 +2809,7 @@
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
 
-        console.log('✅ Сайт загружен со всеми улучшениями!');
+        console.log('✅ Сайт загружен!');
     </script>
 
 </body>
