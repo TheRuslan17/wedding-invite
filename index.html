@@ -47,10 +47,6 @@
             background: linear-gradient(180deg, #8a6555, #b07c6a);
             transform: scale(1.1);
         }
-        ::-webkit-scrollbar-thumb:active {
-            background: #8a6555;
-        }
-        /* Firefox */
         * {
             scrollbar-width: thin;
             scrollbar-color: #b07c6a rgba(220, 207, 199, 0.3);
@@ -76,6 +72,10 @@
             overflow-x: hidden;
             width: 100%;
             max-width: 100vw;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         input, textarea, select {
@@ -143,128 +143,402 @@
         @keyframes spinOrnament { from { transform: rotate(0deg) scale(1); } to { transform: rotate(360deg) scale(1.1); } }
         @keyframes markerPulse { 0%, 100% { box-shadow: 0 0 0 2px #b07c6a, 0 2px 12px rgba(176, 124, 106, 0.25); } 50% { box-shadow: 0 0 0 6px rgba(176, 124, 106, 0.15), 0 4px 20px rgba(176, 124, 106, 0.3); } }
         @keyframes imageFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        @keyframes loaderPulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.05); opacity: 1; } }
-        @keyframes iconFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.05); } }
         @keyframes scrollIndicator { 0%, 100% { opacity: 1; transform: translateY(0); } 50% { opacity: 0.5; transform: translateY(8px); } }
+        @keyframes iconFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-8px) rotate(5deg); } }
+        @keyframes equalize { from { height: 4px; } to { height: 30px; } }
+        @keyframes skeletonPulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        @keyframes blurIn { from { filter: blur(20px); opacity: 0; } to { filter: blur(0); opacity: 1; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ===== ПРОГРЕСС-БАР ЗАГРУЗКИ ===== */
-        .loader {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: rgba(176, 124, 106, 0.1);
-            z-index: 999999;
-            pointer-events: none;
-        }
-        .loader-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #b07c6a, #d4b8ab);
-            transition: width 0.3s ease;
-            animation: loaderPulse 1.5s ease-in-out infinite;
-        }
-
-        /* ===== ИНДИКАТОР ПРОКРУТКИ ===== */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
-            color: #b07c6a;
-            font-size: 24px;
-            animation: scrollIndicator 2s ease-in-out infinite;
+        /* ============================================================ */
+        /* ===== 2. МИНИ-ПЛЕЕР С ВИЗУАЛИЗАЦИЕЙ ===== */
+        /* ============================================================ */
+        .player-wrapper {
+            margin: 18px 0 10px;
             opacity: 0;
-            animation: scrollIndicator 2s ease-in-out infinite, fadeInScale 1s ease 2.5s forwards;
-            cursor: pointer;
+            animation: fadeInScale 1s ease 1.7s forwards;
+            will-change: transform, opacity;
+            width: 100%;
+            max-width: 380px;
         }
-        .scroll-indicator:hover {
-            transform: translateX(-50%) scale(1.2);
-            color: #8a6555;
+        .player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(220, 207, 199, 0.5);
+            padding: 16px 28px 18px;
+            border-radius: 16px;
+            min-width: 220px;
+            max-width: 380px;
+            width: 100%;
+            transition: all 0.3s ease;
+            will-change: transform;
+        }
+        .player:hover {
+            border-color: rgba(176, 124, 106, 0.4);
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+        }
+        .player .track-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #3d2e2a;
+            text-align: center;
+            min-height: 28px;
+            line-height: 1.3;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+        }
+        .player .track-name .artist { font-weight: 400; color: #9a847a; font-size: 14px; }
+        .player .track-name.empty { color: #b09a8f; font-weight: 400; font-size: 15px; font-family: 'Inter', sans-serif; }
+        .player .track-name.loading { color: #b07c6a; font-weight: 500; font-size: 14px; }
+        .player .track-name.error { color: #e74c3c; font-weight: 400; font-size: 14px; }
+        .player-controls { 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+            width: 100%;
+            justify-content: center;
+        }
+        .player-controls button {
+            background: none; border: none; cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: rgba(176, 124, 106, 0.15);
+            border: 1.5px solid rgba(176, 124, 106, 0.2);
+            color: #b07c6a;
+            will-change: transform;
+        }
+        .player-controls button:hover { background: rgba(176, 124, 106, 0.25); border-color: #b07c6a; transform: scale(1.08); }
+        .player-controls button:active { transform: scale(0.92); }
+        .player-controls .btn-play svg { width: 24px; height: 24px; fill: currentColor; transition: transform 0.3s ease; }
+        .player-controls .btn-play.playing { background: rgba(176, 124, 106, 0.25); border-color: #b07c6a; }
+        .player-controls .btn-play.loading { background: rgba(176, 124, 106, 0.1); border-color: rgba(176, 124, 106, 0.3); cursor: wait; }
+
+        .equalizer {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 30px;
+            margin-left: 8px;
+        }
+        .equalizer span {
+            display: block;
+            width: 4px;
+            height: 4px;
+            background: #b07c6a;
+            border-radius: 2px;
+            transition: height 0.2s ease;
+        }
+        .equalizer.active span {
+            animation: equalize 0.6s ease-in-out infinite alternate;
+        }
+        .equalizer.active span:nth-child(1) { animation-delay: 0.1s; }
+        .equalizer.active span:nth-child(2) { animation-delay: 0.2s; }
+        .equalizer.active span:nth-child(3) { animation-delay: 0.3s; }
+        .equalizer.active span:nth-child(4) { animation-delay: 0.15s; }
+        .equalizer.active span:nth-child(5) { animation-delay: 0.25s; }
+        .equalizer.active span:nth-child(6) { animation-delay: 0.35s; }
+        .equalizer.active span:nth-child(7) { animation-delay: 0.2s; }
+        .equalizer.active span:nth-child(8) { animation-delay: 0.3s; }
+
+        /* ============================================================ */
+        /* ===== 9. КНОПКА НАВЕРХ С ПРОГРЕССОМ ===== */
+        /* ============================================================ */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #b07c6a, #8a6555);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 22px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(176, 124, 106, 0.3);
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding: 0;
+            will-change: transform;
+            opacity: 0;
+        }
+        #backToTop .progress-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 64px;
+            height: 64px;
+            transform: rotate(-90deg);
+        }
+        #backToTop .progress-ring circle {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+        #backToTop .progress-ring .bg {
+            stroke: rgba(255,255,255,0.15);
+        }
+        #backToTop .progress-ring .progress {
+            stroke: rgba(255,255,255,0.8);
+            stroke-dasharray: 188.5;
+            stroke-dashoffset: 188.5;
+            transition: stroke-dashoffset 0.1s ease;
+        }
+        #backToTop:hover {
+            transform: scale(1.15) translateY(-4px);
+            box-shadow: 0 8px 40px rgba(176, 124, 106, 0.5);
+        }
+        #backToTop:active { transform: scale(0.9); }
+        #backToTop.show {
+            display: flex !important;
+            animation: fadeInUp 0.4s ease forwards !important;
+            opacity: 1 !important;
+        }
+        #backToTop svg:not(.progress-ring) { 
+            transition: transform 0.3s ease; 
+            position: relative; 
+            z-index: 1; 
+        }
+        #backToTop:hover svg:not(.progress-ring) { transform: translateY(-2px); }
+
+        /* ============================================================ */
+        /* ===== 11. АНИМИРОВАННЫЕ ИКОНКИ В РАЗДЕЛИТЕЛЯХ ===== */
+        /* ============================================================ */
+        .divider .ornament {
+            display: inline-block;
+            animation: iconFloat 4s ease-in-out infinite;
+            transition: transform 0.5s ease, color 0.3s ease;
+            will-change: transform;
+        }
+        .divider:hover .ornament {
+            animation: spinOrnament 0.7s ease forwards, iconFloat 4s ease-in-out infinite;
+            color: #b07c6a;
+        }
+        .divider-ornate .ornament {
+            display: inline-block;
+            animation: iconFloat 4s ease-in-out infinite;
+            transition: transform 0.4s ease, color 0.3s ease;
+            will-change: transform;
+        }
+        .divider-ornate:hover .ornament {
+            transform: scale(1.3) rotate(10deg);
+            color: #b07c6a;
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+        .petal-decor {
+            animation: iconFloat 4s ease-in-out infinite;
+            will-change: transform;
         }
 
-        /* ===== КОНТЕЙНЕР ===== */
+        /* ============================================================ */
+        /* ===== 19. СКЕЛЕТОН ДЛЯ ЛЕНИВОЙ ЗАГРУЗКИ ===== */
+        /* ============================================================ */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(220, 207, 199, 0.3) 25%, rgba(220, 207, 199, 0.5) 50%, rgba(220, 207, 199, 0.3) 75%);
+            background-size: 200% 100%;
+            animation: skeletonPulse 1.5s ease-in-out infinite;
+            border-radius: 12px;
+        }
+        .gallery-slide .skeleton-img {
+            width: 100%;
+            height: 600px;
+            flex-shrink: 0;
+            background: linear-gradient(90deg, rgba(220, 207, 199, 0.3) 25%, rgba(220, 207, 199, 0.5) 50%, rgba(220, 207, 199, 0.3) 75%);
+            background-size: 200% 100%;
+            animation: skeletonPulse 1.5s ease-in-out infinite;
+            border-radius: 0;
+        }
+
+        /* ============================================================ */
+        /* ===== 7. ГАЛЕРЕЯ С АВТОПРОКРУТКОЙ ===== */
+        /* ============================================================ */
+        .gallery-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 16px 60px rgba(0,0,0,0.06);
+            border: 2px solid #dccfc7;
+            background: #e8ddd5;
+            transition: box-shadow 0.3s ease;
+            transform: translateZ(0);
+            touch-action: pan-y;
+        }
+        .gallery-container:hover { box-shadow: 0 20px 60px rgba(176, 124, 106, 0.1); }
+        .gallery-container.paused .gallery-slide {
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .gallery-slide {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        .gallery-slide img {
+            display: block;
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            flex-shrink: 0;
+            transition: transform 0.4s ease, opacity 0.6s ease;
+            cursor: pointer;
+            will-change: transform;
+            opacity: 0;
+            animation: imageFade 0.6s ease forwards;
+        }
+        .gallery-slide img.loaded {
+            opacity: 1;
+        }
+        .gallery-slide img:hover { transform: scale(1.02); }
+
+        /* ============================================================ */
+        /* ===== 12. МИНИ-ГАЛЕРЕЯ С ПРЕВЬЮ ПОД ФОТО ===== */
+        /* ============================================================ */
+        .gallery-thumbs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 0 0;
+            overflow-x: visible;
+            max-width: 100%;
+            flex-wrap: wrap;
+        }
+        .gallery-thumbs .thumb {
+            width: 60px;
+            height: 45px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+        .gallery-thumbs .thumb:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        .gallery-thumbs .thumb.active {
+            border-color: #b07c6a;
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        @media (max-width: 600px) {
+            .gallery-thumbs .thumb {
+                width: 50px;
+                height: 38px;
+            }
+        }
+
+        /* ============================================================ */
+        /* ===== 16. ЭФФЕКТ РАЗМЫТИЯ ПРИ ОТКРЫТИИ ФОТО ===== */
+        /* ============================================================ */
+        .photo-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
+            padding: 30px;
+            animation: fadeInScale 0.3s ease forwards;
+        }
+        .photo-modal img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 12px;
+            object-fit: contain;
+            animation: blurIn 0.5s ease forwards;
+        }
+
+        /* ============================================================ */
+        /* ===== ОСТАЛЬНЫЕ СТИЛИ ===== */
+        /* ============================================================ */
         .container { 
             max-width: 900px; 
             margin: 0 auto; 
-            padding: 0 16px; 
+            padding: 0 24px; 
             width: 100%;
             overflow: visible;
         }
 
-        /* ===== РАЗДЕЛИТЕЛИ ===== */
         .divider {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin: 8px 0 20px;
+            gap: 16px;
+            margin: 10px 0 30px;
             color: #c9a89b;
             font-size: 14px;
         }
         .divider .line {
             flex: 1;
             height: 1px;
-            max-width: 80px;
+            max-width: 100px;
             background: linear-gradient(90deg, transparent, #dccfc7, transparent);
         }
         .divider .ornament {
             font-family: 'Playfair Display', serif;
-            font-size: 18px;
+            font-size: 20px;
             color: #d4b8ab;
-            letter-spacing: 3px;
-            display: inline-block;
-            transition: transform 0.5s ease, color 0.3s ease;
-            will-change: transform;
-        }
-        .divider:hover .ornament {
-            animation: spinOrnament 0.7s ease forwards;
-            color: #b07c6a;
+            letter-spacing: 4px;
         }
 
         .divider-ornate {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin: 6px 0 16px;
+            gap: 12px;
+            margin: 8px 0 24px;
         }
         .divider-ornate .line {
             flex: 1;
             height: 1px;
-            max-width: 60px;
+            max-width: 80px;
             background: linear-gradient(90deg, transparent, #dccfc7, transparent);
         }
         .divider-ornate .ornament {
             font-family: 'Great Vibes', cursive;
-            font-size: 20px;
+            font-size: 24px;
             color: #d4b8ab;
             transition: transform 0.4s ease, color 0.3s ease;
             display: inline-block;
             will-change: transform;
         }
-        .divider-ornate:hover .ornament {
-            transform: scale(1.3) rotate(10deg);
-            color: #b07c6a;
-        }
 
         .petal-decor {
             text-align: center;
-            font-size: 24px;
+            font-size: 28px;
             color: #e8d5cc;
-            letter-spacing: 14px;
-            margin: -8px 0 8px;
+            letter-spacing: 18px;
+            margin: -10px 0 10px;
             opacity: 0.5;
             user-select: none;
-            animation: float 4s ease-in-out infinite;
-            will-change: transform;
         }
 
-        /* ===== ПОЯВЛЕНИЕ ПРИ СКРОЛЛЕ ===== */
         .reveal { 
             opacity: 0; 
             transform: translateY(40px); 
-            transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            transition: opacity 0.6s ease, transform 0.6s ease; 
             will-change: transform, opacity; 
             backface-visibility: hidden;
         }
@@ -272,7 +546,7 @@
         .reveal-left { 
             opacity: 0; 
             transform: translateX(-40px); 
-            transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            transition: opacity 0.6s ease, transform 0.6s ease; 
             will-change: transform, opacity;
             backface-visibility: hidden;
         }
@@ -280,7 +554,7 @@
         .reveal-right { 
             opacity: 0; 
             transform: translateX(40px); 
-            transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            transition: opacity 0.6s ease, transform 0.6s ease; 
             will-change: transform, opacity;
             backface-visibility: hidden;
         }
@@ -288,19 +562,12 @@
         .reveal-scale { 
             opacity: 0; 
             transform: scale(0.9); 
-            transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            transition: opacity 0.6s ease, transform 0.6s ease; 
             will-change: transform, opacity;
             backface-visibility: hidden;
         }
         .reveal-scale.visible { opacity: 1; transform: scale(1); }
 
-        /* ===== СТИЛИЗОВАННЫЕ ИКОНКИ ===== */
-        .icon-heart { color: #b07c6a; display: inline-block; animation: iconFloat 3s ease-in-out infinite; }
-        .icon-heart-red { color: #c97a6a; display: inline-block; animation: iconFloat 3s ease-in-out infinite; }
-        .icon-sm { font-size: 14px; color: #b07c6a; }
-        .icon-md { font-size: 18px; color: #b07c6a; }
-
-        /* ===== HERO ===== */
         .hero {
             min-height: 100vh;
             min-height: 100dvh;
@@ -309,7 +576,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 30px 16px 60px;
+            padding: 40px 20px 70px;
             position: relative;
             overflow: hidden;
             background-image: url('wedding-bg.jpg');
@@ -323,18 +590,18 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(250, 247, 242, 0.4);
+            background: rgba(250, 247, 242, 0.75);
             z-index: 1;
         }
         .hero > * { position: relative; z-index: 2; }
 
         .hero-badge {
             font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            letter-spacing: 4px;
+            font-size: 13px;
+            letter-spacing: 6px;
             text-transform: uppercase;
             color: #b07c6a;
-            margin-bottom: 14px;
+            margin-bottom: 20px;
             font-weight: 400;
             opacity: 0;
             animation: fadeInScale 1s ease 0.2s forwards;
@@ -343,17 +610,17 @@
 
         .hero-names {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(48px, 15vw, 120px);
+            font-size: clamp(64px, 18vw, 120px);
             font-weight: 400;
             line-height: 1.1;
             color: #3d2e2a;
-            margin-bottom: 6px;
-            letter-spacing: 3px;
+            margin-bottom: 8px;
+            letter-spacing: 4px;
             text-shadow: 0 0 40px rgba(176, 124, 106, 0.1);
         }
         .hero-names span {
             display: inline-block;
-            margin: 0 6px;
+            margin: 0 8px;
             opacity: 0;
             animation: fadeInScale 1.2s ease forwards;
             will-change: transform, opacity;
@@ -372,40 +639,39 @@
 
         .hero-date {
             font-family: 'Playfair Display', serif;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 400;
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             color: #7a6257;
-            margin-top: 6px;
+            margin-top: 8px;
             opacity: 0;
             animation: fadeInScale 1s ease 1.2s forwards;
             will-change: transform, opacity;
         }
         .hero-greeting {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(20px, 3vw, 32px);
+            font-size: clamp(24px, 3vw, 36px);
             font-weight: 600;
             font-style: italic;
             color: #b07c6a;
-            margin-top: 14px;
-            margin-bottom: 4px;
-            letter-spacing: 1px;
+            margin-top: 20px;
+            margin-bottom: 6px;
+            letter-spacing: 2px;
             opacity: 0;
             animation: fadeInScale 1s ease 1.4s forwards;
             will-change: transform, opacity;
         }
         .hero-sub {
-            margin-top: 8px;
-            font-size: 16px;
+            margin-top: 10px;
+            font-size: 18px;
             color: #5a423c;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
             font-weight: 300;
             opacity: 0;
             animation: fadeInScale 1s ease 1.9s forwards;
             max-width: 600px;
             line-height: 1.8;
             will-change: transform, opacity;
-            padding: 0 4px;
         }
         .hero-sub .highlight {
             font-family: 'Playfair Display', serif;
@@ -420,7 +686,7 @@
             transform: translateX(-50%);
             z-index: 3;
             color: #b07c6a;
-            font-size: 28px;
+            font-size: 30px;
             opacity: 0;
             animation: scrollIndicator 2s ease-in-out infinite, fadeInScale 1s ease 3s forwards;
             cursor: pointer;
@@ -431,76 +697,10 @@
             transform: translateX(-50%) scale(1.2);
         }
 
-        /* ===== ПЛЕЕР ===== */
-        .player-wrapper {
-            margin: 14px 0 8px;
-            opacity: 0;
-            animation: fadeInScale 1s ease 1.7s forwards;
-            will-change: transform, opacity;
-            width: 100%;
-            max-width: 280px;
-        }
-        .player {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(220, 207, 199, 0.5);
-            padding: 10px 16px 12px;
-            border-radius: 14px;
-            width: 100%;
-            transition: all 0.3s ease;
-            will-change: transform;
-        }
-        .player:hover {
-            border-color: rgba(176, 124, 106, 0.4);
-            background: rgba(255, 255, 255, 0.18);
-            transform: translateY(-2px);
-        }
-        .player .track-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 13px;
-            font-weight: 600;
-            color: #3d2e2a;
-            text-align: center;
-            min-height: 20px;
-            line-height: 1.3;
-            letter-spacing: 0.3px;
-            transition: all 0.3s ease;
-            word-break: break-word;
-        }
-        .player .track-name .artist { font-weight: 400; color: #9a847a; font-size: 11px; }
-        .player .track-name.empty { color: #b09a8f; font-weight: 400; font-size: 12px; font-family: 'Inter', sans-serif; }
-        .player .track-name.loading { color: #b07c6a; font-weight: 500; font-size: 12px; }
-        .player .track-name.error { color: #e74c3c; font-weight: 400; font-size: 12px; }
-        .player-controls { display: flex; align-items: center; justify-content: center; }
-        .player-controls button {
-            background: none; border: none; cursor: pointer;
-            padding: 4px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            background: rgba(176, 124, 106, 0.15);
-            border: 1.5px solid rgba(176, 124, 106, 0.2);
-            color: #b07c6a;
-            will-change: transform;
-        }
-        .player-controls button:hover { background: rgba(176, 124, 106, 0.25); border-color: #b07c6a; transform: scale(1.08); }
-        .player-controls button:active { transform: scale(0.92); }
-        .player-controls .btn-play svg { width: 20px; height: 20px; fill: currentColor; transition: transform 0.3s ease; }
-        .player-controls .btn-play.playing { background: rgba(176, 124, 106, 0.25); border-color: #b07c6a; }
-        .player-controls .btn-play.loading { background: rgba(176, 124, 106, 0.1); border-color: rgba(176, 124, 106, 0.3); cursor: wait; }
-
         /* ===== ТАЙМЕР ===== */
         .timer-section {
-            margin: 20px auto 8px;
-            padding: 16px 14px;
+            margin: 30px auto 10px;
+            padding: 20px 16px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(16px);
             border-radius: 20px;
@@ -531,36 +731,36 @@
         .timer-section.finished { opacity: 0; transform: scale(0.9); pointer-events: none; }
         .timer-title {
             font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            letter-spacing: 3px;
+            font-size: 13px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             color: #b07c6a;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             font-weight: 400;
         }
         .timer-date {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(24px, 4vw, 40px);
+            font-size: clamp(28px, 4vw, 44px);
             font-weight: 400;
             color: #3d2e2a;
-            margin: 3px 0 6px;
+            margin: 4px 0 8px;
             letter-spacing: 2px;
         }
         .timer-divider {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            max-width: 160px;
-            margin: 0 auto 8px;
+            gap: 12px;
+            max-width: 200px;
+            margin: 0 auto 10px;
         }
         .timer-divider .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #dccfc7, transparent); }
-        .timer-divider .diamond { font-size: 12px; color: #d4b8ab; opacity: 0.6; }
-        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .timer-divider .diamond { font-size: 14px; color: #d4b8ab; opacity: 0.6; }
+        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         .timer-item { text-align: center; }
         .timer-item .number {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(24px, 5vw, 38px);
+            font-size: clamp(28px, 5vw, 42px);
             font-weight: 900;
             line-height: 1.1;
             transition: all 0.3s ease;
@@ -574,8 +774,8 @@
         }
         .timer-item .number:hover { transform: scale(1.08); }
         .timer-item .label {
-            font-size: 9px;
-            letter-spacing: 1.5px;
+            font-size: 10px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             color: #9a847a;
             margin-top: 2px;
@@ -583,8 +783,8 @@
 
         .final-message {
             display: none;
-            margin: 20px auto 8px;
-            padding: 20px 16px;
+            margin: 30px auto 10px;
+            padding: 30px 24px;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(12px);
             border-radius: 24px;
@@ -600,25 +800,24 @@
         .final-message.show { display: block; }
         .final-message .big-text {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(28px, 6vw, 48px);
+            font-size: clamp(32px, 6vw, 52px);
             font-weight: 700;
             color: #b07c6a;
             line-height: 1.2;
         }
         .final-message .sub-text {
             font-family: 'Inter', sans-serif;
-            font-size: 15px;
+            font-size: 16px;
             color: #9a847a;
-            margin-top: 6px;
-            letter-spacing: 1.5px;
+            margin-top: 8px;
+            letter-spacing: 2px;
         }
         .final-message .emoji-big {
-            font-size: 40px;
+            font-size: 48px;
             display: block;
-            margin-top: 10px;
+            margin-top: 12px;
             animation: float 3s ease-in-out infinite;
             will-change: transform;
-            color: #b07c6a;
         }
 
         /* ===== ИСТОРИЯ ===== */
@@ -644,7 +843,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 0;
+            padding: 20px 0;
             position: relative;
             width: 100%;
         }
@@ -655,11 +854,11 @@
             width: 44%;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(16px);
-            padding: 18px 22px;
+            padding: 22px 26px;
             border-radius: 18px;
             border: 2px solid rgba(220, 207, 199, 0.5);
             box-shadow: 0 4px 30px rgba(0,0,0,0.04);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.3s ease;
             position: relative;
             z-index: 2;
             will-change: transform;
@@ -672,57 +871,59 @@
 
         .story-item .story-number {
             position: absolute;
-            top: -6px; right: -6px;
+            top: -8px; right: -8px;
             font-family: 'Playfair Display', serif;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
-            color: rgba(176, 124, 106, 0.3);
+            color: rgba(176, 124, 106, 0.2);
             letter-spacing: 1px;
             background: rgba(255,255,255,0.6);
-            padding: 2px 8px;
+            padding: 2px 10px;
             border-radius: 20px;
             backdrop-filter: blur(4px);
             border: 1px solid rgba(220, 207, 199, 0.3);
         }
 
         .story-item .story-year {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             color: #b07c6a;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
         .story-item .story-year .icon {
-            font-size: 22px;
+            font-size: 26px;
             background: rgba(176, 124, 106, 0.1);
-            padding: 5px;
+            padding: 6px;
             border-radius: 50%;
-            width: 36px; height: 36px;
+            width: 42px; height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: transform 0.3s ease;
-            flex-shrink: 0;
-            color: #b07c6a;
+            animation: iconFloat 4s ease-in-out infinite;
         }
-        .story-item .story-content:hover .story-year .icon { transform: scale(1.15) rotate(10deg); }
+        .story-item .story-content:hover .story-year .icon { 
+            transform: scale(1.15) rotate(10deg); 
+            animation-play-state: paused;
+        }
 
         .story-item .story-text {
-            font-size: 14px;
+            font-size: 15px;
             color: #5a423c;
             line-height: 1.7;
-            margin-top: 4px;
+            margin-top: 6px;
         }
         .story-item .story-text strong {
-            font-size: 16px;
+            font-size: 17px;
             color: #3d2e2a;
             display: block;
             margin-bottom: 2px;
         }
 
         .story-item .story-marker {
-            width: 14px; height: 14px;
+            width: 16px; height: 16px;
             background: #b07c6a;
             border-radius: 50%;
             border: 3px solid white;
@@ -763,7 +964,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 10px 0;
             position: relative;
             width: 100%;
         }
@@ -774,11 +975,11 @@
             width: 42%;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(12px);
-            padding: 14px 18px;
+            padding: 16px 22px;
             border-radius: 16px;
             border: 2px solid rgba(220, 207, 199, 0.5);
             box-shadow: 0 2px 20px rgba(0,0,0,0.04);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.3s ease;
             position: relative;
             z-index: 2;
             will-change: transform;
@@ -790,23 +991,27 @@
             border-color: #b07c6a;
         }
         .zigzag-item .event .event-icon { 
-            font-size: 22px; 
+            font-size: 26px; 
             display: block; 
-            margin-bottom: 2px; 
-            color: #b07c6a;
+            margin-bottom: 2px;
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+        .zigzag-item .event:hover .event-icon {
+            animation-play-state: paused;
+            transform: scale(1.2) rotate(10deg);
         }
         .zigzag-item .event .event-time {
             font-family: 'Playfair Display', serif;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             color: #b07c6a;
             letter-spacing: 0.5px;
         }
-        .zigzag-item .event .event-title { font-weight: 600; font-size: 16px; color: #3d2e2a; margin: 2px 0; }
+        .zigzag-item .event .event-title { font-weight: 600; font-size: 17px; color: #3d2e2a; margin: 2px 0; }
         .zigzag-item .event .event-place { font-size: 13px; color: #9a847a; }
 
         .zigzag-item .marker {
-            width: 14px; height: 14px;
+            width: 16px; height: 16px;
             background: #b07c6a;
             border-radius: 50%;
             border: 3px solid white;
@@ -826,9 +1031,9 @@
 
         /* ===== СЕКЦИИ ===== */
         section { 
-            padding: 40px 0 30px; 
+            padding: 80px 0; 
             border-bottom: 1px solid rgba(220, 207, 199, 0.3); 
-            position: relative; 
+            position: relative;
             width: 100%;
             overflow: visible;
         }
@@ -836,13 +1041,13 @@
 
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
+            font-size: 34px;
             font-weight: 600;
             font-style: italic;
             text-align: center;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             color: #3d2e2a;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             transition: color 0.3s ease;
         }
         .section-title:hover { color: #b07c6a; }
@@ -851,95 +1056,92 @@
             text-align: center;
             color: #9a847a;
             font-weight: 300;
-            font-size: 15px;
-            margin-bottom: 32px;
-            letter-spacing: 2px;
+            font-size: 16px;
+            margin-bottom: 48px;
+            letter-spacing: 3px;
             text-transform: uppercase;
         }
 
         /* ===== ДЕТАЛИ ===== */
         .details-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
             padding: 4px 0;
         }
         .detail-card {
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(16px);
-            padding: 24px 16px;
+            padding: 32px 20px;
             border-radius: 18px;
             text-align: center;
             box-shadow: 0 4px 30px rgba(0,0,0,0.03);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.3s ease;
             position: relative;
             overflow: visible;
             border: 2px solid rgba(220, 207, 199, 0.5);
             will-change: transform;
             transform: translateZ(0);
         }
+        .detail-card::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(135deg, #b07c6a, #d4b8ab, #c9a88a, #b07c6a);
+            background-size: 300% 300%;
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+        .detail-card:hover::before { opacity: 1; }
+        .detail-card::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 19px;
+            z-index: -1;
+            background: #f5ede8;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        .detail-card:hover::after { opacity: 0; }
         .detail-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(176, 124, 106, 0.12);
-            border-color: #b07c6a;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 16px 50px rgba(176, 124, 106, 0.15);
+            border-color: transparent;
             z-index: 10;
         }
         .detail-card .icon {
             font-size: 28px;
             color: #b07c6a;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
             display: block;
             transition: transform 0.3s ease;
             will-change: transform;
         }
         .detail-card:hover .icon { transform: scale(1.2) rotate(10deg); }
-        .detail-card h4 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin-bottom: 4px; }
-        .detail-card p { font-size: 13px; color: #7a6257; font-weight: 300; }
+        .detail-card h4 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 20px; 
+            font-weight: 600; 
+            margin-bottom: 6px;
+            transition: color 0.3s ease;
+        }
+        .detail-card:hover h4 { color: #b07c6a; }
+        .detail-card p { font-size: 14px; color: #7a6257; font-weight: 300; }
 
         /* ===== ГАЛЕРЕЯ ===== */
-        .gallery-section { padding: 30px 0 20px; }
-        .gallery-container {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 16px 60px rgba(0,0,0,0.06);
-            border: 2px solid #dccfc7;
-            background: #e8ddd5;
-            transition: box-shadow 0.3s ease;
-            transform: translateZ(0);
-        }
-        .gallery-container:hover { box-shadow: 0 20px 60px rgba(176, 124, 106, 0.1); }
-
-        .gallery-slide {
-            display: flex;
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform;
-            transform: translateZ(0);
-        }
-        .gallery-slide img {
-            display: block;
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            flex-shrink: 0;
-            transition: transform 0.4s ease;
-            cursor: pointer;
-            will-change: transform;
-            opacity: 0;
-            animation: imageFade 0.5s ease forwards;
-        }
-        .gallery-slide img:hover { transform: scale(1.02); }
-
+        .gallery-section { padding: 60px 0 40px; }
         .gallery-dots {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            padding: 16px 0 0;
+            gap: 12px;
+            padding: 20px 0 0;
         }
         .gallery-dots span {
-            width: 9px; height: 9px;
+            width: 10px; height: 10px;
             border-radius: 50%;
             background: rgba(176, 124, 106, 0.25);
             cursor: pointer;
@@ -960,12 +1162,6 @@
             transition: all 0.3s ease;
             will-change: transform;
             width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            background: #e8ddd5;
-            min-height: 350px;
-            position: relative;
         }
         .map-container:hover {
             box-shadow: 0 12px 40px rgba(176, 124, 106, 0.1);
@@ -978,89 +1174,83 @@
             border: none;
             display: block;
             transition: transform 0.4s ease;
-            background: #e8ddd5;
         }
         .map-container:hover iframe { transform: scale(1.01); }
-        
-        .map-fallback {
-            display: none;
-            padding: 40px 20px;
-            text-align: center;
-            color: #7a6257;
-            background: #e8ddd5;
-            min-height: 350px;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .map-fallback .big-icon {
-            font-size: 48px;
-            color: #b07c6a;
-        }
-        .map-fallback .address {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            color: #3d2e2a;
-        }
-        .map-fallback .link-btn {
-            display: inline-block;
-            padding: 10px 24px;
-            background: #b07c6a;
-            color: white;
-            border-radius: 30px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-        .map-fallback .link-btn:hover {
-            background: #8a6555;
-            transform: scale(1.05);
-        }
 
         /* ===== КОНТАКТЫ ===== */
         .contacts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
             max-width: 500px;
             margin: 0 auto;
         }
         .contact-card {
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(12px);
-            padding: 20px 16px;
+            padding: 24px 20px;
             border-radius: 16px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.3s ease;
             border: 2px solid rgba(220, 207, 199, 0.5);
             will-change: transform;
+            position: relative;
         }
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(135deg, #b07c6a, #d4b8ab, #c9a88a, #b07c6a);
+            background-size: 300% 300%;
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+        .contact-card:hover::before { opacity: 1; }
+        .contact-card::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 17px;
+            z-index: -1;
+            background: #f5ede8;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        .contact-card:hover::after { opacity: 0; }
         .contact-card:hover {
-            transform: translateY(-6px) scale(1.03);
+            transform: translateY(-8px) scale(1.03);
             box-shadow: 0 12px 40px rgba(176, 124, 106, 0.12);
-            border-color: #b07c6a;
+            border-color: transparent;
         }
         .contact-card .icon {
-            font-size: 32px;
+            font-size: 34px;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             transition: transform 0.3s ease;
             will-change: transform;
             color: #b07c6a;
         }
-        .contact-card:hover .icon { transform: scale(1.2) rotate(5deg); }
-        .contact-card .name { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 17px; color: #3d2e2a; }
+        .contact-card:hover .icon { 
+            transform: scale(1.2) rotate(5deg); 
+        }
+        .contact-card .name { 
+            font-family: 'Playfair Display', serif; 
+            font-weight: 600; 
+            font-size: 18px; 
+            color: #3d2e2a; 
+        }
         .contact-card .phone {
-            font-size: 13px;
+            font-size: 14px;
             color: #7a6257;
             font-weight: 300;
             text-decoration: none;
             display: block;
-            margin-top: 3px;
+            margin-top: 4px;
             transition: color 0.3s ease;
-            word-break: break-word;
         }
         .contact-card .phone:hover { color: #b07c6a; }
 
@@ -1068,41 +1258,41 @@
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 16px;
-            margin-top: 8px;
+            gap: 24px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
         .social-links a {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 22px;
+            gap: 12px;
+            padding: 12px 28px;
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(8px);
             border-radius: 40px;
             text-decoration: none;
             color: #3d2e2a;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 15px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.3s ease;
             border: 2px solid #dccfc7;
             will-change: transform;
         }
         .social-links a:hover {
             transform: translateY(-4px) scale(1.04);
-            box-shadow: 0 12px 40px rgba(176, 124, 106, 0.2);
-            border-color: #b07c6a;
+            box-shadow: 0 12px 40px rgba(74, 118, 168, 0.2);
+            border-color: #4a76a8;
         }
         .social-links a .vk-icon {
-            font-size: 20px;
-            color: #b07c6a;
+            font-size: 22px;
+            color: #0077FF !important;
             transition: transform 0.3s ease;
             display: inline-block;
             will-change: transform;
         }
         .social-links a:hover .vk-icon { transform: scale(1.15) rotate(-5deg); }
-        .social-links a span { font-size: 14px; font-weight: 500; color: #3d2e2a; }
+        .social-links a span { font-size: 15px; font-weight: 500; color: #3d2e2a; }
 
         /* ===== ПОГОДА ===== */
         .weather-card {
@@ -1110,7 +1300,7 @@
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(16px);
-            padding: 28px 24px;
+            padding: 32px 28px;
             border-radius: 20px;
             border: 2px solid #dccfc7;
             text-align: center;
@@ -1126,9 +1316,9 @@
             border-color: #b07c6a;
         }
         .weather-card .weather-icon {
-            font-size: 56px;
+            font-size: 64px;
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             animation: float 3s ease-in-out infinite;
             will-change: transform;
             transition: transform 0.4s ease;
@@ -1137,144 +1327,190 @@
         .weather-card:hover .weather-icon { transform: scale(1.1) rotate(10deg); }
         .weather-card .weather-temp {
             font-family: 'Playfair Display', serif;
-            font-size: 38px;
+            font-size: 42px;
             font-weight: 700;
             color: #3d2e2a;
         }
-        .weather-card .weather-temp sup { font-size: 18px; color: #b07c6a; }
-        .weather-card .weather-desc { font-size: 17px; color: #7a6257; margin-top: 2px; font-weight: 400; }
+        .weather-card .weather-temp sup { font-size: 20px; color: #b07c6a; }
+        .weather-card .weather-desc { font-size: 18px; color: #7a6257; margin-top: 2px; font-weight: 400; }
         .weather-card .weather-details {
             display: flex;
             justify-content: center;
-            gap: 24px;
-            margin-top: 12px;
-            font-size: 13px;
+            gap: 32px;
+            margin-top: 14px;
+            font-size: 14px;
             color: #9a847a;
-            flex-wrap: wrap;
         }
-        .weather-card .weather-details span { display: flex; align-items: center; gap: 5px; }
+        .weather-card .weather-details span { display: flex; align-items: center; gap: 6px; }
         .weather-card .weather-details .value { font-weight: 600; color: #3d2e2a; }
-        .weather-card .weather-update { font-size: 10px; color: #b09a8f; margin-top: 10px; letter-spacing: 0.5px; }
-        .weather-card .weather-loading { font-size: 14px; color: #9a847a; padding: 20px 0; }
-        .weather-card .weather-loading .spinner { display: inline-block; animation: float 1s ease-in-out infinite; will-change: transform; color: #b07c6a; }
-        .weather-card .weather-error { font-size: 13px; color: #e74c3c; padding: 16px 0; }
-        .weather-card .weather-feels-like { font-size: 12px; color: #b09a8f; margin-top: 3px; }
-        .weather-card .weather-source { font-size: 10px; color: #b09a8f; margin-top: 6px; opacity: 0.7; }
+        .weather-card .weather-update { font-size: 11px; color: #b09a8f; margin-top: 12px; letter-spacing: 0.5px; }
+        .weather-card .weather-loading { font-size: 15px; color: #9a847a; padding: 25px 0; }
+        .weather-card .weather-loading .spinner { display: inline-block; animation: float 1s ease-in-out infinite; will-change: transform; }
+        .weather-card .weather-error { font-size: 14px; color: #e74c3c; padding: 20px 0; }
+        .weather-card .weather-feels-like { font-size: 13px; color: #b09a8f; margin-top: 4px; }
+        .weather-card .weather-source { font-size: 11px; color: #b09a8f; margin-top: 8px; opacity: 0.7; }
 
         /* ===== RSVP ===== */
-        .rsvp-form {
-            max-width: 480px;
+        .rsvp-wrapper {
+            max-width: 560px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(16px);
-            padding: 28px 20px;
-            border-radius: 20px;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.04);
-            border: 2px solid #dccfc7;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 2px solid rgba(220, 207, 199, 0.5);
+            padding: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.06);
             transition: all 0.3s ease;
-            width: 100%;
         }
-        .rsvp-form:hover { box-shadow: 0 12px 40px rgba(176, 124, 106, 0.08); border-color: #b07c6a; }
-        .form-group { margin-bottom: 16px; }
+        .rsvp-wrapper:hover {
+            border-color: #b07c6a;
+            box-shadow: 0 24px 80px rgba(176, 124, 106, 0.1);
+        }
+
+        .rsvp-header {
+            background: linear-gradient(135deg, #b07c6a, #d4b8ab);
+            border-radius: 18px 18px 0 0;
+            padding: 24px 28px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .rsvp-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .rsvp-header .rsvp-icon {
+            font-size: 32px;
+            color: rgba(255,255,255,0.9);
+            display: block;
+            margin-bottom: 6px;
+        }
+        .rsvp-header h3 {
+            font-family: 'Playfair Display', serif;
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        .rsvp-header p {
+            color: rgba(255,255,255,0.85);
+            font-size: 13px;
+            font-weight: 300;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .rsvp-body {
+            padding: 28px 28px 32px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 0 0 18px 18px;
+        }
+
+        .rsvp-form { width: 100%; }
+        .form-group { margin-bottom: 18px; }
         .form-group label {
             display: block;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.8px;
-            color: #7a6257;
-            margin-bottom: 4px;
-            transition: color 0.3s ease;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #5a423c;
+            margin-bottom: 5px;
         }
-        .form-group:hover label { color: #b07c6a; }
+        .form-group label .required { color: #c97a6a; margin-left: 2px; }
         .form-group input, .form-group select {
             width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #e8ddd5;
+            padding: 12px 16px;
+            border: 2px solid rgba(220, 207, 199, 0.5);
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 15px;
             font-family: 'Inter', sans-serif;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(4px);
             transition: all 0.3s ease;
             color: #3d2e2a;
-            will-change: transform;
+            outline: none;
         }
         .form-group input:focus, .form-group select:focus {
-            outline: none;
             border-color: #b07c6a;
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 0 4px rgba(176, 124, 106, 0.1);
-            transform: scale(1.01);
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 4px rgba(176, 124, 106, 0.08);
+            transform: translateY(-1px);
         }
-        .form-group .radio-group {
+        .form-group input::placeholder { color: #b09a8f; font-weight: 300; }
+
+        .radio-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             padding-top: 4px;
         }
-        .form-group .radio-group label {
+        .radio-group label {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-weight: 400;
-            font-size: 14px;
+            font-size: 15px;
             color: #3d2e2a;
-            letter-spacing: 0;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.3);
+            border: 2px solid transparent;
         }
-        .form-group .radio-group label:hover { color: #b07c6a; }
-        .form-group .radio-group input[type="radio"] {
-            width: 16px; height: 16px;
+        .radio-group label:hover {
+            background: rgba(176, 124, 106, 0.06);
+            border-color: rgba(176, 124, 106, 0.15);
+            color: #b07c6a;
+        }
+        .radio-group input[type="radio"] {
+            width: 18px; height: 18px;
             accent-color: #b07c6a;
             flex-shrink: 0;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            margin: 0;
         }
-        .form-group .radio-group input[type="radio"]:hover { transform: scale(1.1); }
-
-        .form-group .guest-select {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #e8ddd5;
-            border-radius: 12px;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(4px);
-            transition: all 0.3s ease;
-            color: #3d2e2a;
-            cursor: pointer;
-            will-change: transform;
+        .radio-group .radio-icon {
+            font-size: 18px;
+            color: #b07c6a;
+            width: 24px;
+            text-align: center;
         }
-        .form-group .guest-select:focus {
-            outline: none;
+        .radio-group label:has(input:checked) {
+            background: rgba(176, 124, 106, 0.08);
             border-color: #b07c6a;
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 0 4px rgba(176, 124, 106, 0.1);
-            transform: scale(1.01);
         }
 
-        .btn {
-            display: inline-block;
+        .btn-submit {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: linear-gradient(135deg, #3d2e2a, #5a423c);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
             box-shadow: 0 4px 20px rgba(61, 46, 42, 0.15);
-            will-change: transform;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        .btn::after {
+        .btn-submit::after {
             content: '';
             position: absolute;
             top: -50%; left: -50%;
@@ -1283,46 +1519,55 @@
             transform: rotate(45deg);
             transition: all 0.4s ease;
         }
-        .btn:hover::after { left: 100%; }
-        .btn:hover {
+        .btn-submit:hover::after { left: 100%; }
+        .btn-submit:hover {
             background: linear-gradient(135deg, #5a423c, #3d2e2a);
-            transform: scale(1.02) translateY(-2px);
+            transform: translateY(-2px);
             box-shadow: 0 8px 40px rgba(61, 46, 42, 0.3);
         }
-        .btn:active { transform: scale(0.98); }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-submit:active { transform: scale(0.98); }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-submit .btn-icon { font-size: 18px; }
 
         .success-message {
             display: none;
             text-align: center;
-            padding: 16px;
-            background: rgba(176, 124, 106, 0.1);
-            border: 2px solid rgba(176, 124, 106, 0.3);
-            border-radius: 12px;
-            color: #5a423c;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, rgba(176, 124, 106, 0.06), rgba(212, 184, 171, 0.06));
+            border-radius: 16px;
+            border: 2px solid rgba(176, 124, 106, 0.2);
             margin-top: 16px;
-            animation: fadeInScale 0.5s ease forwards;
-            will-change: transform, opacity;
+            animation: scaleIn 0.5s ease forwards;
         }
         .success-message .icon {
-            font-size: 28px;
+            font-size: 48px;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             animation: float 3s ease-in-out infinite;
-            will-change: transform;
             color: #b07c6a;
+        }
+        .success-message .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #3d2e2a;
+        }
+        .success-message .desc {
+            color: #7a6257;
+            font-size: 14px;
+            margin-top: 4px;
         }
 
         /* ===== АЛКОГОЛЬ ===== */
         .gift-note {
             max-width: 550px;
-            margin: 14px auto 0;
-            padding: 14px 18px;
+            margin: 16px auto 0;
+            padding: 18px 24px;
             background: rgba(176, 124, 106, 0.08);
             border: 2px solid rgba(176, 124, 106, 0.25);
             border-radius: 16px;
             text-align: center;
-            font-size: 16px;
+            font-size: 17px;
             color: #3d2e2a;
             line-height: 1.6;
             transition: all 0.3s ease;
@@ -1335,40 +1580,39 @@
         }
         .gift-note .heart-icon { 
             color: #c97a6a; 
-            font-size: 18px; 
+            font-size: 20px;
             display: inline-block;
-            animation: iconFloat 3s ease-in-out infinite;
+            animation: heartbeat 1.5s ease-in-out infinite;
         }
         .gift-note .highlight-text {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             color: #b07c6a;
-            font-size: 17px;
+            font-size: 19px;
         }
-        .gift-note .small-note { font-size: 13px; color: #9a847a; margin-top: 3px; }
+        .gift-note .small-note { font-size: 14px; color: #9a847a; margin-top: 4px; }
 
         /* ===== FOOTER ===== */
         .footer {
             text-align: center;
-            padding: 36px 0 24px;
-            font-size: 13px;
+            padding: 50px 0 40px;
+            font-size: 14px;
             color: #b09a8f;
             font-weight: 300;
-            letter-spacing: 0.8px;
-            width: 100%;
+            letter-spacing: 1px;
         }
         .footer .heart {
             color: #c97a6a;
-            font-size: 18px;
+            font-size: 20px;
             display: inline-block;
             animation: heartbeat 1.2s ease-in-out infinite;
-            margin: 0 3px;
+            margin: 0 4px;
             will-change: transform;
         }
         .footer .copyright {
-            font-size: 11px;
+            font-size: 12px;
             color: #b09a8f;
-            margin-top: 5px;
+            margin-top: 6px;
             opacity: 0.7;
             letter-spacing: 0.5px;
         }
@@ -1383,18 +1627,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-top: 8px;
-            padding-top: 10px;
+            margin-top: 10px;
+            padding-top: 12px;
             border-top: 1px solid rgba(220, 207, 199, 0.3);
         }
         .footer-links .link-btn {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            padding: 3px 10px;
-            font-size: 10px;
+            gap: 5px;
+            padding: 4px 14px;
+            font-size: 11px;
             font-weight: 500;
             color: #9a847a;
             background: rgba(255, 255, 255, 0.3);
@@ -1412,7 +1656,7 @@
             color: #b07c6a;
             transform: translateY(-1px);
         }
-        .footer-links .link-btn .icon { font-size: 11px; color: #b07c6a; }
+        .footer-links .link-btn .icon { font-size: 12px; color: #b07c6a; }
         .footer-links .link-btn.secure {
             color: #7a9a7a;
             border-color: rgba(107, 203, 119, 0.3);
@@ -1430,50 +1674,16 @@
             flex-shrink: 0;
         }
 
-        /* ===== КНОПКА НАВЕРХ ===== */
-        #backToTop {
-            position: fixed;
-            bottom: 24px; right: 24px;
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #b07c6a, #8a6555);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 22px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(176, 124, 106, 0.3);
-            z-index: 1000;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            padding: 0;
-            will-change: transform;
-            opacity: 0;
-        }
-        #backToTop:hover { 
-            transform: scale(1.15) translateY(-4px); 
-            box-shadow: 0 8px 40px rgba(176, 124, 106, 0.5); 
-        }
-        #backToTop:active { transform: scale(0.9); }
-        #backToTop.show { 
-            display: flex; 
-            animation: fadeInUp 0.4s ease forwards; 
-            opacity: 1;
-        }
-        #backToTop svg { transition: transform 0.3s ease; }
-        #backToTop:hover svg { transform: translateY(-3px); }
-
         /* ===== TOAST ===== */
         .toast {
             position: fixed;
-            bottom: 24px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 12px 24px;
+            padding: 14px 28px;
             border-radius: 12px;
             font-family: 'Inter', sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             z-index: 99999;
@@ -1487,212 +1697,201 @@
         .toast-success { background: #8aaa8a; }
         .toast-error { background: #cc8a7a; }
 
-        /* ===== МОДАЛЬНОЕ ОКНО ===== */
-        .photo-modal {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            cursor: pointer;
-            padding: 20px;
-            animation: fadeInScale 0.3s ease forwards;
-        }
-        .photo-modal img {
-            max-width: 95%;
-            max-height: 95%;
-            border-radius: 12px;
-            object-fit: contain;
-            animation: fadeInScale 0.3s ease forwards;
-        }
-
         /* ============================================================ */
-        /* ===== АДАПТИВ ДЛЯ МОБИЛЬНЫХ ===== */
+        /* ===== АДАПТИВ ===== */
         /* ============================================================ */
         @media (max-width: 768px) {
             ::-webkit-scrollbar { width: 5px; height: 5px; }
-            .container { padding: 0 12px; }
-            section { padding: 32px 0 24px; }
-            .section-title { font-size: 24px; }
-            .section-subtitle { font-size: 14px; margin-bottom: 24px; }
-            .story-item .story-content { padding: 14px 16px; }
-            .story-item .story-year { font-size: 18px; }
-            .story-item .story-year .icon { width: 32px; height: 32px; font-size: 18px; }
-            .story-item .story-text { font-size: 13px; }
-            .zigzag-item .event { padding: 12px 14px; }
-            .zigzag-item .event .event-time { font-size: 18px; }
-            .zigzag-item .event .event-title { font-size: 15px; }
-            .gallery-slide img { height: 380px; }
+            .container { padding: 0 16px; }
+            section { padding: 60px 0; }
+            .section-title { font-size: 28px; }
+            .section-subtitle { font-size: 14px; margin-bottom: 32px; }
+            .gallery-slide img, .gallery-slide .skeleton-img { height: 450px; }
             .map-container iframe { height: 300px; }
-            .map-container { min-height: 300px; }
-            .map-fallback { min-height: 300px; }
             .weather-card { padding: 24px 18px; }
             .weather-card .weather-temp { font-size: 34px; }
             .weather-card .weather-icon { font-size: 48px; }
-            .rsvp-form { padding: 24px 16px; }
-            .social-links a { padding: 8px 18px; font-size: 13px; }
-            .player { padding: 10px 14px 12px; }
-            .player .track-name { font-size: 12px; }
-            .timer-section { padding: 14px 12px; }
-            .timer-item .number { font-size: 22px; }
-            .gift-note { font-size: 15px; padding: 12px 14px; }
-            .contacts-grid { gap: 16px; }
-            .contact-card { padding: 16px 14px; }
-            .contact-card .icon { font-size: 28px; }
-            .contact-card .name { font-size: 16px; }
-            #backToTop { bottom: 18px; right: 18px; width: 44px; height: 44px; }
-            .hero-names { font-size: clamp(42px, 13vw, 72px); }
-            .hero-date { font-size: 16px; letter-spacing: 4px; }
-            .hero-greeting { font-size: clamp(18px, 3vw, 26px); }
-            .hero-sub { font-size: 15px; }
-            .divider .ornament { font-size: 16px; }
+            .rsvp-wrapper { padding: 6px; }
+            .rsvp-header { padding: 20px 20px; }
+            .rsvp-header h3 { font-size: 20px; }
+            .rsvp-body { padding: 20px 20px 24px; }
+            .social-links a { padding: 10px 20px; font-size: 14px; }
+            .player { padding: 14px 20px 16px; max-width: 320px; }
+            .timer-section { padding: 16px 14px; }
+            .timer-item .number { font-size: 24px; }
+            .hero { padding: 30px 16px 60px; }
+            .hero-names { font-size: clamp(48px, 15vw, 80px); }
+            .divider .ornament { font-size: 18px; }
             .divider .line { max-width: 60px; }
-            .details-grid { gap: 16px; }
-            .detail-card { padding: 20px 14px; }
-            .detail-card h4 { font-size: 16px; }
+            .details-grid { gap: 20px; }
+            .detail-card { padding: 24px 16px; }
+            .detail-card h4 { font-size: 18px; }
             .detail-card .icon { font-size: 24px; }
             .gallery-dots span { width: 8px; height: 8px; }
-            .weather-card .weather-details { gap: 16px; font-size: 12px; }
-            .divider-ornate .ornament { font-size: 18px; }
+            .weather-card .weather-details { gap: 20px; font-size: 13px; }
+            .divider-ornate .ornament { font-size: 20px; }
             .divider-ornate .line { max-width: 50px; }
-            .final-message { padding: 16px 14px; }
-            .final-message .big-text { font-size: 26px; }
-            .final-message .emoji-big { font-size: 34px; }
-            .toast { font-size: 12px; padding: 10px 18px; bottom: 18px; }
-            .player-wrapper { max-width: 240px; }
-            .scroll-indicator { font-size: 22px; bottom: 15px; }
+            .final-message { padding: 24px 18px; }
+            .final-message .big-text { font-size: 28px; }
+            .final-message .emoji-big { font-size: 40px; }
+            .toast { font-size: 13px; padding: 12px 20px; bottom: 20px; }
+            #backToTop { bottom: 20px; right: 20px; width: 48px; height: 48px; }
+            #backToTop .progress-ring { width: 56px; height: 56px; }
+            .scroll-indicator { font-size: 24px; bottom: 15px; }
+            .radio-group label { font-size: 14px; padding: 8px 12px; }
+            .btn-submit { font-size: 15px; padding: 12px; }
+            .gallery-thumbs .thumb { width: 50px; height: 38px; }
+            .hero-date { font-size: 18px; }
+            .hero-greeting { font-size: clamp(20px, 3vw, 28px); }
+            .hero-sub { font-size: 16px; }
+            .story-item .story-year { font-size: 20px; }
+            .story-item .story-text { font-size: 14px; }
+            .story-item .story-text strong { font-size: 15px; }
+            .zigzag-item .event .event-time { font-size: 18px; }
+            .zigzag-item .event .event-title { font-size: 15px; }
         }
 
         @media (max-width: 600px) {
-            .hero-names span { display: block; margin: 2px 0; }
+            .hero-names span { display: block; margin: 4px 0; }
             .hero-names .amp { display: inline-block; font-size: 0.8em; }
             .details-grid { grid-template-columns: 1fr; }
-            .rsvp-form { padding: 20px 14px; }
-            .map-container iframe { height: 220px; }
-            .map-container { min-height: 220px; }
-            .map-fallback { min-height: 220px; }
-            .social-links a { padding: 8px 14px; font-size: 12px; gap: 8px; }
-            .social-links { gap: 12px; }
+            .rsvp-wrapper { padding: 4px; border-radius: 18px; }
+            .rsvp-header { padding: 16px 16px; border-radius: 14px 14px 0 0; }
+            .rsvp-header h3 { font-size: 18px; }
+            .rsvp-header p { font-size: 12px; }
+            .rsvp-body { padding: 16px 16px 20px; }
+            .map-container iframe { height: 250px; }
+            .social-links a { padding: 8px 16px; font-size: 13px; gap: 8px; }
+            .social-links { gap: 16px; }
             .contacts-grid { grid-template-columns: 1fr; }
-            .section-title { font-size: 22px; }
-            .hero-names { font-size: clamp(36px, 15vw, 60px); }
-            .divider .line { max-width: 40px; }
-            .hero { padding: 24px 12px 60px; }
-            .timer-section { padding: 12px 10px; }
-            .timer-item .number { font-size: 20px; }
+            .section-title { font-size: 24px; }
+            .hero-names { font-size: clamp(42px, 15vw, 64px); }
+            .divider .line { max-width: 50px; }
+            .hero { background-attachment: scroll; padding: 24px 12px 60px; }
+            .timer-section { padding: 14px 10px; }
+            .timer-item .number { font-size: 22px; }
             .timer-item .label { font-size: 8px; letter-spacing: 1px; }
-            .timer-date { font-size: 20px; }
-            .gallery-slide img { height: 280px; }
-            .final-message { padding: 14px 12px; }
-            .final-message .big-text { font-size: 22px; }
-            .hero-greeting { font-size: clamp(16px, 4vw, 22px); }
-            .hero-sub { font-size: 14px; }
-            .player { padding: 8px 12px 10px; }
-            .player .track-name { font-size: 12px; min-height: 18px; }
-            .player .track-name .artist { font-size: 10px; }
-            .player-controls button { width: 34px; height: 34px; }
-            .player-controls .btn-play svg { width: 18px; height: 18px; }
+            .timer-date { font-size: 22px; }
+            .gallery-slide img, .gallery-slide .skeleton-img { height: 350px; }
+            .final-message { padding: 20px 14px; }
+            .final-message .big-text { font-size: 24px; }
+            .hero-greeting { font-size: clamp(18px, 4vw, 24px); }
+            .hero-sub { font-size: 15px; }
 
-            .story-timeline::before { left: 16px; }
-            .story-item { flex-direction: column !important; align-items: flex-start; padding-left: 36px; gap: 3px; padding-top: 12px; padding-bottom: 12px; }
-            .story-item .story-content { width: 100%; padding: 12px 14px; }
-            .story-item .story-marker { left: 16px; transform: translateX(-50%); width: 12px; height: 12px; }
-            .story-item .story-number { font-size: 9px; top: -5px; right: -5px; padding: 1px 6px; }
-            .story-item .story-year .icon { font-size: 18px; width: 30px; height: 30px; }
-            .story-item .story-year { font-size: 17px; }
-            .story-item .story-text { font-size: 13px; }
-            .story-item .story-text strong { font-size: 14px; }
+            .player {
+                padding: 12px 16px 14px;
+                min-width: 160px;
+                max-width: 280px;
+            }
+            .player .track-name { font-size: 14px; min-height: 24px; }
+            .player .track-name .artist { font-size: 12px; }
+            .player-controls button { width: 42px; height: 42px; }
+            .player-controls .btn-play svg { width: 20px; height: 20px; }
+            .equalizer { height: 24px; }
+            .equalizer span { width: 3px; }
+
+            .story-timeline::before { left: 20px; }
+            .story-item { flex-direction: column !important; align-items: flex-start; padding-left: 44px; gap: 4px; }
+            .story-item .story-content { width: 100%; padding: 16px 18px; }
+            .story-item .story-marker { left: 20px; transform: translateX(-50%); width: 14px; height: 14px; }
+            .story-item .story-number { font-size: 10px; top: -6px; right: -6px; padding: 1px 8px; }
+            .story-item .story-year .icon { font-size: 22px; width: 38px; height: 38px; }
+            .story-item .story-year { font-size: 20px; }
+            .story-item .story-text { font-size: 14px; }
+            .story-item .story-text strong { font-size: 15px; }
             .story-item:hover .story-marker { transform: translateX(-50%) scale(1.2); }
 
-            .timeline-zigzag::before { left: 16px; }
-            .zigzag-item { flex-direction: column !important; align-items: flex-start; padding-left: 36px; gap: 3px; padding-top: 6px; padding-bottom: 6px; }
-            .zigzag-item .event { width: 100%; padding: 10px 12px; }
-            .zigzag-item .marker { left: 16px; transform: translateX(-50%); width: 12px; height: 12px; }
-            .zigzag-item .event .event-time { font-size: 16px; }
-            .zigzag-item .event .event-icon { font-size: 18px; }
-            .zigzag-item .event .event-title { font-size: 14px; }
+            .timeline-zigzag::before { left: 20px; }
+            .zigzag-item { flex-direction: column !important; align-items: flex-start; padding-left: 44px; gap: 4px; }
+            .zigzag-item .event { width: 100%; padding: 14px 16px; }
+            .zigzag-item .marker { left: 20px; transform: translateX(-50%); width: 14px; height: 14px; }
+            .zigzag-item .event .event-time { font-size: 18px; }
+            .zigzag-item .event .event-icon { font-size: 22px; }
+            .zigzag-item .event .event-title { font-size: 15px; }
             .zigzag-item:hover .marker { transform: translateX(-50%) scale(1.2); }
 
-            #backToTop { bottom: 16px; right: 16px; width: 40px; height: 40px; }
-            #backToTop svg { width: 18px; height: 18px; }
-            .social-links a .vk-icon { font-size: 16px; }
-            .footer .heart { font-size: 15px; }
-            .weather-card .weather-temp { font-size: 28px; }
-            .weather-card .weather-icon { font-size: 40px; }
-            .weather-card .weather-details { flex-direction: column; gap: 4px; }
+            #backToTop { bottom: 16px; right: 16px; width: 44px; height: 44px; }
+            #backToTop .progress-ring { width: 52px; height: 52px; }
+            #backToTop svg:not(.progress-ring) { width: 18px; height: 18px; }
+            .social-links a .vk-icon { font-size: 18px; }
+            .footer .heart { font-size: 17px; }
+            .weather-card .weather-temp { font-size: 30px; }
+            .weather-card .weather-icon { font-size: 44px; }
+            .weather-card .weather-details { flex-direction: column; gap: 6px; }
             .weather-card { padding: 20px 16px; }
-            .photo-modal { padding: 12px; }
-            .contact-card .icon { font-size: 26px; }
+            .photo-modal { padding: 15px; }
+            .contact-card .icon { font-size: 28px; }
             .footer .copyright { font-size: 10px; }
-            .footer-links { gap: 6px; }
-            .footer-links .link-btn { font-size: 9px; padding: 2px 8px; }
+            .footer-links { gap: 8px; }
+            .footer-links .link-btn { font-size: 10px; padding: 3px 10px; }
             .footer-links .divider-dot { width: 2px; height: 2px; }
-            .gift-note { padding: 10px 12px; font-size: 14px; }
-            .gift-note .highlight-text { font-size: 15px; }
-            .gift-note .small-note { font-size: 12px; }
-            .section-subtitle { font-size: 13px; margin-bottom: 20px; }
-            .divider-ornate .ornament { font-size: 16px; }
-            .divider-ornate .line { max-width: 40px; }
-            .divider-ornate { gap: 8px; margin: 4px 0 12px; }
-            .petal-decor { font-size: 20px; letter-spacing: 10px; }
-            .form-group input, .form-group select, .form-group .guest-select { font-size: 13px; padding: 8px 12px; }
-            .form-group .radio-group label { font-size: 13px; }
-            .btn { font-size: 14px; padding: 10px; }
-            .toast { font-size: 12px; padding: 10px 16px; bottom: 14px; max-width: 95%; }
-            .timer-grid { gap: 4px; }
-            .hero { background-attachment: scroll; }
-            .gallery-container { max-width: 100%; }
-            .map-container { max-width: 100%; }
-            .player-wrapper { max-width: 200px; }
-            .scroll-indicator { font-size: 18px; bottom: 10px; }
+            .gift-note { padding: 14px 16px; font-size: 15px; }
+            .gift-note .highlight-text { font-size: 17px; }
+            .scroll-indicator { font-size: 20px; bottom: 12px; }
+            .container { padding: 0 12px; }
+            section { padding: 40px 0; }
+            .radio-group label { font-size: 13px; padding: 6px 10px; }
+            .radio-group .radio-icon { font-size: 16px; width: 20px; }
+            .btn-submit { font-size: 14px; padding: 10px; }
+            .btn-submit .btn-icon { font-size: 16px; }
+            .success-message .title { font-size: 20px; }
+            .success-message .icon { font-size: 40px; }
+            .form-group input, .form-group select { padding: 10px 14px; font-size: 14px; }
+            .gallery-thumbs .thumb { width: 40px; height: 32px; }
+            .detail-card h4 { font-size: 16px; }
+            .detail-card .icon { font-size: 22px; }
+            .detail-card p { font-size: 12px; }
         }
 
         @media (max-width: 400px) {
-            .hero-names { font-size: clamp(30px, 14vw, 48px); }
-            .hero-date { font-size: 14px; letter-spacing: 3px; }
-            .hero-greeting { font-size: 15px; }
-            .hero-sub { font-size: 13px; line-height: 1.6; }
-            .section-title { font-size: 20px; }
+            .hero-names { font-size: clamp(32px, 14vw, 48px); }
+            .hero-date { font-size: 15px; }
+            .hero-greeting { font-size: 16px; }
+            .hero-sub { font-size: 14px; line-height: 1.6; }
+            .section-title { font-size: 22px; }
             .container { padding: 0 8px; }
-            section { padding: 24px 0 16px; }
-            .gallery-slide img { height: 220px; }
-            .map-container iframe { height: 180px; }
-            .map-container { min-height: 180px; }
-            .map-fallback { min-height: 180px; }
-            .weather-card .weather-temp { font-size: 24px; }
-            .weather-card .weather-icon { font-size: 34px; }
+            section { padding: 30px 0; }
+            .gallery-slide img, .gallery-slide .skeleton-img { height: 280px; }
+            .map-container iframe { height: 200px; }
+            .weather-card .weather-temp { font-size: 26px; }
+            .weather-card .weather-icon { font-size: 38px; }
             .timer-item .number { font-size: 18px; }
-            .timer-date { font-size: 18px; }
-            .player .track-name { font-size: 11px; }
-            .player-controls button { width: 30px; height: 30px; }
-            .player-controls .btn-play svg { width: 16px; height: 16px; }
-            .player { padding: 6px 10px 8px; }
-            .rsvp-form { padding: 16px 12px; }
-            .detail-card { padding: 16px 12px; }
-            .detail-card .icon { font-size: 22px; }
+            .timer-date { font-size: 20px; }
+            .player .track-name { font-size: 13px; }
+            .player-controls button { width: 38px; height: 38px; }
+            .player-controls .btn-play svg { width: 18px; height: 18px; }
+            .player { padding: 10px 14px 12px; max-width: 240px; }
+            .rsvp-wrapper { padding: 3px; border-radius: 14px; }
+            .rsvp-header { padding: 14px 14px; }
+            .rsvp-header h3 { font-size: 16px; }
+            .rsvp-body { padding: 14px 14px 16px; }
+            .detail-card { padding: 20px 14px; }
+            .detail-card .icon { font-size: 20px; }
             .detail-card h4 { font-size: 15px; }
-            .zigzag-item .event { padding: 8px 10px; }
-            .zigzag-item .event .event-time { font-size: 14px; }
-            .zigzag-item .event .event-title { font-size: 13px; }
-            .story-item .story-content { padding: 10px 12px; }
-            .story-item .story-text { font-size: 12px; }
-            .story-item .story-text strong { font-size: 13px; }
-            .contact-card { padding: 12px 10px; }
+            .zigzag-item .event { padding: 12px 14px; }
+            .zigzag-item .event .event-time { font-size: 16px; }
+            .zigzag-item .event .event-title { font-size: 14px; }
+            .story-item .story-content { padding: 14px 16px; }
+            .story-item .story-text { font-size: 13px; }
+            .story-item .story-text strong { font-size: 14px; }
+            .contact-card { padding: 16px 14px; }
             .contact-card .icon { font-size: 24px; }
-            .contact-card .name { font-size: 15px; }
-            .gift-note { font-size: 13px; padding: 8px 10px; }
-            .gift-note .highlight-text { font-size: 14px; }
-            .final-message .big-text { font-size: 20px; }
-            .social-links a { font-size: 11px; padding: 6px 12px; }
-            .social-links a .vk-icon { font-size: 14px; }
-            #backToTop { bottom: 12px; right: 12px; width: 36px; height: 36px; }
-            #backToTop svg { width: 16px; height: 16px; }
-            .footer { padding: 24px 0 16px; font-size: 12px; }
-            .gallery-slide img { height: 200px; }
-            .player-wrapper { max-width: 180px; }
-            .scroll-indicator { font-size: 16px; bottom: 8px; }
+            .contact-card .name { font-size: 16px; }
+            .gift-note { font-size: 14px; padding: 12px 14px; }
+            .gift-note .highlight-text { font-size: 16px; }
+            .final-message .big-text { font-size: 22px; }
+            .social-links a { font-size: 12px; padding: 6px 14px; }
+            .social-links a .vk-icon { font-size: 16px; }
+            #backToTop { bottom: 12px; right: 12px; width: 38px; height: 38px; }
+            #backToTop .progress-ring { width: 46px; height: 46px; }
+            #backToTop svg:not(.progress-ring) { width: 16px; height: 16px; }
+            .footer { padding: 30px 0 20px; font-size: 12px; }
+            .scroll-indicator { font-size: 18px; bottom: 10px; }
+            .gallery-slide img, .gallery-slide .skeleton-img { height: 220px; }
+            .radio-group label { font-size: 12px; padding: 5px 8px; }
+            .btn-submit { font-size: 13px; padding: 8px; }
+            .form-group input, .form-group select { padding: 8px 12px; font-size: 13px; }
+            .gallery-thumbs .thumb { width: 32px; height: 26px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1703,18 +1902,19 @@
             .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1 !important; transform: none !important; }
             .petal-decor, .weather-card .weather-icon, .final-message .emoji-big, .footer .heart,
             .story-item .story-marker, .zigzag-item .marker, .gift-note .heart-icon,
-            .icon-heart, .icon-heart-red, .scroll-indicator { animation: none !important; }
+            .story-item .story-year .icon, .zigzag-item .event .event-icon,
+            .contact-card .icon, .scroll-indicator, .divider .ornament,
+            .divider-ornate .ornament, .equalizer.active span { animation: none !important; }
             .gallery-slide img { opacity: 1 !important; animation: none !important; }
             #backToTop { animation: none !important; }
+            .detail-card::before, .detail-card::after,
+            .contact-card::before, .contact-card::after { animation: none !important; opacity: 0 !important; }
+            .timer-section::before { animation: none !important; }
+            .timer-item .number { animation: none !important; background: none !important; -webkit-text-fill-color: #b07c6a !important; }
         }
     </style>
 </head>
 <body>
-
-    <!-- Прогресс-бар загрузки -->
-    <div class="loader" id="loader">
-        <div class="loader-bar" id="loaderBar"></div>
-    </div>
 
     <header class="hero" id="heroSection">
         <div class="hero-badge">Приглашение</div>
@@ -1727,18 +1927,24 @@
 
         <div class="hero-greeting">Дорогие родные и друзья!</div>
 
+        <!-- ===== ПЛЕЕР С ВИЗУАЛИЗАЦИЕЙ ===== -->
         <div class="player-wrapper">
             <div class="player">
                 <div class="track-name empty" id="trackName">🎵 Включить музыку</div>
                 <div class="player-controls">
-                    <button class="btn-play" id="playBtn" aria-label="Воспроизвести музыку">
+                    <button class="btn-play" id="playBtn" aria-label="Воспроизвести">
                         <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
                     </button>
+                    <div class="equalizer" id="equalizer">
+                        <span></span><span></span><span></span>
+                        <span></span><span></span><span></span>
+                        <span></span><span></span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="divider" style="margin-top:4px;">
+        <div class="divider" style="margin-top:6px;">
             <span class="line"></span>
             <span class="ornament">✦ ✦ ✦</span>
             <span class="line"></span>
@@ -1760,7 +1966,7 @@
                 <span class="diamond">◆</span>
                 <span class="line"></span>
             </div>
-            <div class="timer-title" style="margin-top:6px;">До этого дня осталось</div>
+            <div class="timer-title" style="margin-top:8px;">До этого дня осталось</div>
             <div class="timer-grid">
                 <div class="timer-item"><div class="number" id="days">00</div><div class="label">Дней</div></div>
                 <div class="timer-item"><div class="number" id="hours">00</div><div class="label">Часов</div></div>
@@ -1772,7 +1978,7 @@
         <div class="final-message" id="finalMessage">
             <div class="emoji-big">🥂</div>
             <div class="big-text">Сегодня наш день!</div>
-            <div class="sub-text">Спасибо, что вы с нами <i class="fas fa-heart icon-heart-red"></i></div>
+            <div class="sub-text">Спасибо, что вы с нами ❤️</div>
         </div>
 
         <div class="scroll-indicator" onclick="document.getElementById('storySection').scrollIntoView({behavior:'smooth'})">
@@ -1797,7 +2003,7 @@
                 <div class="story-item reveal-left">
                     <div class="story-content">
                         <div class="story-number">01</div>
-                        <div class="story-year"><span class="icon"><i class="fas fa-mug-saucer"></i></span> 2020</div>
+                        <div class="story-year"><span class="icon">☕</span> 2020</div>
                         <div class="story-text"><strong>Знакомство</strong>Случайная встреча в кафе переросла в разговор до утра.</div>
                     </div>
                     <div class="story-marker"></div>
@@ -1805,7 +2011,7 @@
                 <div class="story-item reveal-right">
                     <div class="story-content">
                         <div class="story-number">02</div>
-                        <div class="story-year"><span class="icon"><i class="fas fa-water"></i></span> 2021</div>
+                        <div class="story-year"><span class="icon">🌊</span> 2021</div>
                         <div class="story-text"><strong>Первое свидание</strong>Прогулка по набережной и первый поцелуй под звёздами.</div>
                     </div>
                     <div class="story-marker"></div>
@@ -1813,7 +2019,7 @@
                 <div class="story-item reveal-left">
                     <div class="story-content">
                         <div class="story-number">03</div>
-                        <div class="story-year"><span class="icon"><i class="fas fa-ring"></i></span> 2023</div>
+                        <div class="story-year"><span class="icon">💍</span> 2023</div>
                         <div class="story-text"><strong>Предложение</strong>Он встал на колено на том же месте, где они встретились.</div>
                     </div>
                     <div class="story-marker"></div>
@@ -1821,8 +2027,8 @@
                 <div class="story-item reveal-right">
                     <div class="story-content">
                         <div class="story-number">04</div>
-                        <div class="story-year"><span class="icon"><i class="fas fa-heart icon-heart"></i></span> 2026</div>
-                        <div class="story-text"><strong>Свадьба</strong>День, когда две судьбы становятся одной <i class="fas fa-heart icon-heart-red"></i></div>
+                        <div class="story-year"><span class="icon">❤️</span> 2026</div>
+                        <div class="story-text"><strong>Свадьба</strong>День, когда две судьбы становятся одной ❤️</div>
                     </div>
                     <div class="story-marker"></div>
                 </div>
@@ -1830,7 +2036,7 @@
         </section>
 
         <!-- ===== ДЕТАЛИ ===== -->
-        <section>
+        <section id="detailsSection">
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title reveal">Детали праздника</h2>
             <div class="divider reveal">
@@ -1841,25 +2047,25 @@
             <p class="section-subtitle reveal">Где и когда</p>
             <div class="details-grid">
                 <div class="detail-card reveal-scale">
-                    <span class="icon"><i class="fas fa-calendar-day"></i></span>
+                    <span class="icon">📅</span>
                     <h4>Дата</h4>
                     <p>29 августа 2026<br />Суббота</p>
                 </div>
                 <div class="detail-card reveal-scale" style="transition-delay:0.1s;">
-                    <span class="icon"><i class="fas fa-location-dot"></i></span>
+                    <span class="icon">📍</span>
                     <h4>Место</h4>
                     <p>Ресторан «Зелёный мыс»<br />г. Невинномысск<br />ул. Менделеева, 105</p>
                 </div>
                 <div class="detail-card reveal-scale" style="transition-delay:0.2s;">
-                    <span class="icon"><i class="fas fa-face-smile"></i></span>
+                    <span class="icon">😊</span>
                     <h4>Дресс-код: ваша улыбка!</h4>
-                    <p>Приходите в том, в чём вы чувствуете себя прекрасно.<br /><span style="font-size:12px;color:#b07c6a;font-style:italic;">P.S. Если решите нарядиться — будем рады!</span></p>
+                    <p>Приходите в том, в чём вы чувствуете себя прекрасно.<br /><span style="font-size:13px;color:#b07c6a;font-style:italic;">P.S. Если решите нарядиться — будем рады!</span></p>
                 </div>
             </div>
         </section>
 
         <!-- ===== ГАЛЕРЕЯ ===== -->
-        <section class="gallery-section">
+        <section class="gallery-section" id="gallerySection">
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title reveal">Наши моменты</h2>
             <div class="divider reveal">
@@ -1869,20 +2075,34 @@
             </div>
             <p class="section-subtitle reveal">Немного тёплых воспоминаний</p>
 
-            <div class="gallery-container reveal-scale">
+            <div class="gallery-container reveal-scale" id="galleryContainer">
                 <div class="gallery-slide" id="gallerySlide">
-                    <img src="photo1.jpg" alt="Фото 1" loading="lazy" />
-                    <img src="photo2.jpg" alt="Фото 2" loading="lazy" />
-                    <img src="photo3.jpg" alt="Фото 3" loading="lazy" />
-                    <img src="photo4.jpg" alt="Фото 4" loading="lazy" />
-                    <img src="photo5.jpg" alt="Фото 5" loading="lazy" />
+                    <div class="skeleton-img" id="skeleton1"></div>
+                    <div class="skeleton-img" id="skeleton2"></div>
+                    <div class="skeleton-img" id="skeleton3"></div>
+                    <div class="skeleton-img" id="skeleton4"></div>
+                    <div class="skeleton-img" id="skeleton5"></div>
+                    <img src="photo1.jpg" alt="Фото 1" loading="lazy" decoding="async" style="display:none;" />
+                    <img src="photo2.jpg" alt="Фото 2" loading="lazy" decoding="async" style="display:none;" />
+                    <img src="photo3.jpg" alt="Фото 3" loading="lazy" decoding="async" style="display:none;" />
+                    <img src="photo4.jpg" alt="Фото 4" loading="lazy" decoding="async" style="display:none;" />
+                    <img src="photo5.jpg" alt="Фото 5" loading="lazy" decoding="async" style="display:none;" />
                 </div>
             </div>
+
+            <div class="gallery-thumbs" id="galleryThumbs">
+                <img src="photo1.jpg" alt="Фото 1" class="thumb active" data-index="0" />
+                <img src="photo2.jpg" alt="Фото 2" class="thumb" data-index="1" />
+                <img src="photo3.jpg" alt="Фото 3" class="thumb" data-index="2" />
+                <img src="photo4.jpg" alt="Фото 4" class="thumb" data-index="3" />
+                <img src="photo5.jpg" alt="Фото 5" class="thumb" data-index="4" />
+            </div>
+
             <div class="gallery-dots" id="galleryDots"></div>
         </section>
 
         <!-- ===== ПРОГРАММА ===== -->
-        <section>
+        <section id="programSection">
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title reveal">Программа дня</h2>
             <div class="divider reveal">
@@ -1894,27 +2114,27 @@
 
             <div class="timeline-zigzag">
                 <div class="zigzag-item reveal-left">
-                    <div class="event"><span class="event-icon"><i class="fas fa-house-chimney"></i></span><div class="event-time">10:30</div><div class="event-title">Сбор у жениха</div><div class="event-place"><i class="fas fa-location-dot icon-sm"></i> Дом жениха</div></div>
+                    <div class="event"><span class="event-icon">🏠</span><div class="event-time">10:30</div><div class="event-title">Сбор у жениха</div><div class="event-place">📍 Дом жениха</div></div>
                     <div class="marker"></div>
                 </div>
                 <div class="zigzag-item reveal-right">
-                    <div class="event"><span class="event-icon"><i class="fas fa-spa"></i></span><div class="event-time">12:00</div><div class="event-title">Сбор у невесты</div><div class="event-place"><i class="fas fa-location-dot icon-sm"></i> Дом невесты</div></div>
+                    <div class="event"><span class="event-icon">💄</span><div class="event-time">12:00</div><div class="event-title">Сбор у невесты</div><div class="event-place">📍 Дом невесты</div></div>
                     <div class="marker"></div>
                 </div>
                 <div class="zigzag-item reveal-left">
-                    <div class="event"><span class="event-icon"><i class="fas fa-gem"></i></span><div class="event-time">12:40</div><div class="event-title">Выкуп</div><div class="event-place"><i class="fas fa-location-dot icon-sm"></i> Дом невесты</div></div>
+                    <div class="event"><span class="event-icon">💍</span><div class="event-time">12:40</div><div class="event-title">Выкуп</div><div class="event-place">📍 Дом невесты</div></div>
                     <div class="marker"></div>
                 </div>
                 <div class="zigzag-item reveal-right">
-                    <div class="event"><span class="event-icon"><i class="fas fa-scroll"></i></span><div class="event-time">14:00</div><div class="event-title">Регистрация брака</div><div class="event-place"><i class="fas fa-location-dot icon-sm"></i> ЗАГС</div></div>
+                    <div class="event"><span class="event-icon">📜</span><div class="event-time">14:00</div><div class="event-title">Регистрация брака</div><div class="event-place">📍 ЗАГС</div></div>
                     <div class="marker"></div>
                 </div>
                 <div class="zigzag-item reveal-left">
-                    <div class="event"><span class="event-icon"><i class="fas fa-utensils"></i></span><div class="event-time">16:30</div><div class="event-title">Банкет</div><div class="event-place"><i class="fas fa-location-dot icon-sm"></i> Ресторан «Зелёный мыс»</div></div>
+                    <div class="event"><span class="event-icon">🍽️</span><div class="event-time">16:30</div><div class="event-title">Банкет</div><div class="event-place">📍 Ресторан «Зелёный мыс»</div></div>
                     <div class="marker"></div>
                 </div>
                 <div class="zigzag-item reveal-right">
-                    <div class="event"><span class="event-icon"><i class="fas fa-moon"></i></span><div class="event-time">00:00</div><div class="event-title">Окончание вечера</div><div class="event-place"><i class="fas fa-location-dot icon-sm"></i> Ресторан «Зелёный мыс»</div></div>
+                    <div class="event"><span class="event-icon">🌙</span><div class="event-time">00:00</div><div class="event-title">Окончание вечера</div><div class="event-place">📍 Ресторан «Зелёный мыс»</div></div>
                     <div class="marker"></div>
                 </div>
             </div>
@@ -1930,37 +2150,14 @@
                 <span class="line"></span>
             </div>
             <p class="section-subtitle reveal" style="line-height:1.8;">Ресторан «Зелёный мыс»<br />г. Невинномысск<br />ул. Менделеева, 105</p>
-            
-            <div class="map-container reveal-scale" id="mapContainer">
-                <iframe 
-                    id="mapFrame"
-                    src="https://yandex.ru/map-widget/v1/org/zeleny_mys/1799472245/?ll=41.913235%2C44.658006&utm_source=share&z=17" 
-                    width="100%" 
-                    height="400" 
-                    frameborder="0" 
-                    allowfullscreen="true" 
-                    loading="lazy" 
-                    style="border-radius:16px;"
-                    onerror="showMapFallback()"
-                ></iframe>
-                
-                <div class="map-fallback" id="mapFallback">
-                    <div class="big-icon"><i class="fas fa-location-dot"></i></div>
-                    <div class="address">Ресторан «Зелёный мыс»</div>
-                    <p style="color:#7a6257;">г. Невинномысск, ул. Менделеева, 105</p>
-                    <a href="https://yandex.ru/maps/org/zeleny_mys/1799472245/" target="_blank" class="link-btn">
-                        <i class="fas fa-map-location-dot"></i> Открыть в Яндекс.Картах
-                    </a>
-                    <a href="https://www.google.com/maps/search/?api=1&query=44.658006,41.913235" target="_blank" class="link-btn" style="background:#4a76a8;margin-top:8px;">
-                        <i class="fas fa-map"></i> Открыть в Google Maps
-                    </a>
-                </div>
+            <div class="map-container reveal-scale">
+                <iframe src="https://yandex.ru/map-widget/v1/org/zeleny_mys/1799472245/?ll=41.913235%2C44.658006&utm_source=share&z=17" width="100%" height="400" frameborder="0" allowfullscreen="true" loading="lazy" style="border-radius:16px;"></iframe>
             </div>
-            <p style="text-align:center;margin-top:14px;font-size:13px;color:#9a847a;"><i class="fas fa-location-dot icon-sm"></i> Ресторан «Зелёный мыс» на карте</p>
+            <p style="text-align:center;margin-top:16px;font-size:14px;color:#9a847a;">📍 Откроется в Яндекс.Картах</p>
         </section>
 
         <!-- ===== КОНТАКТЫ ===== -->
-        <section>
+        <section id="contactsSection">
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title reveal">Контакты</h2>
             <div class="divider reveal">
@@ -1971,14 +2168,14 @@
             <p class="section-subtitle reveal">По любым вопросам обращайтесь</p>
             <div class="contacts-grid">
                 <div class="contact-card reveal-scale">
-                    <span class="icon"><i class="fas fa-user-tie"></i></span>
+                    <span class="icon">🤵</span>
                     <div class="name">Максим</div>
-                    <a href="tel:+79188771103" class="phone"><i class="fas fa-phone icon-sm"></i> 8 (918) 877-11-03</a>
+                    <a href="tel:+79188771103" class="phone">8 (918) 877-11-03</a>
                 </div>
                 <div class="contact-card reveal-scale" style="transition-delay:0.1s;">
-                    <span class="icon"><i class="fas fa-venus"></i></span>
+                    <span class="icon">👰</span>
                     <div class="name">Ульяна</div>
-                    <a href="tel:+79283198455" class="phone"><i class="fas fa-phone icon-sm"></i> 8 (928) 319-84-55</a>
+                    <a href="tel:+79283198455" class="phone">8 (928) 319-84-55</a>
                 </div>
             </div>
         </section>
@@ -2017,14 +2214,14 @@
             <p class="section-subtitle reveal">29 августа 2026, Невинномысск</p>
             <div class="weather-card reveal-scale" id="weatherCard">
                 <div id="weatherContent">
-                    <div class="weather-loading"><span class="spinner"><i class="fas fa-sun"></i></span><br>Загружаем прогноз погоды...</div>
+                    <div class="weather-loading"><span class="spinner">☀️</span><br>Загружаем прогноз погоды...</div>
                 </div>
             </div>
-            <p style="text-align:center;margin-top:10px;font-size:11px;color:#b09a8f;" id="weatherUpdateTime"></p>
+            <p style="text-align:center;margin-top:12px;font-size:12px;color:#b09a8f;" id="weatherUpdateTime"></p>
         </section>
 
         <!-- ===== RSVP ===== -->
-        <section>
+        <section id="rsvpSection">
             <div class="petal-decor">✿ ✿ ✿</div>
             <h2 class="section-title reveal">Ждём вас!</h2>
             <div class="divider reveal">
@@ -2034,47 +2231,78 @@
             </div>
             <p class="section-subtitle reveal">Пожалуйста, подтвердите присутствие до 1 августа</p>
 
-            <form class="rsvp-form reveal-scale" action="https://formspree.io/f/mnjyybwg" method="POST" id="rsvpForm">
-                <input type="hidden" name="_subject" value="✅ Новое подтверждение на свадьбу!" />
-                <input type="hidden" name="_replyto" value="support.ruslan26@gmail.com" />
-                <input type="hidden" name="_next" value="#" />
-
-                <div class="form-group">
-                    <label for="name"><i class="fas fa-user icon-sm"></i> Ваше имя и фамилия</label>
-                    <input type="text" id="name" name="Имя" placeholder="Напишите Ваше и все имена гостей" required />
+            <div class="rsvp-wrapper reveal-scale">
+                <div class="rsvp-header">
+                    <span class="rsvp-icon"><i class="fas fa-envelope-open-text"></i></span>
+                    <h3>Подтверждение присутствия</h3>
+                    <p>Заполните форму, чтобы мы знали, что вы с нами ❤️</p>
                 </div>
 
-                <div class="form-group">
-                    <label for="guests"><i class="fas fa-users icon-sm"></i> Количество гостей</label>
-                    <select class="guest-select" id="guests" name="Количество гостей">
-                        <option value="1">1 человек</option><option value="2">2 человека</option>
-                        <option value="3">3 человека</option><option value="4">4 человека</option>
-                        <option value="5">5 человек</option><option value="6">6 человек</option>
-                        <option value="7">7 человек</option><option value="8">8 человек</option>
-                        <option value="9">9 человек</option><option value="10">10 человек</option>
-                    </select>
-                </div>
+                <div class="rsvp-body">
+                    <form class="rsvp-form" action="https://formspree.io/f/mnjyybwg" method="POST" id="rsvpForm">
+                        <input type="hidden" name="_subject" value="✅ Новое подтверждение на свадьбу!" />
+                        <input type="hidden" name="_replyto" value="support.ruslan26@gmail.com" />
+                        <input type="hidden" name="_next" value="#" />
 
-                <div class="form-group">
-                    <label><i class="fas fa-check-circle icon-sm"></i> Сможете ли Вы присутствовать на нашем дне?</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="attendance" value="С удовольствием приду" checked /> <i class="fas fa-face-smile icon-sm"></i> С удовольствием приду</label>
-                        <label><input type="radio" name="attendance" value="К сожалению, не смогу присутствовать" /> <i class="fas fa-face-frown icon-sm"></i> К сожалению, не смогу присутствовать</label>
-                        <label><input type="radio" name="attendance" value="Сообщу позже" /> <i class="fas fa-clock icon-sm"></i> Сообщу позже</label>
+                        <div class="form-group">
+                            <label for="name">Ваше имя <span class="required">*</span></label>
+                            <input type="text" id="name" name="Имя" placeholder="Напишите Ваше и имена всех гостей" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="guests">Количество гостей <span class="required">*</span></label>
+                            <select class="guest-select" id="guests" name="Количество гостей">
+                                <option value="1">1 человек</option>
+                                <option value="2">2 человека</option>
+                                <option value="3">3 человека</option>
+                                <option value="4">4 человека</option>
+                                <option value="5">5 человек</option>
+                                <option value="6">6 человек</option>
+                                <option value="7">7 человек</option>
+                                <option value="8">8 человек</option>
+                                <option value="9">9 человек</option>
+                                <option value="10">10 человек</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Сможете ли Вы присутствовать? <span class="required">*</span></label>
+                            <div class="radio-group">
+                                <label>
+                                    <input type="radio" name="attendance" value="С удовольствием приду" checked />
+                                    <span class="radio-icon"><i class="fas fa-face-smile"></i></span>
+                                    С удовольствием приду
+                                </label>
+                                <label>
+                                    <input type="radio" name="attendance" value="К сожалению, не смогу присутствовать" />
+                                    <span class="radio-icon"><i class="fas fa-face-frown"></i></span>
+                                    К сожалению, не смогу
+                                </label>
+                                <label>
+                                    <input type="radio" name="attendance" value="Сообщу позже" />
+                                    <span class="radio-icon"><i class="fas fa-clock"></i></span>
+                                    Сообщу позже
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Пожелания</label>
+                            <input type="text" id="message" name="Пожелания" placeholder="Напишите пару тёплых слов..." />
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            <span class="btn-icon"><i class="fas fa-check-circle"></i></span>
+                            Подтвердить присутствие
+                        </button>
+                    </form>
+
+                    <div class="success-message" id="successMessage">
+                        <span class="icon"><i class="fas fa-bouquet"></i></span>
+                        <div class="title">Спасибо большое!</div>
+                        <div class="desc">Мы получили ваше подтверждение и очень ждём вас на нашем празднике! ❤️</div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="message"><i class="fas fa-pen icon-sm"></i> Пожелания</label>
-                    <input type="text" id="message" name="Пожелания" placeholder="Напишите пару слов" />
-                </div>
-
-                <button type="submit" class="btn" id="submitBtn"><i class="fas fa-check icon-sm"></i> Подтвердить</button>
-            </form>
-
-            <div class="success-message" id="successMessage">
-                <span class="icon"><i class="fas fa-bouquet"></i></span>
-                <strong>Спасибо!</strong> Мы получили ваше подтверждение и очень ждём вас!
             </div>
 
             <div class="gift-note">
@@ -2082,23 +2310,23 @@
                 <span class="highlight-text">Главное для нас — ваше присутствие!</span>
                 <span class="heart-icon"><i class="fas fa-heart"></i></span><br>
                 Вместо цветов будем рады <strong>бутылочке хорошего алкоголя</strong> с запиской, к какому событию её приурочить.
-                <div class="small-note"><i class="fas fa-wine-bottle icon-sm"></i> Ваше внимание — лучший подарок</div>
+                <div class="small-note"><i class="fas fa-wine-bottle"></i> Ваше внимание — лучший подарок</div>
             </div>
 
-            <p style="text-align:center;margin-top:6px;font-size:12px;color:#b09a8f;"><i class="fas fa-heart icon-heart-red"></i> Будем очень рады видеть вас!</p>
+            <p style="text-align:center;margin-top:8px;font-size:13px;color:#b09a8f;"><i class="fas fa-heart" style="color:#c97a6a;"></i> Будем очень рады видеть вас!</p>
         </section>
 
     </div>
 
     <footer class="footer">
-        <div class="divider-ornate" style="max-width:300px;margin:0 auto 16px;">
+        <div class="divider-ornate" style="max-width:300px;margin:0 auto 20px;">
             <span class="line"></span><span class="ornament">✧</span>
             <span class="line"></span><span class="ornament">✧</span>
             <span class="line"></span><span class="ornament">✧</span>
             <span class="line"></span>
         </div>
         <p>С любовью, <span class="heart"><i class="fas fa-heart"></i></span> Максим & Ульяна</p>
-        <p style="margin-top:6px;font-size:11px;opacity:0.6;">29.08.2026</p>
+        <p style="margin-top:8px;font-size:12px;opacity:0.6;">29.08.2026</p>
 
         <div class="footer-links">
             <button class="link-btn" onclick="showToast('👨‍💼 Каспарович Руслан Владиславович, г. Невинномысск', 'info')"><span class="icon"><i class="fas fa-copyright"></i></span> Права</button>
@@ -2111,8 +2339,12 @@
         </div>
     </footer>
 
-    <!-- Кнопка "Наверх" -->
-    <button id="backToTop" aria-label="Вернуться наверх">
+    <!-- ===== КНОПКА НАВЕРХ С ПРОГРЕССОМ ===== -->
+    <button id="backToTop" aria-label="Наверх">
+        <svg class="progress-ring" viewBox="0 0 64 64">
+            <circle class="bg" cx="32" cy="32" r="30" />
+            <circle class="progress" id="progressCircle" cx="32" cy="32" r="30" />
+        </svg>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4L12 20M12 4L18 10M12 4L6 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -2124,56 +2356,13 @@
     </div>
 
     <script>
-        // ===== ПРОГРЕСС-БАР ЗАГРУЗКИ =====
-        let loaderProgress = 0;
-        const loaderBar = document.getElementById('loaderBar');
-        const loader = document.getElementById('loader');
-
-        function updateLoader() {
-            loaderProgress += Math.random() * 15 + 5;
-            if (loaderProgress > 100) loaderProgress = 100;
-            loaderBar.style.width = loaderProgress + '%';
-            if (loaderProgress < 100) {
-                setTimeout(updateLoader, 200 + Math.random() * 300);
-            } else {
-                setTimeout(() => {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 500);
-                }, 300);
-            }
-        }
-        updateLoader();
-
-        // ===== КАРТА =====
-        function showMapFallback() {
-            const iframe = document.getElementById('mapFrame');
-            const fallback = document.getElementById('mapFallback');
-            if (iframe) iframe.style.display = 'none';
-            if (fallback) fallback.style.display = 'flex';
-        }
-
-        setTimeout(function() {
-            const iframe = document.getElementById('mapFrame');
-            if (iframe) {
-                try {
-                    const isLoaded = iframe.contentWindow && iframe.contentWindow.location.href;
-                    if (!isLoaded) {
-                        showMapFallback();
-                    }
-                } catch (e) {
-                    console.log('Карта загружена');
-                }
-            }
-        }, 5000);
-
-        document.getElementById('mapFrame').addEventListener('error', function() {
-            showMapFallback();
-        });
-
-        // ===== ПЛЕЕР =====
+        // ============================================================
+        //  ПЛЕЕР С ВИЗУАЛИЗАЦИЕЙ
+        // ============================================================
         const trackName = document.getElementById('trackName');
         const playBtn = document.getElementById('playBtn');
         const playIcon = document.getElementById('playIcon');
+        const equalizer = document.getElementById('equalizer');
 
         let isPlaying = false, audio = null, isLoading = false, isLoaded = false;
         let retryCount = 0;
@@ -2181,45 +2370,49 @@
         const song = { file: 'song.mp3', title: 'Perfect', artist: 'Ed Sheeran' };
 
         function createAudio() {
-            try {
-                if (audio) { audio.pause(); audio.src = ''; audio = null; }
-                audio = new Audio();
-                audio.src = song.file;
-                audio.loop = false;
-                audio.volume = 0.8;
-                audio.preload = 'auto';
+            if (audio) { audio.pause(); audio.src = ''; audio = null; }
+            audio = new Audio();
+            audio.src = song.file;
+            audio.loop = false;
 
-                audio.addEventListener('canplaythrough', function() {
-                    isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
-                    if (trackName.classList.contains('loading')) {
-                        trackName.textContent = '🎵 Включить музыку';
-                        trackName.classList.remove('loading'); trackName.classList.add('empty');
-                    }
-                    retryCount = 0;
-                });
+            audio.addEventListener('canplaythrough', function() {
+                isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
+                if (trackName.classList.contains('loading')) {
+                    trackName.textContent = '🎵 Включить музыку';
+                    trackName.classList.remove('loading'); trackName.classList.add('empty');
+                }
+                retryCount = 0;
+            });
 
-                audio.addEventListener('ended', function() { 
-                    isPlaying = false; updatePlayButton(false); audio.currentTime = 0; 
-                });
+            audio.addEventListener('ended', function() { 
+                isPlaying = false; updatePlayButton(false); audio.currentTime = 0; 
+                equalizer.classList.remove('active');
+            });
 
-                audio.addEventListener('error', function(e) {
-                    console.warn('Ошибка загрузки аудио:', e);
-                    if (retryCount < MAX_RETRIES) {
-                        retryCount++;
-                        setTimeout(() => {
-                            if (!isLoaded && !isPlaying) {
-                                try { audio.load(); } catch(err) {}
-                            }
-                        }, 2000 * retryCount);
-                    } else {
-                        isLoaded = false; isLoading = false; playBtn.classList.remove('loading');
-                        trackName.textContent = '🎵 Музыка недоступна'; 
-                        trackName.classList.add('error');
-                    }
-                });
-            } catch (e) {
-                console.warn('Ошибка создания аудио:', e);
-            }
+            audio.addEventListener('play', function() {
+                equalizer.classList.add('active');
+            });
+
+            audio.addEventListener('pause', function() {
+                equalizer.classList.remove('active');
+            });
+
+            audio.addEventListener('error', function(e) {
+                console.warn('Ошибка загрузки аудио:', e);
+                if (retryCount < MAX_RETRIES) {
+                    retryCount++;
+                    setTimeout(() => {
+                        if (!isLoaded && !isPlaying) {
+                            audio.load();
+                        }
+                    }, 2000 * retryCount);
+                } else {
+                    isLoaded = false; isLoading = false; playBtn.classList.remove('loading');
+                    trackName.textContent = '🎵 Музыка недоступна'; 
+                    trackName.classList.add('error');
+                    equalizer.classList.remove('active');
+                }
+            });
         }
 
         setTimeout(createAudio, 500);
@@ -2240,75 +2433,73 @@
         }
 
         function playSong() {
-            try {
-                if (isLoading) return;
-                if (!audio) { createAudio(); if (!audio) return; }
+            if (isLoading) return;
+            if (!audio) { createAudio(); if (!audio) return; }
 
-                if (!isLoaded) {
-                    isLoading = true; playBtn.classList.add('loading');
-                    trackName.textContent = '⏳ Загрузка...'; trackName.classList.add('loading');
-                    try { audio.load(); } catch(e) {}
+            if (!isLoaded) {
+                isLoading = true; playBtn.classList.add('loading');
+                trackName.textContent = '⏳ Загрузка...'; trackName.classList.add('loading');
+                audio.load();
 
-                    const timeoutId = setTimeout(() => {
-                        if (isLoading) {
-                            isLoading = false; playBtn.classList.remove('loading');
-                            trackName.textContent = '⏳ Долгая загрузка...';
-                            trackName.classList.add('loading');
-                        }
-                    }, 8000);
+                audio.addEventListener('canplaythrough', function handler() {
+                    audio.removeEventListener('canplaythrough', handler);
+                    isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
+                    if (isPlaying) {
+                        audio.play().catch(() => {});
+                    } else {
+                        trackName.textContent = '🎵 Включить музыку';
+                        trackName.classList.remove('loading'); trackName.classList.add('empty');
+                    }
+                });
 
-                    audio.addEventListener('canplaythrough', function handler() {
-                        audio.removeEventListener('canplaythrough', handler);
-                        isLoaded = true; isLoading = false; playBtn.classList.remove('loading');
-                        if (isPlaying) {
-                            try { audio.play().catch(() => {}); } catch(e) {}
-                        } else {
-                            trackName.textContent = '🎵 Включить музыку';
-                            trackName.classList.remove('loading'); trackName.classList.add('empty');
-                        }
-                        clearTimeout(timeoutId);
-                    });
-
-                    return;
-                }
-
-                audio.play()
-                    .then(() => { 
-                        isPlaying = true; updatePlayButton(true); updateTrackDisplay(); 
-                    })
-                    .catch((err) => {
-                        console.warn('Ошибка воспроизведения:', err);
-                        isLoaded = false;
-                        trackName.textContent = '🔄 Перезагрузка...';
+                const timeoutId = setTimeout(() => {
+                    if (isLoading) {
+                        isLoading = false; playBtn.classList.remove('loading');
+                        trackName.textContent = '⏳ Долгая загрузка...';
                         trackName.classList.add('loading');
-                        try { audio.load(); } catch(e) {}
-                        setTimeout(() => {
-                            if (!isLoaded) {
-                                trackName.textContent = '🎵 Музыка недоступна';
-                                trackName.classList.add('error');
-                                updatePlayButton(false);
-                            }
-                        }, 5000);
-                    });
-            } catch (e) {
-                console.warn('Ошибка в playSong:', e);
+                    }
+                }, 8000);
+
+                audio.addEventListener('canplaythrough', function() {
+                    clearTimeout(timeoutId);
+                });
+
+                return;
             }
+
+            audio.play()
+                .then(() => { 
+                    isPlaying = true; updatePlayButton(true); updateTrackDisplay(); 
+                    equalizer.classList.add('active');
+                })
+                .catch((err) => {
+                    console.warn('Ошибка воспроизведения:', err);
+                    isLoaded = false;
+                    trackName.textContent = '🔄 Перезагрузка...';
+                    trackName.classList.add('loading');
+                    audio.load();
+                    setTimeout(() => {
+                        if (!isLoaded) {
+                            trackName.textContent = '🎵 Музыка недоступна';
+                            trackName.classList.add('error');
+                            updatePlayButton(false);
+                            equalizer.classList.remove('active');
+                        }
+                    }, 5000);
+                });
         }
 
         function pauseSong() { 
-            try {
-                if (audio) { 
-                    audio.pause(); 
-                    isPlaying = false; 
-                    updatePlayButton(false); 
-                }
-            } catch (e) {}
+            if (audio) { 
+                audio.pause(); 
+                isPlaying = false; 
+                updatePlayButton(false); 
+                equalizer.classList.remove('active');
+            } 
         }
 
         function togglePlay() { 
-            try {
-                isPlaying ? pauseSong() : playSong(); 
-            } catch (e) {}
+            isPlaying ? pauseSong() : playSong(); 
         }
 
         playBtn.addEventListener('click', togglePlay);
@@ -2316,71 +2507,218 @@
         trackName.classList.add('empty'); 
         updatePlayButton(false);
 
-        // ===== TOAST =====
-        function showToast(message, type = 'info') {
-            try {
-                document.querySelectorAll('.toast').forEach(el => el.remove());
-                const toast = document.createElement('div');
-                toast.className = `toast toast-${type}`;
-                toast.textContent = message;
-                document.body.appendChild(toast);
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.transform = 'translateX(-50%) translateY(20px)';
-                    toast.style.transition = 'all 0.4s ease';
-                    setTimeout(() => toast.remove(), 500);
-                }, 3000);
-            } catch (e) {}
+        // ============================================================
+        //  КНОПКА НАВЕРХ С ПРОГРЕССОМ
+        // ============================================================
+        const backToTopBtn = document.getElementById('backToTop');
+        const progressCircle = document.getElementById('progressCircle');
+        const circumference = 2 * Math.PI * 30;
+
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            
+            if (scrollTop > 500) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+            
+            const offset = circumference - (progress / 100) * circumference;
+            progressCircle.style.strokeDashoffset = offset;
+        });
+
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ============================================================
+        //  ГАЛЕРЕЯ С АВТОПРОКРУТКОЙ
+        // ============================================================
+        const galleryContainer = document.getElementById('galleryContainer');
+        const gallerySlide = document.getElementById('gallerySlide');
+        const images = gallerySlide.querySelectorAll('img');
+        const total = images.length;
+        let current = 0, autoPlayInterval;
+        let isPaused = false;
+
+        function loadImages() {
+            const skeletons = document.querySelectorAll('.skeleton-img');
+            skeletons.forEach((s, i) => {
+                s.style.display = 'none';
+                if (images[i]) {
+                    images[i].style.display = 'block';
+                    images[i].classList.add('loaded');
+                }
+            });
         }
 
-        // ===== ЗАЩИТА =====
+        setTimeout(loadImages, 1000);
+
+        function updateGallery(index) {
+            gallerySlide.style.transform = 'translateX(-' + (index * 100) + '%)';
+            const dots = document.querySelectorAll('.gallery-dots span');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            
+            const thumbs = document.querySelectorAll('.gallery-thumbs .thumb');
+            thumbs.forEach((thumb, i) => thumb.classList.toggle('active', i === index));
+        }
+
+        function goTo(index) { 
+            current = (index + total) % total; 
+            updateGallery(current); 
+            resetAutoPlay(); 
+        }
+
+        function nextSlide() { goTo(current + 1); }
+
+        galleryContainer.addEventListener('mouseenter', function() {
+            isPaused = true;
+            clearInterval(autoPlayInterval);
+            this.classList.add('paused');
+        });
+
+        galleryContainer.addEventListener('mouseleave', function() {
+            isPaused = false;
+            this.classList.remove('paused');
+            startAutoPlay();
+        });
+
+        let touchTimeout;
+        galleryContainer.addEventListener('touchstart', function() {
+            isPaused = true;
+            clearInterval(autoPlayInterval);
+            clearTimeout(touchTimeout);
+        });
+
+        galleryContainer.addEventListener('touchend', function() {
+            touchTimeout = setTimeout(() => {
+                isPaused = false;
+                startAutoPlay();
+            }, 3000);
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        galleryContainer.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        galleryContainer.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    goTo(current + 1);
+                } else {
+                    goTo(current - 1);
+                }
+            }
+        }, { passive: true });
+
+        document.querySelectorAll('.gallery-thumbs .thumb').forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                const index = parseInt(this.dataset.index);
+                goTo(index);
+            });
+        });
+
+        const dotsContainer = document.getElementById('galleryDots');
+        for (let i = 0; i < total; i++) {
+            const dot = document.createElement('span');
+            dot.addEventListener('click', (e) => { e.stopPropagation(); goTo(i); });
+            dotsContainer.appendChild(dot);
+        }
+        updateGallery(0);
+
+        function startAutoPlay() { 
+            if (!isPaused) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = setInterval(nextSlide, 4000); 
+            }
+        }
+        function resetAutoPlay() { 
+            clearInterval(autoPlayInterval); 
+            if (!isPaused) startAutoPlay(); 
+        }
+        startAutoPlay();
+
+        // ============================================================
+        //  ЭФФЕКТ РАЗМЫТИЯ ПРИ ОТКРЫТИИ ФОТО
+        // ============================================================
+        const modal = document.getElementById('photoModal');
+        const modalImg = document.getElementById('modalImage');
+        
+        document.querySelectorAll('.gallery-slide img').forEach(img => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', () => { 
+                modalImg.src = img.src; 
+                modal.style.display = 'flex'; 
+                document.body.style.overflow = 'hidden';
+                modalImg.style.animation = 'none';
+                setTimeout(() => {
+                    modalImg.style.animation = 'blurIn 0.5s ease forwards';
+                }, 10);
+            });
+        });
+        
+        modal.addEventListener('click', () => { 
+            modal.style.display = 'none'; 
+            document.body.style.overflow = 'auto'; 
+        });
+        
+        document.addEventListener('keydown', (e) => { 
+            if (e.key === 'Escape' && modal.style.display === 'flex') { 
+                modal.style.display = 'none'; 
+                document.body.style.overflow = 'auto'; 
+            } 
+        });
+
+        // ============================================================
+        //  TOAST
+        // ============================================================
+        function showToast(message, type = 'info') {
+            document.querySelectorAll('.toast').forEach(el => el.remove());
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                toast.style.transition = 'all 0.4s ease';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // ============================================================
+        //  ЗАЩИТА
+        // ============================================================
         document.querySelectorAll('.gallery-slide img').forEach(img => {
             img.addEventListener('contextmenu', (e) => { e.preventDefault(); showToast('📸 Изображения защищены', 'info'); });
             img.setAttribute('draggable', 'false');
         });
-
+        document.addEventListener('copy', (e) => { e.preventDefault(); showToast('📝 Копирование запрещено', 'info'); });
+        document.addEventListener('selectstart', (e) => {
+            if (!e.target.closest('form') && !e.target.closest('input') && !e.target.closest('textarea')) e.preventDefault();
+        });
         document.addEventListener('contextmenu', (e) => {
             if (!e.target.closest('form') && !e.target.closest('button') && !e.target.closest('.link-btn')) {
-                e.preventDefault();
-                showToast('🔒 Просмотр кода защищён', 'info');
+                e.preventDefault(); showToast('🔒 Просмотр кода защищён', 'info');
             }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'i' || e.key === 'I'))) {
-                e.preventDefault();
-                showToast('🔒 Просмотр кода защищён', 'info');
-                return false;
-            }
-        });
-
-        // ===== ФОТО В ПОЛНЫЙ РАЗМЕР =====
-        const modal = document.getElementById('photoModal');
-        const modalImg = document.getElementById('modalImage');
-        document.querySelectorAll('.gallery-slide img').forEach(img => {
-            img.style.cursor = 'pointer';
-            img.addEventListener('click', () => {
-                try {
-                    modalImg.src = img.src;
-                    modal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                } catch (e) {}
-            });
-        });
-        modal.addEventListener('click', () => {
-            try {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            } catch (e) {}
         });
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.style.display === 'flex') {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
+            if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J')) ||
+                (e.ctrlKey && e.shiftKey && (e.key === 'c' || e.key === 'C'))) {
+                e.preventDefault(); showToast('🔒 Просмотр кода защищён', 'info'); return false;
             }
         });
 
-        // ===== ТАЙМЕР =====
+        // ============================================================
+        //  ТАЙМЕР
+        // ============================================================
         const timerSection = document.getElementById('timerSection');
         const finalMessage = document.getElementById('finalMessage');
         const daysEl = document.getElementById('days'), hoursEl = document.getElementById('hours');
@@ -2406,34 +2744,11 @@
         }
         startTimer();
 
-        // ===== ГАЛЕРЕЯ =====
-        const slide = document.getElementById('gallerySlide');
-        const images = slide.querySelectorAll('img');
-        const total = images.length;
-        let current = 0, autoPlayInterval;
-
-        function updateGallery(index) {
-            slide.style.transform = 'translateX(-' + (index * 100) + '%)';
-            const dots = document.querySelectorAll('.gallery-dots span');
-            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-        }
-        function goTo(index) { current = (index + total) % total; updateGallery(current); resetAutoPlay(); }
-        function nextSlide() { goTo(current + 1); }
-
-        const dotsContainer = document.getElementById('galleryDots');
-        for (let i = 0; i < total; i++) {
-            const dot = document.createElement('span');
-            dot.addEventListener('click', (e) => { e.stopPropagation(); goTo(i); });
-            dotsContainer.appendChild(dot);
-        }
-        updateGallery(0);
-
-        function startAutoPlay() { autoPlayInterval = setInterval(nextSlide, 4000); }
-        function resetAutoPlay() { clearInterval(autoPlayInterval); startAutoPlay(); }
-        startAutoPlay();
-
-        // ===== ПОГОДА =====
+        // ============================================================
+        //  ПОГОДА
+        // ============================================================
         const weatherContent = document.getElementById('weatherContent');
+        const weatherUpdateTime = document.getElementById('weatherUpdateTime');
 
         function displayStaticWeather() {
             weatherContent.innerHTML = `
@@ -2446,13 +2761,16 @@
                     <span><i class="fas fa-droplet"></i> <span class="value">55</span>%</span>
                     <span><i class="fas fa-gauge-high"></i> <span class="value">728</span> мм рт.ст.</span>
                 </div>
-                <div style="margin-top:6px;font-size:11px;color:#b09a8f;"><i class="fas fa-calendar-day icon-sm"></i> 29 августа 2026, ~12:00</div>
+                <div style="margin-top:8px;font-size:12px;color:#b09a8f;"><i class="fas fa-calendar-day"></i> 29 августа 2026, ~12:00</div>
                 <div class="weather-source"><i class="fas fa-sun"></i> По данным Яндекс Погоды</div>
             `;
+            weatherUpdateTime.textContent = '';
         }
         displayStaticWeather();
 
-        // ===== ФОРМА =====
+        // ============================================================
+        //  ФОРМА
+        // ============================================================
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
         const successMsg = document.getElementById('successMessage');
@@ -2483,7 +2801,8 @@
             e.preventDefault();
             const name = document.getElementById('name').value.trim();
             if (!name) { showToast('Пожалуйста, напишите ваше имя и имена гостей 🙂', 'error'); return; }
-            submitBtn.disabled = true; submitBtn.textContent = '⏳ Отправляем...';
+            submitBtn.disabled = true; 
+            submitBtn.innerHTML = '<span class="btn-icon"><i class="fas fa-spinner fa-spin"></i></span> Отправляем...';
             try {
                 const formData = new FormData(form);
                 const response = await fetch(form.action, {
@@ -2497,28 +2816,19 @@
                     showToast('✅ Спасибо! Мы получили ваше подтверждение!', 'success');
                 } else {
                     showToast('Что-то пошло не так. Попробуйте ещё раз 😊', 'error');
-                    submitBtn.disabled = false; submitBtn.textContent = '✅ Подтвердить';
+                    submitBtn.disabled = false; 
+                    submitBtn.innerHTML = '<span class="btn-icon"><i class="fas fa-check-circle"></i></span> Подтвердить присутствие';
                 }
             } catch (error) {
                 showToast('Ошибка соединения. Проверьте интернет 🙏', 'error');
-                submitBtn.disabled = false; submitBtn.textContent = '✅ Подтвердить';
+                submitBtn.disabled = false; 
+                submitBtn.innerHTML = '<span class="btn-icon"><i class="fas fa-check-circle"></i></span> Подтвердить присутствие';
             }
         });
 
-        // ===== КНОПКА НАВЕРХ =====
-        const backToTopBtn = document.getElementById('backToTop');
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 500) {
-                backToTopBtn.classList.add('show');
-            } else {
-                backToTopBtn.classList.remove('show');
-            }
-        });
-        backToTopBtn.addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // ===== АНИМАЦИЯ ПРИ СКРОЛЛЕ =====
+        // ============================================================
+        //  АНИМАЦИЯ ПРИ СКРОЛЛЕ
+        // ============================================================
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -2528,7 +2838,7 @@
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
 
-        console.log('✅ Сайт загружен!');
+        console.log('✅ Сайт загружен со всеми улучшениями!');
     </script>
 
 </body>
