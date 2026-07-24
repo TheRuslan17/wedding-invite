@@ -30,23 +30,10 @@
         html { scroll-behavior: smooth; }
 
         /* ===== КАСТОМНЫЙ СКРОЛЛ ===== */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(220, 207, 199, 0.3);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #b07c6a, #d4b8ab);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: #b07c6a rgba(220, 207, 199, 0.3);
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(220, 207, 199, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #b07c6a, #d4b8ab); border-radius: 10px; }
+        * { scrollbar-width: thin; scrollbar-color: #b07c6a rgba(220, 207, 199, 0.3); }
 
         /* ===== ОСНОВНЫЕ СТИЛИ ===== */
         body {
@@ -129,13 +116,12 @@
         @keyframes blurIn { from { filter: blur(20px); opacity: 0; } to { filter: blur(0); opacity: 1; } }
 
         /* ============================================================ */
-        /* ===== ПЛЕЕР С ВИЗУАЛИЗАЦИЕЙ ===== */
+        /* ===== ПЛЕЕР ===== */
         /* ============================================================ */
         .player-wrapper {
             margin: 18px 0 10px;
             opacity: 0;
             animation: fadeInScale 1s ease 1.7s forwards;
-            will-change: transform, opacity;
             width: 100%;
             max-width: 380px;
             margin-left: auto;
@@ -155,7 +141,6 @@
             max-width: 380px;
             width: 100%;
             transition: all 0.3s ease;
-            will-change: transform;
             margin: 0 auto;
         }
         .player .track-name {
@@ -166,13 +151,9 @@
             text-align: center;
             min-height: 28px;
             line-height: 1.3;
-            letter-spacing: 0.3px;
-            transition: all 0.3s ease;
         }
         .player .track-name .artist { font-weight: 400; color: #9a847a; font-size: 14px; }
         .player .track-name.empty { color: #b09a8f; font-weight: 400; font-size: 15px; font-family: 'Inter', sans-serif; }
-        .player .track-name.loading { color: #b07c6a; font-weight: 500; font-size: 14px; }
-        .player .track-name.error { color: #e74c3c; font-weight: 400; font-size: 14px; }
         .player-controls { 
             display: flex; 
             align-items: center; 
@@ -193,13 +174,10 @@
             background: rgba(176, 124, 106, 0.15);
             border: 1.5px solid rgba(176, 124, 106, 0.2);
             color: #b07c6a;
-            will-change: transform;
         }
         .player-controls button:hover { background: rgba(176, 124, 106, 0.25); border-color: #b07c6a; transform: scale(1.08); }
-        .player-controls button:active { transform: scale(0.92); }
-        .player-controls .btn-play svg { width: 24px; height: 24px; fill: currentColor; transition: transform 0.3s ease; }
+        .player-controls .btn-play svg { width: 24px; height: 24px; fill: currentColor; }
         .player-controls .btn-play.playing { background: rgba(176, 124, 106, 0.25); border-color: #b07c6a; }
-        .player-controls .btn-play.loading { background: rgba(176, 124, 106, 0.1); border-color: rgba(176, 124, 106, 0.3); cursor: wait; }
 
         .equalizer {
             display: flex;
@@ -229,7 +207,7 @@
         .equalizer.active span:nth-child(8) { animation-delay: 0.3s; }
 
         /* ============================================================ */
-        /* ===== КНОПКА НАВЕРХ С ПРОГРЕССОМ ===== */
+        /* ===== КНОПКА НАВЕРХ ===== */
         /* ============================================================ */
         #backToTop {
             position: fixed;
@@ -242,7 +220,6 @@
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 20px;
             display: none;
             align-items: center;
             justify-content: center;
@@ -250,7 +227,6 @@
             z-index: 1000;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             padding: 0;
-            will-change: transform;
             opacity: 0;
         }
         #backToTop .progress-ring {
@@ -279,27 +255,19 @@
             transform: scale(1.15) translateY(-4px);
             box-shadow: 0 8px 40px rgba(176, 124, 106, 0.5);
         }
-        #backToTop:active { transform: scale(0.9); }
         #backToTop.show {
             display: flex !important;
             animation: fadeInUp 0.4s ease forwards !important;
             opacity: 1 !important;
         }
-        #backToTop svg:not(.progress-ring) { 
-            transition: transform 0.3s ease; 
-            position: relative; 
-            z-index: 1; 
-        }
-        #backToTop:hover svg:not(.progress-ring) { transform: translateY(-2px); }
 
         /* ============================================================ */
-        /* ===== АНИМИРОВАННЫЕ ИКОНКИ В РАЗДЕЛИТЕЛЯХ ===== */
+        /* ===== АНИМИРОВАННЫЕ ИКОНКИ ===== */
         /* ============================================================ */
         .divider .ornament {
             display: inline-block;
             animation: iconFloat 4s ease-in-out infinite;
             transition: transform 0.5s ease, color 0.3s ease;
-            will-change: transform;
         }
         .divider:hover .ornament {
             animation: spinOrnament 0.7s ease forwards, iconFloat 4s ease-in-out infinite;
@@ -309,7 +277,6 @@
             display: inline-block;
             animation: iconFloat 4s ease-in-out infinite;
             transition: transform 0.4s ease, color 0.3s ease;
-            will-change: transform;
         }
         .divider-ornate:hover .ornament {
             transform: scale(1.3) rotate(10deg);
@@ -318,24 +285,10 @@
         }
         .petal-decor {
             animation: iconFloat 4s ease-in-out infinite;
-            will-change: transform;
         }
 
         /* ============================================================ */
-        /* ===== СКЕЛЕТОН ДЛЯ ЛЕНИВОЙ ЗАГРУЗКИ ===== */
-        /* ============================================================ */
-        .gallery-slide .skeleton-img {
-            width: 100%;
-            height: 600px;
-            flex-shrink: 0;
-            background: linear-gradient(90deg, rgba(220, 207, 199, 0.3) 25%, rgba(220, 207, 199, 0.5) 50%, rgba(220, 207, 199, 0.3) 75%);
-            background-size: 200% 100%;
-            animation: skeletonPulse 1.5s ease-in-out infinite;
-            border-radius: 0;
-        }
-
-        /* ============================================================ */
-        /* ===== ГАЛЕРЕЯ С АВТОПРОКРУТКОЙ ===== */
+        /* ===== ГАЛЕРЕЯ ===== */
         /* ============================================================ */
         .gallery-container {
             position: relative;
@@ -346,17 +299,19 @@
             box-shadow: 0 16px 60px rgba(0,0,0,0.06);
             border: 2px solid #dccfc7;
             background: #e8ddd5;
-            transition: box-shadow 0.3s ease;
-            transform: translateZ(0);
             touch-action: pan-y;
         }
-        .gallery-container:hover { box-shadow: 0 20px 60px rgba(176, 124, 106, 0.1); }
-
         .gallery-slide {
             display: flex;
             transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform;
-            transform: translateZ(0);
+        }
+        .gallery-slide .skeleton-img {
+            width: 100%;
+            height: 600px;
+            flex-shrink: 0;
+            background: linear-gradient(90deg, rgba(220, 207, 199, 0.3) 25%, rgba(220, 207, 199, 0.5) 50%, rgba(220, 207, 199, 0.3) 75%);
+            background-size: 200% 100%;
+            animation: skeletonPulse 1.5s ease-in-out infinite;
         }
         .gallery-slide img {
             display: block;
@@ -366,18 +321,11 @@
             flex-shrink: 0;
             transition: transform 0.4s ease, opacity 0.6s ease;
             cursor: pointer;
-            will-change: transform;
             opacity: 0;
             animation: imageFade 0.6s ease forwards;
         }
-        .gallery-slide img.loaded {
-            opacity: 1;
-        }
-        .gallery-slide img:hover { transform: scale(1.02); }
+        .gallery-slide img.loaded { opacity: 1; }
 
-        /* ============================================================ */
-        /* ===== МИНИ-ГАЛЕРЕЯ С ПРЕВЬЮ ===== */
-        /* ============================================================ */
         .gallery-thumbs {
             display: flex;
             justify-content: center;
@@ -398,18 +346,28 @@
             opacity: 0.6;
             flex-shrink: 0;
         }
-        .gallery-thumbs .thumb:hover {
-            opacity: 1;
-            transform: scale(1.05);
+        .gallery-thumbs .thumb:hover { opacity: 1; transform: scale(1.05); }
+        .gallery-thumbs .thumb.active { border-color: #b07c6a; opacity: 1; transform: scale(1.05); }
+
+        .gallery-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 0 0;
         }
-        .gallery-thumbs .thumb.active {
-            border-color: #b07c6a;
-            opacity: 1;
-            transform: scale(1.05);
+        .gallery-dots span {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: rgba(176, 124, 106, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(176, 124, 106, 0.1);
         }
+        .gallery-dots span:hover { background: rgba(176, 124, 106, 0.4); transform: scale(1.2); }
+        .gallery-dots span.active { background: #b07c6a; transform: scale(1.4); border-color: #b07c6a; }
 
         /* ============================================================ */
-        /* ===== ЭФФЕКТ РАЗМЫТИЯ ПРИ ОТКРЫТИИ ФОТО ===== */
+        /* ===== МОДАЛЬНОЕ ОКНО ===== */
         /* ============================================================ */
         .photo-modal {
             position: fixed;
@@ -483,7 +441,6 @@
             color: #d4b8ab;
             transition: transform 0.4s ease, color 0.3s ease;
             display: inline-block;
-            will-change: transform;
         }
 
         .petal-decor {
@@ -500,7 +457,6 @@
             opacity: 0; 
             transform: translateY(40px); 
             transition: opacity 0.6s ease, transform 0.6s ease; 
-            will-change: transform, opacity; 
             backface-visibility: hidden;
         }
         .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -508,7 +464,6 @@
             opacity: 0; 
             transform: translateX(-30px); 
             transition: opacity 0.6s ease, transform 0.6s ease; 
-            will-change: transform, opacity;
             backface-visibility: hidden;
         }
         .reveal-left.visible { opacity: 1; transform: translateX(0); }
@@ -516,7 +471,6 @@
             opacity: 0; 
             transform: translateX(30px); 
             transition: opacity 0.6s ease, transform 0.6s ease; 
-            will-change: transform, opacity;
             backface-visibility: hidden;
         }
         .reveal-right.visible { opacity: 1; transform: translateX(0); }
@@ -524,7 +478,6 @@
             opacity: 0; 
             transform: scale(0.9); 
             transition: opacity 0.6s ease, transform 0.6s ease; 
-            will-change: transform, opacity;
             backface-visibility: hidden;
         }
         .reveal-scale.visible { opacity: 1; transform: scale(1); }
@@ -568,9 +521,10 @@
             animation: fadeInScale 1s ease 0.2s forwards;
         }
 
+        /* ===== ГЛАВНОЕ - ИМЕНА НА ПК БОЛЬШИЕ, НА ТЕЛЕФОНЕ ЕЩЁ БОЛЬШЕ ===== */
         .hero-names {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(56px, 12vw, 120px);
+            font-size: clamp(80px, 12vw, 140px);
             font-weight: 400;
             line-height: 1.1;
             color: #3d2e2a;
@@ -647,7 +601,6 @@
             opacity: 0;
             animation: scrollIndicator 2s ease-in-out infinite, fadeInScale 1s ease 3s forwards;
             cursor: pointer;
-            transition: color 0.3s ease, transform 0.3s ease;
         }
 
         /* ===== ТАЙМЕР ===== */
@@ -1057,22 +1010,6 @@
 
         /* ===== ГАЛЕРЕЯ ===== */
         .gallery-section { padding: 40px 0 20px; }
-        .gallery-dots {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 16px 0 0;
-        }
-        .gallery-dots span {
-            width: 9px; height: 9px;
-            border-radius: 50%;
-            background: rgba(176, 124, 106, 0.25);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(176, 124, 106, 0.1);
-        }
-        .gallery-dots span:hover { background: rgba(176, 124, 106, 0.4); transform: scale(1.2); }
-        .gallery-dots span.active { background: #b07c6a; transform: scale(1.4); border-color: #b07c6a; }
 
         /* ===== КАРТА ===== */
         .map-container {
@@ -1226,11 +1163,6 @@
             overflow: hidden;
             animation: pulseGlow 3s ease-in-out infinite;
         }
-        .weather-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(176, 124, 106, 0.15);
-            border-color: #b07c6a;
-        }
         .weather-card .weather-icon {
             font-size: 48px;
             display: block;
@@ -1239,7 +1171,6 @@
             transition: transform 0.4s ease;
             color: #b07c6a;
         }
-        .weather-card:hover .weather-icon { transform: scale(1.1) rotate(10deg); }
         .weather-card .weather-temp {
             font-family: 'Playfair Display', serif;
             font-size: 36px;
@@ -1485,12 +1416,6 @@
             line-height: 1.6;
             transition: all 0.3s ease;
         }
-        .gift-note:hover {
-            background: rgba(176, 124, 106, 0.14);
-            border-color: #b07c6a;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(176, 124, 106, 0.1);
-        }
         .gift-note .heart-icon { 
             color: #c97a6a; 
             font-size: 18px;
@@ -1528,12 +1453,6 @@
             opacity: 0.7;
             letter-spacing: 0.5px;
         }
-        .footer .copyright a {
-            color: #b09a8f;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        .footer .copyright a:hover { color: #b07c6a; }
 
         .footer-links {
             display: flex;
@@ -1574,11 +1493,6 @@
             border-color: rgba(107, 203, 119, 0.3);
             background: rgba(107, 203, 119, 0.06);
         }
-        .footer-links .link-btn.secure:hover {
-            background: rgba(107, 203, 119, 0.12);
-            border-color: #7a9a7a;
-            color: #7a9a7a;
-        }
         .footer-links .divider-dot {
             width: 3px; height: 3px;
             border-radius: 50%;
@@ -1617,13 +1531,13 @@
         /* ===== АДАПТИВ ДЛЯ МОБИЛЬНЫХ ===== */
         /* ============================================================ */
         @media (max-width: 600px) {
-            ::-webkit-scrollbar { width: 4px; height: 4px; }
-            
+            body { overflow-x: hidden; width: 100%; }
             .container { padding: 0 12px; }
             section { padding: 40px 0 24px; }
             
+            /* ===== ИМЕНА НА ТЕЛЕФОНЕ УВЕЛИЧЕНЫ В 1.5 РАЗА ===== */
             .hero-names { 
-                font-size: clamp(48px, 12vw, 72px) !important; 
+                font-size: clamp(120px, 22vw, 160px) !important;
                 margin-bottom: 4px;
             }
             .hero-names span { 
@@ -1634,6 +1548,7 @@
                 display: inline-block; 
                 font-size: 0.7em;
             }
+            
             .hero-date { font-size: 16px; letter-spacing: 4px; }
             .hero-greeting { font-size: 18px; }
             .hero-sub { font-size: 15px; }
@@ -1643,8 +1558,12 @@
             .section-title { font-size: 24px; }
             .section-subtitle { font-size: 13px; margin-bottom: 24px; }
             
-            .gallery-slide img, .gallery-slide .skeleton-img { height: 320px !important; }
-            .gallery-thumbs .thumb { width: 40px; height: 32px; }
+            /* ===== ФОТКИ УВЕЛИЧЕНЫ ===== */
+            .gallery-slide img, 
+            .gallery-slide .skeleton-img { 
+                height: 400px !important; 
+            }
+            .gallery-thumbs .thumb { width: 50px; height: 38px; }
             
             .player-wrapper { max-width: 280px; }
             .player { 
@@ -1664,7 +1583,7 @@
             .timer-item .label { font-size: 8px; letter-spacing: 1px; }
             .timer-date { font-size: 20px; }
             
-            .map-container iframe { height: 220px; }
+            .map-container iframe { height: 250px; }
             
             .weather-card { padding: 18px 14px; }
             .weather-card .weather-temp { font-size: 28px; }
@@ -1674,14 +1593,12 @@
             .rsvp-wrapper { padding: 4px; }
             .rsvp-header { padding: 14px 16px; }
             .rsvp-header h3 { font-size: 17px; }
-            .rsvp-header p { font-size: 11px; }
             .rsvp-body { padding: 16px 14px 18px; }
             
             .details-grid { grid-template-columns: 1fr; gap: 16px; }
             .detail-card { padding: 18px 14px; }
             .detail-card .icon { font-size: 22px; }
             .detail-card h4 { font-size: 16px; }
-            .detail-card p { font-size: 12px; }
             
             .social-links a { padding: 8px 14px; font-size: 12px; gap: 8px; }
             .social-links { gap: 12px; }
@@ -1693,49 +1610,30 @@
             .contact-card .name { font-size: 16px; }
             
             #backToTop { bottom: 14px; right: 14px; width: 40px; height: 40px; }
-            #backToTop .progress-ring { width: 48px; height: 48px; top: -4px; left: -4px; }
-            #backToTop svg:not(.progress-ring) { width: 18px; height: 18px; }
+            #backToTop .progress-ring { width: 48px; height: 48px; }
             
             .scroll-indicator { font-size: 18px; bottom: 10px; }
-            
             .footer { padding: 24px 0 16px; font-size: 12px; }
-            .footer .heart { font-size: 16px; }
-            .footer .copyright { font-size: 10px; }
-            .footer-links { gap: 6px; }
-            .footer-links .link-btn { font-size: 9px; padding: 2px 8px; }
-            .footer-links .divider-dot { width: 2px; height: 2px; }
             
             .gift-note { font-size: 14px; padding: 12px 14px; }
             .gift-note .highlight-text { font-size: 16px; }
-            .gift-note .small-note { font-size: 12px; }
             
             .final-message { padding: 16px 12px; }
             .final-message .big-text { font-size: 24px; }
             .final-message .emoji-big { font-size: 34px; }
-            .final-message .sub-text { font-size: 14px; }
             
             .toast { font-size: 12px; padding: 10px 16px; bottom: 14px; max-width: 95%; }
-            
             .photo-modal { padding: 12px; }
             
             .divider { gap: 8px; margin: 8px 0 16px; }
             .divider .line { max-width: 40px; }
             .divider .ornament { font-size: 14px; }
-            
             .divider-ornate .ornament { font-size: 16px; }
-            .divider-ornate .line { max-width: 30px; }
-            
             .petal-decor { font-size: 18px; letter-spacing: 10px; }
             
             .btn-submit { font-size: 14px; padding: 10px; }
-            .btn-submit .btn-icon { font-size: 14px; }
-            
             .form-group input, .form-group select { padding: 8px 12px; font-size: 13px; }
             .radio-group label { font-size: 13px; padding: 6px 10px; }
-            .radio-group .radio-icon { font-size: 14px; width: 18px; }
-            
-            .success-message .title { font-size: 18px; }
-            .success-message .icon { font-size: 34px; }
             
             .story-timeline::before { left: 16px; }
             .story-item { 
@@ -1756,12 +1654,6 @@
                 width: 12px; 
                 height: 12px; 
             }
-            .story-item .story-number { 
-                font-size: 9px; 
-                top: -5px; 
-                right: -5px; 
-                padding: 1px 6px; 
-            }
             .story-item .story-year .icon { 
                 font-size: 18px; 
                 width: 30px; 
@@ -1777,8 +1669,6 @@
                 align-items: flex-start; 
                 padding-left: 36px; 
                 gap: 3px; 
-                padding-top: 6px; 
-                padding-bottom: 6px; 
             }
             .zigzag-item .event { 
                 width: 100%; 
@@ -1792,23 +1682,24 @@
             }
             .zigzag-item .event .event-time { font-size: 16px; }
             .zigzag-item .event .event-icon { font-size: 18px; }
-            .zigzag-item .event .event-title { font-size: 14px; }
         }
 
         @media (max-width: 400px) {
-            .hero-names { font-size: clamp(36px, 11vw, 52px) !important; }
+            .hero-names { font-size: clamp(90px, 20vw, 130px) !important; }
             .hero-date { font-size: 14px; letter-spacing: 3px; }
             .hero-greeting { font-size: 16px; }
             .hero-sub { font-size: 14px; line-height: 1.6; }
             .section-title { font-size: 20px; }
             
-            .gallery-slide img, .gallery-slide .skeleton-img { height: 240px !important; }
-            .gallery-thumbs .thumb { width: 32px; height: 26px; }
+            .gallery-slide img, 
+            .gallery-slide .skeleton-img { 
+                height: 320px !important; 
+            }
+            .gallery-thumbs .thumb { width: 40px; height: 30px; }
             
             .player-wrapper { max-width: 220px; }
             .player { padding: 8px 10px 10px; max-width: 220px; }
             .player .track-name { font-size: 12px; min-height: 18px; }
-            .player .track-name .artist { font-size: 10px; }
             .player-controls button { width: 32px; height: 32px; }
             .player-controls .btn-play svg { width: 16px; height: 16px; }
             .equalizer { height: 16px; gap: 2px; }
@@ -1816,9 +1707,7 @@
             
             .timer-item .number { font-size: 16px; }
             .timer-date { font-size: 18px; }
-            
-            .map-container iframe { height: 180px; }
-            
+            .map-container iframe { height: 200px; }
             .weather-card .weather-temp { font-size: 24px; }
             .weather-card .weather-icon { font-size: 34px; }
             
@@ -1833,37 +1722,17 @@
             .contact-card { padding: 12px 10px; }
             .contact-card .icon { font-size: 22px; }
             .contact-card .name { font-size: 14px; }
-            .contact-card .phone { font-size: 12px; }
             
             .social-links a { padding: 6px 12px; font-size: 11px; }
             .social-links a .vk-icon { font-size: 16px; }
             
             #backToTop { bottom: 12px; right: 12px; width: 34px; height: 34px; }
             #backToTop .progress-ring { width: 42px; height: 42px; }
-            #backToTop svg:not(.progress-ring) { width: 14px; height: 14px; }
-            
-            .scroll-indicator { font-size: 16px; bottom: 8px; }
-            
-            .footer { padding: 20px 0 14px; font-size: 11px; }
-            .footer-links .link-btn { font-size: 8px; padding: 2px 6px; }
             
             .gift-note { font-size: 13px; padding: 8px 10px; }
             .gift-note .highlight-text { font-size: 14px; }
-            
             .final-message .big-text { font-size: 20px; }
             .final-message .emoji-big { font-size: 28px; }
-            
-            .form-group input, .form-group select { padding: 6px 10px; font-size: 12px; }
-            .radio-group label { font-size: 12px; padding: 4px 8px; }
-            .btn-submit { font-size: 13px; padding: 8px; }
-            
-            .story-item .story-content { padding: 10px 12px; }
-            .story-item .story-text { font-size: 12px; }
-            .story-item .story-text strong { font-size: 13px; }
-            
-            .zigzag-item .event { padding: 8px 10px; }
-            .zigzag-item .event .event-time { font-size: 14px; }
-            .zigzag-item .event .event-title { font-size: 13px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1878,10 +1747,8 @@
             .contact-card .icon, .scroll-indicator, .divider .ornament,
             .divider-ornate .ornament, .equalizer.active span { animation: none !important; }
             .gallery-slide img { opacity: 1 !important; animation: none !important; }
-            #backToTop { animation: none !important; }
             .detail-card::before, .detail-card::after,
             .contact-card::before, .contact-card::after { animation: none !important; opacity: 0 !important; }
-            .timer-section::before { animation: none !important; }
             .timer-item .number { animation: none !important; background: none !important; -webkit-text-fill-color: #b07c6a !important; }
         }
     </style>
@@ -2310,7 +2177,7 @@
         </div>
     </footer>
 
-    <!-- ===== КНОПКА НАВЕРХ С ПРОГРЕССОМ ===== -->
+    <!-- ===== КНОПКА НАВЕРХ ===== -->
     <button id="backToTop" aria-label="Наверх">
         <svg class="progress-ring" viewBox="0 0 56 56">
             <circle class="bg" cx="28" cy="28" r="26" />
@@ -2328,7 +2195,7 @@
 
     <script>
         // ============================================================
-        //  ПЛЕЕР С ВИЗУАЛИЗАЦИЕЙ
+        //  ПЛЕЕР
         // ============================================================
         const trackName = document.getElementById('trackName');
         const playBtn = document.getElementById('playBtn');
@@ -2479,7 +2346,7 @@
         updatePlayButton(false);
 
         // ============================================================
-        //  КНОПКА НАВЕРХ С ПРОГРЕССОМ
+        //  КНОПКА НАВЕРХ
         // ============================================================
         const backToTopBtn = document.getElementById('backToTop');
         const progressCircle = document.getElementById('progressCircle');
@@ -2505,7 +2372,7 @@
         });
 
         // ============================================================
-        //  ГАЛЕРЕЯ С АВТОПРОКРУТКОЙ
+        //  ГАЛЕРЕЯ
         // ============================================================
         const galleryContainer = document.getElementById('galleryContainer');
         const gallerySlide = document.getElementById('gallerySlide');
@@ -2617,7 +2484,7 @@
         startAutoPlay();
 
         // ============================================================
-        //  ЭФФЕКТ РАЗМЫТИЯ ПРИ ОТКРЫТИИ ФОТО
+        //  ФОТО В ПОЛНЫЙ РАЗМЕР
         // ============================================================
         const modal = document.getElementById('photoModal');
         const modalImg = document.getElementById('modalImage');
