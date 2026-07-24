@@ -148,7 +148,6 @@
         @keyframes equalize { from { height: 4px; } to { height: 30px; } }
         @keyframes skeletonPulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
         @keyframes blurIn { from { filter: blur(20px); opacity: 0; } to { filter: blur(0); opacity: 1; } }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ============================================================ */
         /* ===== 2. МИНИ-ПЛЕЕР С ВИЗУАЛИЗАЦИЕЙ ===== */
@@ -160,6 +159,8 @@
             will-change: transform, opacity;
             width: 100%;
             max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .player {
             display: flex;
@@ -176,6 +177,7 @@
             width: 100%;
             transition: all 0.3s ease;
             will-change: transform;
+            margin: 0 auto;
         }
         .player:hover {
             border-color: rgba(176, 124, 106, 0.4);
@@ -610,7 +612,7 @@
 
         .hero-names {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(64px, 18vw, 120px);
+            font-size: clamp(48px, 15vw, 120px);
             font-weight: 400;
             line-height: 1.1;
             color: #3d2e2a;
@@ -650,7 +652,7 @@
         }
         .hero-greeting {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(24px, 3vw, 36px);
+            font-size: clamp(20px, 3vw, 36px);
             font-weight: 600;
             font-style: italic;
             color: #b07c6a;
@@ -1720,7 +1722,7 @@
             .timer-section { padding: 16px 14px; }
             .timer-item .number { font-size: 24px; }
             .hero { padding: 30px 16px 60px; }
-            .hero-names { font-size: clamp(48px, 15vw, 80px); }
+            .hero-names { font-size: clamp(48px, 13vw, 80px); }
             .divider .ornament { font-size: 18px; }
             .divider .line { max-width: 60px; }
             .details-grid { gap: 20px; }
@@ -1749,11 +1751,13 @@
             .story-item .story-text strong { font-size: 15px; }
             .zigzag-item .event .event-time { font-size: 18px; }
             .zigzag-item .event .event-title { font-size: 15px; }
+            .player-wrapper { max-width: 320px; }
         }
 
         @media (max-width: 600px) {
-            .hero-names span { display: block; margin: 4px 0; }
+            .hero-names span { display: block; margin: 2px 0; }
             .hero-names .amp { display: inline-block; font-size: 0.8em; }
+            .hero-names { font-size: clamp(42px, 12vw, 64px); }
             .details-grid { grid-template-columns: 1fr; }
             .rsvp-wrapper { padding: 4px; border-radius: 18px; }
             .rsvp-header { padding: 16px 16px; border-radius: 14px 14px 0 0; }
@@ -1765,19 +1769,20 @@
             .social-links { gap: 16px; }
             .contacts-grid { grid-template-columns: 1fr; }
             .section-title { font-size: 24px; }
-            .hero-names { font-size: clamp(42px, 15vw, 64px); }
+            .hero-date { font-size: 16px; letter-spacing: 4px; }
             .divider .line { max-width: 50px; }
             .hero { background-attachment: scroll; padding: 24px 12px 60px; }
             .timer-section { padding: 14px 10px; }
             .timer-item .number { font-size: 22px; }
             .timer-item .label { font-size: 8px; letter-spacing: 1px; }
             .timer-date { font-size: 22px; }
-            .gallery-slide img, .gallery-slide .skeleton-img { height: 350px; }
+            .gallery-slide img, .gallery-slide .skeleton-img { height: 320px; }
             .final-message { padding: 20px 14px; }
             .final-message .big-text { font-size: 24px; }
             .hero-greeting { font-size: clamp(18px, 4vw, 24px); }
             .hero-sub { font-size: 15px; }
 
+            .player-wrapper { max-width: 280px; }
             .player {
                 padding: 12px 16px 14px;
                 min-width: 160px;
@@ -1791,8 +1796,8 @@
             .equalizer span { width: 3px; }
 
             .story-timeline::before { left: 20px; }
-            .story-item { flex-direction: column !important; align-items: flex-start; padding-left: 44px; gap: 4px; }
-            .story-item .story-content { width: 100%; padding: 16px 18px; }
+            .story-item { flex-direction: column !important; align-items: flex-start; padding-left: 44px; gap: 4px; padding-top: 14px; padding-bottom: 14px; }
+            .story-item .story-content { width: 100%; padding: 14px 16px; }
             .story-item .story-marker { left: 20px; transform: translateX(-50%); width: 14px; height: 14px; }
             .story-item .story-number { font-size: 10px; top: -6px; right: -6px; padding: 1px 8px; }
             .story-item .story-year .icon { font-size: 22px; width: 38px; height: 38px; }
@@ -1802,8 +1807,8 @@
             .story-item:hover .story-marker { transform: translateX(-50%) scale(1.2); }
 
             .timeline-zigzag::before { left: 20px; }
-            .zigzag-item { flex-direction: column !important; align-items: flex-start; padding-left: 44px; gap: 4px; }
-            .zigzag-item .event { width: 100%; padding: 14px 16px; }
+            .zigzag-item { flex-direction: column !important; align-items: flex-start; padding-left: 44px; gap: 4px; padding-top: 6px; padding-bottom: 6px; }
+            .zigzag-item .event { width: 100%; padding: 12px 14px; }
             .zigzag-item .marker { left: 20px; transform: translateX(-50%); width: 14px; height: 14px; }
             .zigzag-item .event .event-time { font-size: 18px; }
             .zigzag-item .event .event-icon { font-size: 22px; }
@@ -1841,17 +1846,18 @@
             .detail-card h4 { font-size: 16px; }
             .detail-card .icon { font-size: 22px; }
             .detail-card p { font-size: 12px; }
+            .hero-badge { font-size: 11px; letter-spacing: 4px; }
         }
 
         @media (max-width: 400px) {
-            .hero-names { font-size: clamp(32px, 14vw, 48px); }
-            .hero-date { font-size: 15px; }
+            .hero-names { font-size: clamp(34px, 12vw, 48px); }
+            .hero-date { font-size: 14px; letter-spacing: 3px; }
             .hero-greeting { font-size: 16px; }
             .hero-sub { font-size: 14px; line-height: 1.6; }
             .section-title { font-size: 22px; }
             .container { padding: 0 8px; }
             section { padding: 30px 0; }
-            .gallery-slide img, .gallery-slide .skeleton-img { height: 280px; }
+            .gallery-slide img, .gallery-slide .skeleton-img { height: 260px; }
             .map-container iframe { height: 200px; }
             .weather-card .weather-temp { font-size: 26px; }
             .weather-card .weather-icon { font-size: 38px; }
@@ -1861,6 +1867,7 @@
             .player-controls button { width: 38px; height: 38px; }
             .player-controls .btn-play svg { width: 18px; height: 18px; }
             .player { padding: 10px 14px 12px; max-width: 240px; }
+            .player-wrapper { max-width: 240px; }
             .rsvp-wrapper { padding: 3px; border-radius: 14px; }
             .rsvp-header { padding: 14px 14px; }
             .rsvp-header h3 { font-size: 16px; }
@@ -1868,10 +1875,10 @@
             .detail-card { padding: 20px 14px; }
             .detail-card .icon { font-size: 20px; }
             .detail-card h4 { font-size: 15px; }
-            .zigzag-item .event { padding: 12px 14px; }
+            .zigzag-item .event { padding: 10px 12px; }
             .zigzag-item .event .event-time { font-size: 16px; }
             .zigzag-item .event .event-title { font-size: 14px; }
-            .story-item .story-content { padding: 14px 16px; }
+            .story-item .story-content { padding: 12px 14px; }
             .story-item .story-text { font-size: 13px; }
             .story-item .story-text strong { font-size: 14px; }
             .contact-card { padding: 16px 14px; }
@@ -1892,6 +1899,10 @@
             .btn-submit { font-size: 13px; padding: 8px; }
             .form-group input, .form-group select { padding: 8px 12px; font-size: 13px; }
             .gallery-thumbs .thumb { width: 32px; height: 26px; }
+            .hero-badge { font-size: 10px; letter-spacing: 3px; }
+            .divider .ornament { font-size: 14px; }
+            .divider .line { max-width: 30px; }
+            .divider { gap: 10px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
