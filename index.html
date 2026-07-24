@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes, viewport-fit=cover" />
     <title>Максим & Ульяна | Свадьба</title>
 
     <!-- Open Graph -->
@@ -521,7 +521,7 @@
             animation: fadeInScale 1s ease 0.2s forwards;
         }
 
-        /* ===== ГЛАВНОЕ - ИМЕНА НА ПК БОЛЬШИЕ, НА ТЕЛЕФОНЕ ЕЩЁ БОЛЬШЕ ===== */
+        /* ===== ИМЕНА ===== */
         .hero-names {
             font-family: 'Great Vibes', cursive;
             font-size: clamp(80px, 12vw, 140px);
@@ -1535,18 +1535,20 @@
             .container { padding: 0 12px; }
             section { padding: 40px 0 24px; }
             
-            /* ===== ИМЕНА НА ТЕЛЕФОНЕ УВЕЛИЧЕНЫ В 1.5 РАЗА ===== */
+            /* ===== ИМЕНА НА ТЕЛЕФОНЕ - КАЖДОЕ С НОВОЙ СТРОКИ ===== */
             .hero-names { 
                 font-size: clamp(120px, 22vw, 160px) !important;
                 margin-bottom: 4px;
             }
             .hero-names span { 
-                display: inline-block; 
-                margin: 0 3px;
+                display: block !important;
+                margin: 0 !important;
+                line-height: 1.1;
             }
             .hero-names .amp { 
-                display: inline-block; 
+                display: block !important;
                 font-size: 0.7em;
+                margin: 2px 0 !important;
             }
             
             .hero-date { font-size: 16px; letter-spacing: 4px; }
